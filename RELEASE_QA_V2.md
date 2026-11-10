@@ -10,3 +10,5 @@
 - Source and tests must be checked into GitHub together with its exact compiled HTML, then the actual GitHub Actions workflow/deployment run checked for that commit.
 
 See `IMPLEMENTATION_MATRIX.md` for feature-by-feature proof limits.
+
+- Remote CI observation: initial v2.0 run `42762941286` failed at the Playwright Chromium installation step on Ubuntu 26.04; deterministic build and Node tests passed. The workflow is corrected to target the explicitly supported Ubuntu 24.04 image; new run still requires checking.

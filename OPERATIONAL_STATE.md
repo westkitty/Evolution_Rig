@@ -94,3 +94,5 @@ Open the standalone file on the intended browser and run one real local Ollama o
 - Optional Lab functionality and regression evidence: see `IMPLEMENTATION_MATRIX.md`, `RELEASE_QA_V2.md`. The user explicitly requested all 19 eligible COOL ideas, including source/CI handoff.
 - Known proof gaps: managed Chromium denies localhost, so true IndexedDB/reload/CORS validation is a SKIP here; human reviewer calibration, real provider cost, real assistive tech and large mobile runtime require external evidence. Do not claim them verified.
 - Remote state must be updated only after successful local build/test and an atomic GitHub commit, followed by checking the final workflow run. Historical v1.6 remote remains rollback until this succeeds.
+
+- First v2.0 GitHub Actions run 42762941286: source byte parity and 28 Node tests passed; browser installation **FAILED** because `ubuntu-latest` transitioned to Ubuntu 26.04, unsupported by pinned Playwright 1.57 Chromium installer. Remediation pins `ubuntu-24.04`. Never describe first run as a successful deployment.
