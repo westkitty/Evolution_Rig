@@ -314,6 +314,7 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   <section class="rail-section"><div class="eyebrow">New independent board</div><details class="create-board-details" id="boardComposer" open><summary>Create a board</summary>
     <form id="boardForm" class="stack"><label>Board title<input name="title" required maxlength="120" placeholder="e.g. Better offline workflows"></label><label>Goal / directive<textarea name="objective" required maxlength="1600" rows="3" placeholder="What should this board optimize for?"></textarea></label><button class="primary" type="submit">+ Create board</button></form></details>
   </section>
+  <section class="rail-section"><div class="eyebrow">The Seed Vault / 20 origins</div><p class="tiny-note">Twenty fully specified ideas you can plant as a new board or add to the one you have.</p><button type="button" class="ghost" id="boardStarters">Explore twenty starters ↗</button></section>
   <section class="rail-section"><div class="eyebrow">Workspace portability</div><div class="stack"><button class="ghost" id="downloadWorkspace" type="button">Export workspace JSON</button><button class="ghost" id="importWorkspace" type="button">Import workspace JSON</button><input hidden id="workspaceFile" type="file" accept=".json,application/json"></div></section>
   <div class="rail-note"><strong>Private by default.</strong> Boards and ideas stay in this browser storage. There is no service or account. Export JSON periodically; browser storage can be cleared. Model calls leave the device only if you explicitly choose a remote provider. <div id="storageNotice" class="tiny-note" style="margin-top:9px"></div></div>
 </aside>
@@ -333,6 +334,7 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
       <button id="hudZoomIn" type="button" aria-label="Zoom in" title="Zoom in">+</button>
       <button id="hudFit" type="button" aria-label="Fit complete field" title="Fit field">Fit</button>
       <button id="hudTrace" type="button" aria-label="Center on selected idea" title="Trace selected idea">Trace</button>
+      <button id="hudStarters" type="button" aria-haspopup="dialog" aria-controls="starterDialog" aria-label="Explore twenty starter ideas">Seeds</button>
       <button id="hudInfo" type="button" aria-expanded="false" aria-controls="atlasNotebook" aria-label="Show selected idea field report">Record</button>
     </div>
     <span class="hud-dock-end" id="hudRoute">LOCAL / OFFLINE</span>
@@ -342,10 +344,10 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   <section class="summary" aria-label="Board statistics"><div class="stat"><strong id="statTotal">0</strong><span>Total ideas</span></div><div class="stat"><strong id="statActive">0</strong><span>Active candidates</span></div><div class="stat"><strong id="statGold">0</strong><span>Gold shortlisted</span></div><div class="stat"><strong id="statGenerations">0</strong><span>Deepest generation</span></div></section>
   <nav class="tabs" id="viewTabs" role="tablist" aria-label="Workspace areas"><button class="tab" data-view="studio" role="tab" aria-selected="true">01 / Studio</button><button class="tab" data-view="jury" role="tab" aria-selected="false">02 / Jury</button><button class="tab" data-view="autopilot" role="tab" aria-selected="false">03 / Autopilot</button><button class="tab" data-view="models" role="tab" aria-selected="false">04 / Models</button></nav>
   <section class="view" id="studio" role="tabpanel" aria-label="Idea studio">
-    <div class="workbar"><button class="primary" id="newSeed">+ New seed</button><button id="branchSelected">Branch selected</button><label class="bar" style="gap:6px">N <input type="number" id="branchCount" min="1" max="8" step="1" value="3" aria-label="Number of branch children"></label><button id="crossPicked">Crossbreed picked pair</button><span class="stretch"></span><label>Filter <select id="nodeFilter"><option value="active">Active</option><option value="all">All, including archived</option><option value="gold">Gold only</option></select></label><label>Search <input id="nodeSearch" placeholder="Title or mechanism" aria-label="Search ideas"></label></div>
+    <div class="workbar"><button class="primary" id="newSeed">+ New seed</button><button class="ghost" id="workbenchStarters" aria-haspopup="dialog" aria-controls="starterDialog">Seed Vault / 20</button><button id="branchSelected">Branch selected</button><label class="bar" style="gap:6px">N <input type="number" id="branchCount" min="1" max="8" step="1" value="3" aria-label="Number of branch children"></label><button id="crossPicked">Crossbreed picked pair</button><span class="stretch"></span><label>Filter <select id="nodeFilter"><option value="active">Active</option><option value="all">All, including archived</option><option value="gold">Gold only</option></select></label><label>Search <input id="nodeSearch" placeholder="Title or mechanism" aria-label="Search ideas"></label></div>
     <section class="observatory" id="observatory" aria-labelledby="atlasTitle">
     <header class="obs-head"><div><div class="eyebrow">THE OBSERVATORY / CAUSAL SURVEY</div><h2 id="atlasTitle">Every possibility leaves a trace.</h2><p>The map is evidence, not a prediction. Every point is a recorded idea. Every thread is a real parent relationship. Even discarded paths remain.</p></div><div class="obs-controls" aria-label="Observatory navigation"><button id="atlasZoomOut" aria-label="Zoom out" title="Zoom out">− Zoom</button><button id="atlasZoomIn" aria-label="Zoom in" title="Zoom in">+ Zoom</button><button data-atlas-reset id="atlasReset" title="Fit full field (Home)">Fit field</button><button class="obs-focus" id="atlasFocus" title="Center and magnify selected idea">Trace selected</button></div></header>
-    <div class="obs-grid"><div class="atlas-field"><div class="atlas-hud"><div class="eyebrow">FIELD / <span id="atlasModeLabel">UNPOPULATED</span></div><div class="atlas-readout" id="atlasReadout">0 IDEAS · 0 LINKS<br>NO SURVEY DATA</div></div><aside class="field-prologue" id="fieldPrologue" aria-labelledby="fieldPrologueTitle" hidden><span class="field-prologue-label">FIELD NOTE / ORIGIN ZERO</span><h2 id="fieldPrologueTitle">Everything begins with a choice.</h2><p id="fieldPrologueText">The field will record every lineage you create. No invented paths. No erased ancestors.</p><button id="fieldPrologueStart" type="button">Open a board <span aria-hidden="true">↗</span></button></aside><canvas id="atlasCanvas" tabindex="0" role="img" aria-label="Interactive causal field. Every point corresponds to an idea; links show recorded ancestry. Click or tap a point to select. Drag to pan, scroll to zoom. Use the adjacent list, family tree, or jury table for keyboard and screen-reader access.">Your ideas and ancestry are also available in the accessible family tree and jury table below.</canvas><div class="atlas-key" aria-label="Diagram legend"><span><i class="key-mark"></i>Active</span><span><i class="key-mark gold"></i>Gold</span><span><i class="key-mark archive"></i>Archived</span><span><i class="key-mark hybrid"></i>Two parents</span></div></div>
+    <div class="obs-grid"><div class="atlas-field"><div class="atlas-hud"><div class="eyebrow">FIELD / <span id="atlasModeLabel">UNPOPULATED</span></div><div class="atlas-readout" id="atlasReadout">0 IDEAS · 0 LINKS<br>NO SURVEY DATA</div></div><aside class="field-prologue" id="fieldPrologue" aria-labelledby="fieldPrologueTitle" hidden><span class="field-prologue-label">FIELD NOTE / ORIGIN ZERO</span><h2 id="fieldPrologueTitle">Everything begins with a choice.</h2><p id="fieldPrologueText">The field will record every lineage you create. No invented paths. No erased ancestors.</p><button id="fieldPrologueStart" type="button">Open a board <span aria-hidden="true">↗</span></button><button id="fieldPrologueStarters" type="button" aria-haspopup="dialog" aria-controls="starterDialog">Browse 20 starter ideas <span aria-hidden="true">↗</span></button></aside><canvas id="atlasCanvas" tabindex="0" role="img" aria-label="Interactive causal field. Every point corresponds to an idea; links show recorded ancestry. Click or tap a point to select. Drag to pan, scroll to zoom. Use the adjacent list, family tree, or jury table for keyboard and screen-reader access.">Your ideas and ancestry are also available in the accessible family tree and jury table below.</canvas><div class="atlas-key" aria-label="Diagram legend"><span><i class="key-mark"></i>Active</span><span><i class="key-mark gold"></i>Gold</span><span><i class="key-mark archive"></i>Archived</span><span><i class="key-mark hybrid"></i>Two parents</span></div></div>
     <aside class="atlas-notebook" id="atlasNotebook" aria-label="Selected idea and survey findings"><button id="atlasCloseNotebook" type="button" aria-label="Close field report">× <span>Close record</span></button><div class="atlas-focus" aria-live="polite" aria-atomic="true"><div class="eyebrow" id="atlasFocusKicker">FIELD REPORT / AWAITING INPUT</div><h3 id="atlasFocusTitle">No idea selected.</h3><p id="atlasNarrative">Create a board and place a seed. The field will show the lineages you actually construct.</p></div><div class="atlas-evidence" aria-label="Trace counts"><div><strong id="atlasAncestorCount">0</strong><span>Ancestors</span></div><div><strong id="atlasDescendantCount">0</strong><span>Descendants</span></div><div><strong id="atlasArchiveCount">0</strong><span>Archived trails</span></div></div><div class="atlas-trace"><span class="eyebrow">EVIDENCE / NOT ORACLE</span><span id="atlasTraceText">The jury measures textual structure. No rating proves originality, feasibility or real-world impact.</span></div><div class="atlas-recent"><div class="eyebrow">SIGNALS / SELECT A RECORD</div><div class="atlas-index" id="atlasIndex" role="group" aria-label="Notable ideas in the current board"></div></div></aside></div>
     <div class="depth-bar" aria-label="Timeline depth exploration"><label for="atlasDepth">UNFOLD / GENERATION DEPTH</label><input id="atlasDepth" type="range" min="0" max="0" value="0" step="1" aria-label="Show ideas through generation" disabled><output id="atlasDepthLabel" for="atlasDepth">NO GENERATIONS</output><button id="atlasUnfoldAll" class="sm ghost" disabled>Reveal all</button></div>
     <div class="obs-foot"><span><strong id="atlasFootSummary">No generations recorded</strong> · click a node to follow its ancestry</span><span>Pointer: select / drag / zoom · Keyboard: use signal buttons below or focus the canvas for arrows / ± / Home</span></div>
@@ -381,6 +383,17 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   <footer style="margin-top:25px;color:#708a89;font:11px var(--mono)">EVOLUTION RIG / LOCAL INSTRUMENT / NO EXTERNAL LIBRARIES / NOTHING RUNS WHEN CLOSED</footer>
 </main></div>
 <div class="hud-scrim" id="hudScrim" hidden aria-hidden="true"></div>
+<dialog id="starterDialog" aria-labelledby="starterHeading" aria-describedby="starterIntro">
+  <div class="starter-shell">
+    <header class="starter-head"><div><div class="starter-kicker">EVOLUTION RIG / ORIGIN LIBRARY · 20</div><h2 id="starterHeading">The Seed Vault<span aria-hidden="true">.</span></h2><p id="starterIntro">Twenty possible beginnings. Every one has a mechanism, a first experiment and a way to fail. Choose one; the future is yours to grow.</p></div><button type="button" class="starter-close" id="starterClose" aria-label="Close starter ideas">✕ <span>Close</span></button></header>
+    <div class="starter-filterbar"><label class="starter-search-label" for="starterSearch">FIND A BEGINNING<input id="starterSearch" type="search" placeholder="Search ideas, problems, mechanisms…" autocomplete="off"></label><div class="starter-filter-buttons" id="starterFilters" role="group" aria-label="Starter idea themes"></div></div>
+    <div class="starter-catalog">
+      <section class="starter-list-panel" aria-label="Starter idea choices"><div class="starter-section-title"><span>SELECT AN ORIGIN</span><output id="starterCount" aria-live="polite">20 ideas</output></div><div class="starter-list" id="starterList"></div></section>
+      <section class="starter-detail-panel" id="starterDetailPanel" aria-labelledby="starterName"><div class="starter-detail-intro"><span class="starter-current-index" id="starterCurrentIndex">ORIGIN 01 / 20</span><span class="starter-category-tag" id="starterCurrentCategory">SYSTEMS</span><h3 id="starterName" aria-live="polite">Select a beginning</h3><p class="starter-promise" id="starterPromise"></p></div><div class="starter-detail-chapters"><div><b>THE TENSION</b><p id="starterProblem"></p></div><div><b>THE MECHANISM</b><p id="starterMechanism"></p></div><div><b>FIRST CONTACT WITH REALITY</b><p id="starterPlan"></p></div><div><b>WHAT WOULD PROVE IT?</b><p id="starterValidation"></p></div><div><b>THE COST OF GETTING IT WRONG</b><p id="starterRisks"></p></div></div></section>
+    </div>
+    <footer class="starter-foot"><span id="starterBoardContext">No board selected. Make a new one to begin.</span><div class="starter-actions"><button type="button" id="starterEdit" class="ghost" disabled>Edit first</button><button type="button" id="starterIntoBoard" class="ghost" disabled>Add to current board</button><button type="button" id="starterNewBoard" class="primary">Plant as new board ↗</button></div></footer>
+  </div>
+</dialog>
 <dialog class="dialog" id="ideaDialog" aria-labelledby="dialogTitle"><form id="ideaForm" novalidate><div class="dialog-header"><div><div class="eyebrow" id="dialogKicker">NEW / SEED</div><h2 id="dialogTitle">Create idea</h2></div><button type="button" class="ghost sm" id="closeDialog" aria-label="Close">Close</button></div><div class="dialog-content"><div class="field-grid" id="ideaFields"><label style="grid-column:1/-1">Title *<input name="title" required maxlength="160" placeholder="A concrete idea title"></label><label style="grid-column:1/-1">Problem to solve<textarea name="problem" maxlength="2000" rows="2"></textarea></label><label>Target audience<textarea name="audience" maxlength="2000" rows="2"></textarea></label><label>Mechanism / how it works<textarea name="mechanism" maxlength="2000" rows="3"></textarea></label><label>Differentiation / original angle<textarea name="difference" maxlength="2000" rows="3"></textarea></label><label>First execution plan<textarea name="plan" maxlength="2000" rows="3"></textarea></label><label>Validation method<textarea name="validation" maxlength="2000" rows="3"></textarea></label><label>Expected impact / benefit<textarea name="benefit" maxlength="2000" rows="3"></textarea></label><label>Constraints<textarea name="constraints" maxlength="2000" rows="3"></textarea></label><label style="grid-column:1/-1">Risks / unknowns<textarea name="risks" maxlength="2000" rows="2"></textarea></label></div></div><div class="dialog-footer"><button id="cancelIdea" type="button">Cancel</button><button class="primary" id="submitIdea" type="submit">Save idea</button></div></form></dialog>
 <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
 <script>
@@ -669,6 +682,299 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   }
   return {SCHEMA_VERSION,FIELDS,METRICS,TEST_IDEAS,MUTATIONS,rawMetrics,anchors,judge,goldIds,board,normalizeIdea,record,localIdeas,lineageDelta,familyTree,slug,projectFiles,zipFiles,validateImport,similarity};
 });
+
+</script>
+<script>
+/* Twenty authored, offline launch vectors. These are proposals, never workspace
+   state or claimed solutions. The app plants them through its normal seed path. */
+(function(root){
+ 'use strict';
+ const ideas=[
+  {
+   id:'offline-handoff',category:'Systems',title:'The Offline Handoff Engine',
+   tagline:'A half-finished project should survive the person who remembers it.',
+   objective:'Evolve a private, inspectable way to resume abandoned technical and creative projects without relying on conversation memory.',
+   problem:'Long projects become impossible to resume when decisions, evidence, and unresolved failures are scattered across chats and folders.',
+   audience:'Solo makers, small creative studios, collaborators inheriting stalled work.',
+   mechanism:'A portable handoff packet connects current files, verified decisions, test receipts, open risks, and one exact next action.',
+   difference:'Treats claims and test evidence as different objects; cold-start resumption is the primary success test.',
+   plan:'Pick one paused project. Export a compact source map, evidence ledger, and executable next-step checklist into a single offline folder.',
+   validation:'Give the packet to a collaborator with no chat history; measure correct recovery, time spent asking questions, and missing artifacts.',
+   benefit:'Preserves continuity and reduces costly rediscovery without handing the entire project to a cloud service.',
+   constraints:'Works offline; no tokens, API keys, hidden account dependencies, or forced central database.',
+   risks:'A polished but stale packet can mislead. Stamp facts with source and freshness, and surface unknowns explicitly.'
+  },
+  {
+   id:'proof-before-automation',category:'Systems',title:'Proof Before Automation',
+   tagline:'A machine should earn the right to repeat a task.',
+   objective:'Develop an evidence-gated workflow that safely graduates manual procedures into local automation.',
+   problem:'Small automations silently repeat bad assumptions at scale, sometimes damaging durable state.',
+   audience:'Developers, personal automation users, operations teams.',
+   mechanism:'A rehearsal ledger records manual outcomes, boundary cases, rollback ability, and trigger evidence before enabling unattended execution.',
+   difference:'Automation begins disabled and must pass the same adversarial replay that justified its design.',
+   plan:'Select one harmless daily task and manually record ten runs. Prototype a dry-run simulator that compares expected and actual results.',
+   validation:'Inject incorrect inputs and duplicate triggers; count false-positive actions, missed exceptions, and successful reversals.',
+   benefit:'Fewer runaway jobs and a clear record of why an automation was trusted.',
+   constraints:'No privileged commands in the first prototype; every mutation requires a bounded scope and visible stop switch.',
+   risks:'Tests may miss rare events; a passing rehearsal is not proof of safety at larger scale.'
+  },
+  {
+   id:'repair-passport',category:'Systems',title:'The Repair Passport',
+   tagline:'Every repaired object has a history worth keeping.',
+   objective:'Create a local-first evidence passport for repairs, maintenance decisions, and the real life of everyday objects.',
+   problem:'Owners lose service history, part provenance, and the reasons behind earlier fixes.',
+   audience:'Households, hobby repairers, repair cafes, independent technicians.',
+   mechanism:'Attach photos, part identifiers, observed symptoms, interventions, and outcome checks to an offline object record with exportable receipts.',
+   difference:'A repair is an evidence trail with explicit uncertainty, not a vague list of completed chores.',
+   plan:'Prototype three object passports and one printable QR link to a locally stored record.',
+   validation:'Ask another person to diagnose a recurring issue from the passport alone; count missing facts and duplicate purchases avoided.',
+   benefit:'More repairable goods and less repeated diagnostic work.',
+   constraints:'No mandatory accounts, no unverified repair claims, and no unsafe advice for high-voltage or life-critical equipment.',
+   risks:'False history could cause unsafe decisions; clearly mark user observations versus verified professional work.'
+  },
+  {
+   id:'signal-switchboard',category:'Systems',title:'The Consentful Signal Switchboard',
+   tagline:'Notifications should answer to the person receiving them.',
+   objective:'Prototype a transparent, user-owned notification system that prioritizes human control over engagement.',
+   problem:'Useful reminders and low-value interruptions compete for the same attention and obscure real urgency.',
+   audience:'People coordinating care, shared homes, creative focus, and frequent reminders.',
+   mechanism:'Route incoming events by declared urgency, quiet hours, temporary context, and the recipient\'s own acknowledgment rules.',
+   difference:'Every notification explains why it appeared and offers a reversible mute or escalation policy.',
+   plan:'Build a local simulation with fifteen realistic reminders and a visible rules editor.',
+   validation:'Have testers sort simulated events; compare missed-critical alerts and unwanted interruptions with default chronological ordering.',
+   benefit:'More predictable attention without hiding genuinely urgent information.',
+   constraints:'No secret tracking, no inference of private medical states, and no silent suppression of emergency messages.',
+   risks:'Incorrect classifications can delay important information; provide a visible unfiltered fallback.'
+  },
+  {
+   id:'unbuilt-futures',category:'Worlds',title:'Museum of Futures That Never Arrived',
+   tagline:'Exhibit the inventions history almost made.',
+   objective:'Build an interactive exhibition about plausible alternate futures, their constraints, and the reasons they did not happen.',
+   problem:'Speculative histories often show spectacle without the economic, technical, and human decisions that would cause it.',
+   audience:'Museums, educators, speculative fiction readers, design students.',
+   mechanism:'Each exhibit starts with one altered decision, tracks a branching consequence graph, and distinguishes sourced history from fiction.',
+   difference:'Visitors can trace which assumption makes an alternate future possible and where the scenario breaks.',
+   plan:'Create three self-contained exhibits with an explicit point of divergence, dated consequence cards, and a falsification panel.',
+   validation:'Ask visitors to identify the original decision and one trade-off after exploration; compare against static story cards.',
+   benefit:'Makes systems thinking tangible through narrative discovery.',
+   constraints:'Clearly label fictional counterfactuals; avoid passing invented events off as established history.',
+   risks:'A seductive presentation may make speculation feel factual; keep provenance and uncertainty in view.'
+  },
+  {
+   id:'myth-with-consequences',category:'Worlds',title:'Myth With Consequences',
+   tagline:'What if a legend had to obey its own laws?',
+   objective:'Create a small interactive mythology that generates surprising consequences from a consistent rule system.',
+   problem:'Large fictional worlds lose their sense of reality when magic, history, and characters change rules between scenes.',
+   audience:'Worldbuilders, writers, tabletop creators, narrative designers.',
+   mechanism:'Represent a few cosmological laws, places, actors, costs, and obligations as inspectable constraints; events update a persistent consequence ledger.',
+   difference:'Interesting outcomes come from rules colliding, not random spectacle or unrestricted generation.',
+   plan:'Define five immutable rules and three actors; build a twelve-event scenario with visible causes and irreversible costs.',
+   validation:'Give the rules to a second writer; measure whether they can predict or explain new events without contradictions.',
+   benefit:'Deeper narrative coherence and reusable storytelling machinery.',
+   constraints:'No silent retcons; keep metaphors distinct from literal bodies, places, and events.',
+   risks:'Over-formalization can suppress imagination; preserve room for ambiguity without breaking locked facts.'
+  },
+  {
+   id:'single-object-civilization',category:'Worlds',title:'A Civilization From One Object',
+   tagline:'An ordinary artifact becomes an archaeological universe.',
+   objective:'Construct an explorable fictional society by deriving its economy, rituals, technology, and conflicts from one designed object.',
+   problem:'Invented civilizations often feel like lists of unrelated aesthetics rather than connected consequences.',
+   audience:'Illustrators, fiction writers, game designers, exhibition visitors.',
+   mechanism:'Start with the material, wear, markings, manufacturing process, ownership, and repair scars of a single artifact; infer competing cultural explanations.',
+   difference:'Every world detail must point back to inspectable evidence or admit that it is a hypothesis.',
+   plan:'Sketch one object from three angles, write ten physical clues, and make three mutually inconsistent but plausible histories.',
+   validation:'Show the object without a description; ask viewers to infer uses and social context, then compare with the recorded clue chain.',
+   benefit:'A dense fictional world that rewards close inspection.',
+   constraints:'Use original designs and distinguish observed object features from invented social interpretation.',
+   risks:'Decorative lore can outrun material evidence; prune unsupported conclusions.'
+  },
+  {
+   id:'sound-memory-atlas',category:'Worlds',title:'Atlas of Vanishing Sounds',
+   tagline:'Map a place by the noises that are disappearing.',
+   objective:'Develop an ethical, accessible archive of place-based sound memories and environmental change.',
+   problem:'The lived texture of places disappears without leaving a searchable, contextual trace.',
+   audience:'Community historians, sound artists, librarians, local residents.',
+   mechanism:'Pair consented recordings with short descriptions, time windows, maps, context tags, and optional recollections.',
+   difference:'Captures meaning and uncertainty alongside audio instead of presenting isolated atmospheric clips.',
+   plan:'Record five non-sensitive public soundscapes, note weather and location context, and publish an offline narrated mini-atlas.',
+   validation:'Check if listeners can identify what changed over time and distinguish recording facts from memories.',
+   benefit:'A richer public record of environmental and cultural transitions.',
+   constraints:'Obtain permission where necessary; do not record private conversations or expose vulnerable locations.',
+   risks:'Precise geotags or accidental speech could expose people; minimize and review metadata before sharing.'
+  },
+  {
+   id:'shared-home-weather',category:'People',title:'Shared Home Weather Map',
+   tagline:'Make expectations visible before they become arguments.',
+   objective:'Create a consensual planning surface that makes a shared home more predictable without monitoring its people.',
+   problem:'Small uncertainties about schedules, visitors, and energy levels generate disproportionate friction.',
+   audience:'Housemates, partners, families, collaborative living groups.',
+   mechanism:'Each person posts an optional short forecast of plans, capacity, boundaries, and requests; shared changes carry visible acknowledgments.',
+   difference:'Treats the home as negotiated territory, not a surveillance dashboard or obligation tracker.',
+   plan:'Make a two-person offline prototype with next-day plan cards, change notices, and explicit opt-out.',
+   validation:'Run a one-week voluntary trial; compare surprise conflicts and perceived autonomy against ordinary texting.',
+   benefit:'Fewer avoidable misunderstandings while preserving personal independence.',
+   constraints:'No passive location tracking, no public profiles, no hidden authority over another person\'s plans.',
+   risks:'A planning tool can become a control mechanism; make consent, omission, and private space first-class.'
+  },
+  {
+   id:'mutual-aid-without-profiles',category:'People',title:'Mutual Aid Without Profiles',
+   tagline:'Help should not require a permanent identity ledger.',
+   objective:'Explore privacy-preserving ways to match voluntary offers and requests in a local community.',
+   problem:'Centralized help directories can expose needs, stigmatize participants, and outlive the original request.',
+   audience:'Neighborhood groups, mutual-aid organizers, informal care networks.',
+   mechanism:'Use time-limited request cards, consent-based introductions, a minimal matching vocabulary, and automatic local expiration.',
+   difference:'Success is a completed voluntary exchange, not engagement metrics or a growing user database.',
+   plan:'Prototype ten fictional request cards and run a tabletop matching exercise with privacy constraints.',
+   validation:'Measure successful matches, irrelevant disclosures, unresolved requests, and whether participants can withdraw cleanly.',
+   benefit:'More useful coordination with less durable personal exposure.',
+   constraints:'Do not expose addresses, vulnerable people, or sensitive request details without explicit consent.',
+   risks:'Anonymity can attract misuse; design bounded contact and community moderation without coercive identity capture.'
+  },
+  {
+   id:'conversation-rehearsal',category:'People',title:'The Conversation Rehearsal Lab',
+   tagline:'Practice difficult words without scripting a human being.',
+   objective:'Develop a private rehearsal tool for negotiating boundaries, clarifying needs, and recognizing misunderstandings.',
+   problem:'People enter consequential conversations with unsorted assumptions and no way to test alternate phrasing.',
+   audience:'Individuals, couples, mediators, mentors, support groups.',
+   mechanism:'Offer role-neutral scenario prompts, intent-versus-impact comparisons, multiple readings, and user-controlled rewrites.',
+   difference:'The tool never predicts how a particular person will respond or declares one participant correct.',
+   plan:'Build five fictional scenarios; let participants author three phrasings and annotate risks in each.',
+   validation:'Ask independent readers to paraphrase each version; measure clarity and unintended implied demands.',
+   benefit:'More precise, less coercive communication under stress.',
+   constraints:'No diagnosis, mind-reading, hidden transcript collection, or automated pressure to contact anyone.',
+   risks:'Rehearsed scripts can become manipulative; surface uncertainty and invite genuine listening.'
+  },
+  {
+   id:'skills-that-travel',category:'People',title:'Skills That Travel',
+   tagline:'Teach one useful thing without building another platform.',
+   objective:'Create exchangeable offline lessons that transfer practical skills between people with limited connectivity.',
+   problem:'Valuable community knowledge remains trapped in long videos, private chats, or inaccessible accounts.',
+   audience:'Volunteers, community workshops, families, first-time repairers.',
+   mechanism:'Package one task as an illustrated checklist, common failures, a self-check, and a printable emergency fallback.',
+   difference:'Lesson quality is verified by independent task completion, not views or instructor popularity.',
+   plan:'Convert one ordinary low-risk skill into a phone-friendly local HTML lesson and a one-page printout.',
+   validation:'Have three novices attempt the skill without coaching; record completion, confusion points, and correction time.',
+   benefit:'Practical knowledge that survives device, connectivity, and teacher turnover.',
+   constraints:'Start with low-risk tasks; require qualified oversight for electrical, medical, or other hazardous instruction.',
+   risks:'Ambiguous steps can cause damage; test with genuine beginners and include stop conditions.'
+  },
+  {
+   id:'heat-refuge-guide',category:'Planet',title:'The Heat Refuge Field Guide',
+   tagline:'Turn extreme-weather uncertainty into visible choices.',
+   objective:'Prototype a neighborhood heat-resilience resource that communicates real options without pretending to predict emergencies.',
+   problem:'People may not know where to find shaded routes, water, cooling resources, or reliable local updates during hot weather.',
+   audience:'Neighborhood volunteers, walkers, libraries, local preparedness groups.',
+   mechanism:'Combine verified public resource entries, offline map notes, accessibility details, and prominently dated update receipts.',
+   difference:'Missing, old, and unverified information is visibly marked rather than silently filled with plausible guesses.',
+   plan:'Map a small fictional district first, then verify a handful of real publicly listed resources with permission.',
+   validation:'Time how long a test user takes to find one accessible verified option; deliberately insert stale data to test warnings.',
+   benefit:'A clearer decision surface for community preparedness.',
+   constraints:'Not an emergency service; must never invent availability, operational status, travel time, or safety.',
+   risks:'Outdated resource data could mislead; require freshness checks and defer to official emergency guidance.'
+  },
+  {
+   id:'pollinator-steps',category:'Planet',title:'Pollinator Stepping Stones',
+   tagline:'What if a city garden were part of a larger route?',
+   objective:'Explore small-scale habitat connectivity through evidence-aware gardening and visual mapping.',
+   problem:'Isolated habitat improvements can fail to connect into meaningful ecological corridors.',
+   audience:'Gardeners, schools, conservation volunteers, local planners.',
+   mechanism:'Map known planting patches, blooming periods, distances, and observed visits; propose candidate links with explicit uncertainty.',
+   difference:'Separates measured species visits from aesthetic green-space assumptions.',
+   plan:'Build a paper-scale map of a small area and propose three planting bridges with season and maintenance constraints.',
+   validation:'Track repeat pollinator observations using a consistent simple counting protocol; compare baseline and later seasons.',
+   benefit:'Better-grounded local habitat decisions and participatory nature observation.',
+   constraints:'Prioritize locally appropriate plants and verified site permissions; do not invent ecological outcomes.',
+   risks:'Species identification errors and pesticide exposure can distort results; involve local expertise.'
+  },
+  {
+   id:'rainfall-commons',category:'Planet',title:'Rainfall Commons Notebook',
+   tagline:'Let a neighborhood remember where the water went.',
+   objective:'Build an offline participatory notebook for observing runoff, standing water, and drainage patterns.',
+   problem:'Small recurring water problems are documented inconsistently and lose their history between weather events.',
+   audience:'Residents, property stewards, volunteer watershed groups.',
+   mechanism:'Timestamp repeatable observations, simple sketches, rain gauge readings, and photo positions without claiming hydrological causality.',
+   difference:'Makes repeated observations comparable while leaving diagnosis to qualified experts.',
+   plan:'Create a privacy-aware log for one safe observation point and capture five distinct weather events.',
+   validation:'Compare observer consistency and whether later records help identify patterns missed in single-event reports.',
+   benefit:'A clearer community evidence base for maintenance and environmental questions.',
+   constraints:'No unsafe storm visits, no exposure of private homes, no substituted flood-risk advice.',
+   risks:'Correlations may be mistaken for causes; attach conditions and uncertainties to every observation.'
+  },
+  {
+   id:'material-afterlife',category:'Planet',title:'The Material Afterlife Exchange',
+   tagline:'Give surplus parts a second possible use.',
+   objective:'Prototype a lightweight local inventory of reusable materials with honest condition and fit constraints.',
+   problem:'Usable offcuts, spare parts, and repair materials are discarded while others repurchase the same items.',
+   audience:'Makerspaces, repair groups, small workshops, neighbors.',
+   mechanism:'Catalog an item\'s dimensions, defects, material, handling rules, and time-limited availability with printable labels.',
+   difference:'Fit and safety evidence matter more than marketing photos or estimated resale value.',
+   plan:'Inventory twenty safe surplus objects and run a hypothetical exchange before introducing real contacts.',
+   validation:'Record successful matches, unsuitable matches caught, and time to find a compatible part.',
+   benefit:'Less needless purchasing and better use of existing materials.',
+   constraints:'Exclude hazardous materials and safety-critical salvaged components until qualified review exists.',
+   risks:'Unknown material provenance can cause failures; label uncertain condition rather than guessing.'
+  },
+  {
+   id:'failure-garden',category:'Strange',title:'The Garden of Useful Failures',
+   tagline:'What if the discarded branch taught more than the winner?',
+   objective:'Turn failed experiments into an explorable system of constraints, surprises, and reusable negative evidence.',
+   problem:'Creative and technical projects archive final successes while losing the tests that ruled out attractive but false ideas.',
+   audience:'Artists, scientists, makers, product teams, students.',
+   mechanism:'Each failed experiment becomes a plant-like record: hypothesis, conditions, failure signal, salvageable mechanism, and descendants.',
+   difference:'A failure can germinate a new experiment without being retroactively recast as success.',
+   plan:'Collect five non-sensitive failed experiments and draw a causal map of what each disproved and what it made possible.',
+   validation:'Give new participants a problem from the archive; measure whether they avoid one repeated false lead.',
+   benefit:'A body of learning that grows even when outcomes disappoint.',
+   constraints:'Use real negative evidence and do not expose confidential postmortems without permission.',
+   risks:'Romanticizing failure can erase harm or cost; keep consequences attached to the record.'
+  },
+  {
+   id:'ordinary-museum',category:'Strange',title:'The Reverse Museum of Ordinary Things',
+   tagline:'The visitor is the strange civilization being studied.',
+   objective:'Build an interactive exhibit that makes familiar daily objects feel historically contingent and mysterious.',
+   problem:'People rarely notice the power structures, infrastructure, and assumptions packed into routine objects.',
+   audience:'Museum visitors, design students, curious readers, artists.',
+   mechanism:'Describe an everyday object from an unfamiliar observer\'s perspective, then reveal one evidence-backed layer at a time.',
+   difference:'The final revelation concerns the visitor\'s own habits rather than a fictional monster or twist ending.',
+   plan:'Choose three mundane objects, draft alien field notes, and pair each with a sourced systems diagram.',
+   validation:'Ask visitors to name a newly noticed dependency and distinguish the imagined viewpoint from sourced facts.',
+   benefit:'More careful attention to invisible systems and everyday design.',
+   constraints:'Keep satire clearly fictional; avoid false historical or technical claims.',
+   risks:'An overly clever frame can obscure the actual object; test comprehension without the reveal text.'
+  },
+  {
+   id:'night-city',category:'Strange',title:'The Night City for Other Species',
+   tagline:'Redraw a street from the perspective of creatures it ignores.',
+   objective:'Create a speculative design atlas that examines how urban infrastructure affects nonhuman movement.',
+   problem:'City plans usually privilege daytime human travel and omit the needs and hazards of other animals.',
+   audience:'Urban designers, ecology educators, speculative artists.',
+   mechanism:'Reinterpret lights, roads, heat islands, barriers, and habitat through species-specific observation cards and alternative route overlays.',
+   difference:'The worldbuilding is constrained by known species behavior while designs remain clearly hypothetical.',
+   plan:'Pick one real common urban species and draw two route diagrams with alternate lighting or shelter assumptions.',
+   validation:'Ask a local expert to check behavioral assumptions; compare comprehension before and after the alternative map.',
+   benefit:'Empathy that can lead to more considered spatial design.',
+   constraints:'No invented species biology presented as fact; do not encourage entering restricted or hazardous places.',
+   risks:'Anthropomorphism may misrepresent animal needs; attach evidence and leave uncertain behavior open.'
+  },
+  {
+   id:'dissenting-time-capsule',category:'Strange',title:'The Time Capsule That Disagrees',
+   tagline:'An archive should remember what its makers got wrong.',
+   objective:'Design a future-facing archive that preserves predictions, dissent, and later evidence without rewriting the past.',
+   problem:'Time capsules preserve confident narratives but rarely preserve how contested or uncertain they were at creation.',
+   audience:'Families, classrooms, museums, research groups, community archives.',
+   mechanism:'Seal dated claims beside competing interpretations, missing evidence, confidence markers, and rules for append-only future responses.',
+   difference:'The capsule cannot silently update an old belief; a later reader can see the disagreement and what changed.',
+   plan:'Create five dated fictional predictions with dissent notes and add a simulated later evidence packet.',
+   validation:'Ask readers to reconstruct original disagreement from both views and identify whether later corrections are distinguishable.',
+   benefit:'A more honest memory system that rewards learning rather than hindsight certainty.',
+   constraints:'Privacy-first, reversible local export, and no rewriting of preserved original records.',
+   risks:'Future readers may treat simulations as history; mark fictional trials and provenance unambiguously.'
+  }
+ ];
+ const frozen=Object.freeze(ideas.map(item=>Object.freeze(item)));
+ root.RigStarterIdeas=frozen;
+ if(typeof module!=='undefined'&&module.exports)module.exports=frozen;
+})(globalThis);
 
 </script>
 <script>
@@ -1261,6 +1567,96 @@ function changeView(view){if(!['studio','jury','autopilot','models'].includes(vi
  for(const tab of document.querySelectorAll('.tab'))tab.setAttribute('aria-selected',String(tab.dataset.view===view));
  if(view==='studio'){requestAnimationFrame(drawEdges);observatory.show(true);observatory.resize();}else observatory.show(false);
 }
+// The Seed Vault is a catalog, not a second workspace or scoring engine.
+// All planted records pass through the same board, normalization, jury, history,
+// persistence, and ancestry paths as seeds authored in the workbench.
+const starterIdeas=globalThis.RigStarterIdeas;
+if(!Array.isArray(starterIdeas)||starterIdeas.length!==20)throw Error('Starter catalog is incomplete');
+const starterCategories=['All','Systems','Worlds','People','Planet','Strange'];
+let starterCategory='All',starterQuery='',starterSelected=starterIdeas[0].id,starterOrigin=null;
+const selectedStarter=()=>starterIdeas.find(item=>item.id===starterSelected)||null;
+const starterFields=item=>Object.fromEntries(C.FIELDS.map(key=>[key,item[key]||'']));
+function renderStarterFilters(){
+ const el=$('starterFilters');el.replaceChildren();
+ for(const category of starterCategories){
+  const button=document.createElement('button');button.type='button';button.dataset.starterCategory=category;
+  button.textContent=category==='All'?'All / 20':category;
+  button.setAttribute('aria-pressed',String(starterCategory===category));el.append(button);
+ }
+}
+function renderStarterCatalog(){
+ const items=starterIdeas.filter(item=>(starterCategory==='All'||item.category===starterCategory)&&
+  [item.title,item.tagline,item.category,item.problem,item.mechanism].some(field=>field.toLowerCase().includes(starterQuery)));
+ if(!items.some(item=>item.id===starterSelected))starterSelected=items[0]?.id||null;
+ const list=$('starterList');list.replaceChildren();
+ $('starterCount').textContent=`${items.length} / 20`;
+ for(const item of items){
+  const button=document.createElement('button');button.type='button';button.className='starter-entry';
+  button.dataset.starterId=item.id;button.setAttribute('aria-pressed',String(item.id===starterSelected));
+  const number=document.createElement('span');number.className='starter-index';number.textContent=String(starterIdeas.indexOf(item)+1).padStart(2,'0');
+  const copy=document.createElement('span');copy.className='starter-copy';
+  const name=document.createElement('b');name.textContent=item.title;
+  const desc=document.createElement('small');desc.textContent=item.tagline;
+  const arrow=document.createElement('span');arrow.className='starter-arrow';arrow.setAttribute('aria-hidden','true');arrow.textContent='→';
+  copy.append(name,desc);button.append(number,copy,arrow);list.append(button);
+ }
+ if(!items.length){const p=document.createElement('p');p.className='starter-empty';p.textContent='No matching origins. Change the theme or clear the search.';list.append(p);}
+ renderStarterDetail();
+}
+function renderStarterDetail(){
+ const item=selectedStarter();
+ $('starterCurrentIndex').textContent=item?'ORIGIN '+String(starterIdeas.indexOf(item)+1).padStart(2,'0')+' / 20':'NO MATCH';
+ $('starterCurrentCategory').textContent=item?.category.toUpperCase()||'FILTERED';
+ $('starterName').textContent=item?.title||'No matching beginning';
+ $('starterPromise').textContent=item?.tagline||'Try a different search.';
+ for(const [id,key] of [['starterProblem','problem'],['starterMechanism','mechanism'],['starterPlan','plan'],['starterValidation','validation'],['starterRisks','risks']])$(id).textContent=item?.[key]||'—';
+ const board=currentBoard();
+ $('starterBoardContext').textContent=board?'CURRENT BOARD / '+board.title:'NO BOARD / START AN INDEPENDENT LINEAGE';
+ $('starterIntoBoard').disabled=!item||!board||busy;
+ $('starterEdit').disabled=!item||!board||busy;
+ $('starterNewBoard').disabled=!item||busy;
+}
+function openStarterVault(opener){
+ starterOrigin=opener||document.activeElement;
+ starterCategory='All';starterQuery='';starterSelected=starterIdeas[0].id;
+ $('starterSearch').value='';renderStarterFilters();renderStarterCatalog();
+ if(!$('starterDialog').open)$('starterDialog').showModal();
+ $('starterSearch').focus({preventScroll:true});
+}
+function closeStarterVault(){if($('starterDialog').open)$('starterDialog').close();}
+function plantStarter(newBoard){
+ const item=selectedStarter();if(!item)return;
+ if(busy)return notify('Finish the current generation before planting another seed.',true);
+ if(newBoard){
+  stopAuto('Stopped to start a new origin');atlasDepthChoice=null;
+  const board=C.board(item.title,item.objective);
+  state.boards.push(board);state.selectedBoardId=board.id;state.selectedIdeaId=null;picked=[];
+ }else if(!currentBoard())return notify('Choose a board or start an independent origin.',true);
+ else{stopAuto('Stopped to plant a new origin');atlasDepthChoice=null;}
+ const added=addIdeas([starterFields(item)],[],'curated starter / '+item.id);
+ closeStarterVault();changeView('studio');
+ window.dispatchEvent(new CustomEvent('evolution-rig:starter-planted',{detail:{newBoard,starterId:item.id}}));
+ notify(added.length?(newBoard?'Independent board and root idea created.':'Starter added as a root idea to this board.'):'No idea was created.',!added.length);
+}
+for(const id of ['hudStarters','boardStarters','workbenchStarters','fieldPrologueStarters'])
+ $(id).addEventListener('click',event=>openStarterVault(event.currentTarget));
+$('starterClose').addEventListener('click',closeStarterVault);
+$('starterDialog').addEventListener('close',()=>{if(starterOrigin?.isConnected&&!starterOrigin.closest('[inert]'))starterOrigin.focus({preventScroll:true});starterOrigin=null;});
+$('starterFilters').addEventListener('click',event=>{const button=event.target.closest('[data-starter-category]');if(!button)return;starterCategory=button.dataset.starterCategory;for(const b of $('starterFilters').querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.starterCategory===starterCategory));renderStarterCatalog();$('starterDetailPanel').scrollTop=0;});
+$('starterSearch').addEventListener('input',event=>{starterQuery=event.target.value.trim().toLowerCase();renderStarterCatalog();});
+$('starterList').addEventListener('click',event=>{
+ const button=event.target.closest('[data-starter-id]');if(!button)return;
+ starterSelected=button.dataset.starterId;for(const b of $('starterList').querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.starterId===starterSelected));renderStarterDetail();$('starterDetailPanel').scrollTop=0;
+});
+$('starterNewBoard').addEventListener('click',()=>plantStarter(true));
+$('starterIntoBoard').addEventListener('click',()=>plantStarter(false));
+$('starterEdit').addEventListener('click',()=>{
+ const item=selectedStarter();if(!item||!currentBoard()||busy)return;
+ closeStarterVault();openIdeaDialog();
+ for(const key of C.FIELDS)$('ideaForm').elements.namedItem(key).value=item[key]||'';
+ $('dialogKicker').textContent='STARTER / EDIT BEFORE PLANTING';
+});
+
 // Board and editor events
 $('boardForm').addEventListener('submit',e=>{e.preventDefault();const form=e.currentTarget,title=form.elements.namedItem('title').value.trim(),objective=form.elements.namedItem('objective').value.trim();if(!title||!objective)return;stopAuto('Stopped on board change');atlasDepthChoice=null;const b=C.board(title,objective);state.boards.push(b);state.selectedBoardId=b.id;state.selectedIdeaId=null;picked=[];persist();form.reset();if(window.innerWidth<=760)$('boardComposer').open=false;renderAll();changeView('studio');notify('Board created. Add its first seed.');});
 $('boardList').addEventListener('click',e=>{const b=e.target.closest('[data-board]');if(!b)return;stopAuto('Stopped on board change');atlasDepthChoice=null;state.selectedBoardId=b.dataset.board;state.selectedIdeaId=null;picked=[];persist();renderAll();changeView('studio');});
@@ -1310,6 +1706,63 @@ if(!calibrator.passes)notify('Scoring reference gate failed. Gold export is disa
 })();
 
 </script>
+<style>
+/* The Seed Vault is an explicit, full-focus workspace, never always-on chrome. */
+#starterDialog{position:fixed;inset:0;margin:auto;padding:0;color:#ebeadb;background:#0b1b1ddf;border:1px solid #c8ab7c8a;border-radius:5px;box-shadow:0 25px 105px #000e;max-width:none;width:min(1080px,calc(100vw - 32px));max-height:min(88dvh,820px);height:min(88dvh,820px);overflow:hidden}
+#starterDialog::backdrop{background:rgba(1,8,10,.84);backdrop-filter:blur(11px)}
+#starterDialog .starter-shell{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;min-height:0}
+.starter-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:27px clamp(20px,3.2vw,37px) 19px;border-bottom:1px solid #536a5c7a;background:radial-gradient(ellipse at 75% 0%,#42625857,transparent 60%),linear-gradient(125deg,#162a27,#0c2125)}
+.starter-kicker{font:700 10px var(--mono);letter-spacing:.17em;color:#e5c28d}
+.starter-head h2{font:400 clamp(32px,3.3vw,48px)/1.05 Georgia,serif;letter-spacing:-.048em;margin:7px 0 10px;color:#f7ead3}
+.starter-head h2 span{color:#e7c68a}
+.starter-head p{margin:0;max-width:66ch;color:#a9c7bb;font:12px/1.55 var(--sans)}
+#starterDialog .starter-close{display:inline-flex;gap:9px;align-items:center;justify-content:center;flex:none;color:#ddc7a4;background:transparent;border:1px solid #6c7c6b;padding:7px 10px;border-radius:2px;font:700 10px var(--mono)}
+.starter-filterbar{display:flex;align-items:end;gap:16px;padding:11px clamp(18px,3.1vw,36px);border-bottom:1px solid #3c5d5875;background:#102325}
+.starter-search-label{display:flex;flex-direction:column;min-width:min(250px,35%);flex:1;color:#b8bfa9;font:700 9px var(--mono);letter-spacing:.11em}
+#starterDialog input[type=search]{font:13px var(--sans);background:#081618;color:#f8ead2;border:1px solid #56746c;border-radius:2px;margin:6px 0 0;padding:9px 11px;min-height:35px;max-width:none;outline-offset:2px}
+.starter-filter-buttons{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;max-width:690px}
+.starter-filter-buttons button{font:700 10px var(--mono);letter-spacing:.03em;color:#b4c7bd;background:#18312c;border:1px solid #4d7165;border-radius:2px;padding:7px 10px;min-height:33px}
+.starter-filter-buttons button[aria-pressed=true]{background:#d9b77f;border-color:#e3c18a;color:#1b2722}
+.starter-catalog{display:grid;grid-template-columns:minmax(0,.99fr) minmax(0,1.01fr);min-height:0;overflow:hidden}
+.starter-list-panel{display:flex;flex-direction:column;min-height:0;background:linear-gradient(110deg,#0e2222,#0b1b1e);border-right:1px solid #51685967}
+.starter-section-title{display:flex;justify-content:space-between;gap:10px;padding:13px 22px 10px;border-bottom:1px solid #3d5d5554;color:#9fc0b1;font:700 10px var(--mono);letter-spacing:.12em}
+.starter-section-title output{color:#e2c18a}
+.starter-list{overflow:auto;overscroll-behavior:contain;min-height:0;padding:10px 13px 16px;scrollbar-color:#6b8574 #0b1b1e}
+.starter-entry{width:100%;display:grid;grid-template-columns:31px 1fr 20px;align-items:center;gap:10px;text-align:left;border-radius:2px;padding:13px 11px 12px;background:transparent;border:1px solid transparent;border-bottom-color:#3f5f594a;color:#d5dfd4}
+.starter-entry:hover:not(:disabled){background:#213b34;border-color:#688573}
+.starter-entry[aria-pressed=true]{background:linear-gradient(95deg,#354335,#1b332e);border-color:#b59d737e;box-shadow:inset 3px 0 #e4c185}
+.starter-entry .starter-index{font:700 11px var(--mono);color:#daba8d}
+.starter-entry .starter-copy{display:grid;gap:4px;min-width:0}
+.starter-entry .starter-copy b{font:600 14px/1.25 var(--sans);letter-spacing:-.014em;color:#f3e6cf}
+.starter-entry .starter-copy small{font:11px/1.35 var(--sans);color:#9db6ad}
+.starter-entry .starter-arrow{font:16px Georgia,serif;color:#cdb286}
+.starter-empty{padding:20px;color:#9dbdb1;font:13px var(--sans)}
+.starter-detail-panel{min-height:0;overflow:auto;overscroll-behavior:contain;background:radial-gradient(ellipse at 100% 3%,#4463523d,transparent 60%),linear-gradient(180deg,#142a29,#0c1c20);padding:clamp(20px,3vw,37px);scrollbar-color:#6b8574 #102526}
+.starter-detail-intro{border-left:2px solid #caaa7d;padding-left:19px;margin-bottom:25px}
+.starter-current-index,.starter-category-tag{display:inline-block;font:700 10px var(--mono);letter-spacing:.13em;color:#dfbf87}
+.starter-category-tag{color:#a3c9b9;margin-left:12px}
+.starter-detail-panel h3{font:400 clamp(26px,2.8vw,40px)/1.12 Georgia,serif;letter-spacing:-.045em;color:#f2e5ce;margin:14px 0 13px}
+.starter-promise{color:#c5c9ad;font:italic 17px/1.4 Georgia,serif;margin:0}
+.starter-detail-chapters{display:grid;grid-template-columns:1fr 1fr;gap:20px 24px}
+.starter-detail-chapters div{border-top:1px solid #78917c5e;padding-top:10px}
+.starter-detail-chapters div:nth-child(2){grid-column:1/-1}
+.starter-detail-chapters b{color:#d8c294;font:700 9px var(--mono);letter-spacing:.11em}
+.starter-detail-chapters p{color:#bbcfbf;font:12px/1.65 var(--sans);margin:7px 0 0}
+.starter-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 20px;border-top:1px solid #6079667a;background:#102222;min-height:64px}
+.starter-foot>span{color:#a8baaa;font:11px/1.3 var(--sans);max-width:24ch}
+.starter-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+.starter-actions button{border-radius:2px;padding:9px 11px;font:700 11px var(--mono);white-space:nowrap}
+.starter-actions button.primary{background:#dfbd86;color:#12221c;border-color:#efd2a0}
+#starterDialog button:focus-visible{outline:2px solid #f1d49a;outline-offset:2px}
+@media(max-width:800px){#starterDialog{width:calc(100vw - 18px);max-height:calc(100dvh - 20px);height:calc(100dvh - 20px)}.starter-head{padding:16px 19px 14px;gap:8px}.starter-head h2{font-size:32px;margin:5px 0 4px}.starter-head p{font-size:11px}.starter-filterbar{display:block;padding:9px 13px}.starter-search-label{width:100%}.starter-filter-buttons{margin-top:7px;max-width:none;justify-content:flex-start}.starter-filter-buttons button{font-size:9px;min-height:28px;padding:5px 8px}.starter-catalog{grid-template-columns:1fr;grid-template-rows:minmax(120px,.73fr) minmax(170px,1.1fr)}.starter-list-panel{border-right:0;border-bottom:1px solid #51685967}.starter-list{padding:3px 8px}.starter-entry{padding:9px 8px;gap:7px}.starter-detail-panel{padding:16px 18px}.starter-detail-intro{margin-bottom:15px}.starter-detail-panel h3{font-size:26px;margin:9px 0}.starter-promise{font-size:15px}.starter-detail-chapters{grid-template-columns:1fr;gap:12px}.starter-detail-chapters div:nth-child(2){grid-column:auto}.starter-foot{padding:9px 12px;display:grid;gap:8px}.starter-foot>span{max-width:none}.starter-actions{justify-content:flex-start}.starter-actions button{flex:1;font-size:10px;padding:8px 7px;min-width:0}}
+@media(max-width:450px){.starter-head p{display:none}.starter-head h2{font-size:29px}.starter-head .starter-close span{display:none}.starter-detail-panel h3{font-size:23px}.starter-section-title{padding:8px 12px;font-size:9px}.starter-filter-buttons button{font-size:9px;padding:4px 6px}.starter-actions button{font-size:9px;padding:8px 5px}}
+@media(max-height:560px){#starterDialog{height:calc(100dvh - 10px);max-height:calc(100dvh - 10px)}.starter-head{padding-top:10px;padding-bottom:8px}.starter-filterbar{padding-top:5px;padding-bottom:5px}.starter-catalog{grid-template-rows:minmax(90px,.65fr) minmax(100px,1fr)}.starter-foot{min-height:48px;padding:7px}}
+@media(prefers-reduced-motion:reduce){#starterDialog *,#starterDialog *::before,#starterDialog *::after{animation:none!important;transition:none!important}}
+
+/* Keep every action label legible on narrow screens: the primary action has its own row. */
+@media(max-width:450px){.starter-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}.starter-actions button{white-space:normal;overflow-wrap:anywhere;min-height:33px;text-align:center}.starter-actions #starterNewBoard{grid-column:1/-1}.starter-foot{gap:5px}.starter-foot>span{font-size:10px}}
+
+</style>
 <script>
 /* Causal Field: progressive disclosure without rewriting the project state.
    All operations delegate to existing workbench controls and the original
@@ -1343,7 +1796,9 @@ if(!calibrator.passes)notify('Scoring reference gate failed. Gold export is disa
   for(const [id,target] of Object.entries(delegate))$(id).addEventListener('click',()=>$(target).click());
   infoButton.addEventListener('click',()=>body.classList.contains('ui-notes-open')?closeReport(true):showReport());
   $('atlasCloseNotebook').addEventListener('click',()=>closeReport(true));
+  window.addEventListener('evolution-rig:starter-planted',()=>{if(body.classList.contains('ui-boards-open'))closeBoards(true);});
   document.addEventListener('keydown',e=>{
+    if($('starterDialog').open||$('ideaDialog').open)return;
     if(e.key==='Escape'){if(body.classList.contains('ui-boards-open')){e.preventDefault();closeBoards(true);}else if(body.classList.contains('ui-notes-open')){e.preventDefault();closeReport(true);}return;}
     if(!immersive()||e.altKey||e.ctrlKey||e.metaKey||e.repeat)return;
     if(e.target.closest('input,textarea,select,button,[contenteditable="true"],dialog')||$('ideaDialog').open)return;
