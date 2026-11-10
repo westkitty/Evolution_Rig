@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark"><title>Evolution Rig / Causal Observatory</title>
+<style>
+:root{--bg:#0c1317;--bg2:#101c22;--panel:#16242a;--panel2:#1b2d32;--line:#2c4649;--line2:#425b58;--ink:#eaf1e8;--muted:#a2b4b3;--accent:#b9eb87;--a2:#71c6bd;--gold:#f9c771;--red:#f3a3a3;--shadow:0 14px 40px rgba(0,0,0,.25);--round:13px;--mono:ui-monospace,SFMono-Regular,Consolas,monospace;--sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}::selection{background:#395746;color:#fff}a{color:var(--a2)}
+button{border:1px solid var(--line2);color:var(--ink);background:#22343b;border-radius:9px;padding:9px 12px;transition:background .15s,border-color .15s,transform .15s}button:hover:not(:disabled){background:#30494d;border-color:#759786}button:active:not(:disabled){transform:translateY(1px)}button.primary{background:var(--accent);color:#15221a;border-color:var(--accent);font-weight:800}button.primary:hover:not(:disabled){background:#d5f2b4}button.ghost{background:transparent}button.danger{color:#ffb7b7;border-color:#894950}button.sm{padding:6px 10px;font-size:12px}button.tiny{padding:4px 7px;font-size:11px}
+input,textarea,select{background:#0b171c;border:1px solid #466064;border-radius:8px;padding:10px;color:var(--ink);width:100%;max-width:100%}input::placeholder,textarea::placeholder{color:#718b90}textarea{min-height:75px;resize:vertical}select{cursor:pointer}input[type=number]{max-width:110px}input[type=checkbox]{width:auto;accent-color:var(--accent)}label{display:block;font-size:12px;font-weight:700;letter-spacing:.03em;color:#b8d0cb}label input,label textarea,label select{display:block;margin-top:6px;font-weight:400;letter-spacing:0}label.check{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:0}small,.muted{color:var(--muted)}p{margin:8px 0 12px}h1,h2,h3{margin:0;line-height:1.2;letter-spacing:-.025em}h1{font-size:clamp(26px,2.8vw,40px)}h2{font-size:21px}h3{font-size:15px}.eyebrow{color:var(--a2);font:700 11px var(--mono);letter-spacing:.14em;text-transform:uppercase}.mono{font-family:var(--mono)}.bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.stretch{flex:1}.stack{display:grid;gap:12px}.tiny-note{font-size:12px;color:var(--muted)}.value{font-family:var(--mono);font-weight:800;color:var(--ink)}
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}.rail{background:#101e23;border-right:1px solid var(--line);padding:23px 16px;display:flex;flex-direction:column;gap:26px;min-width:0}.brand{display:flex;gap:12px;align-items:center}.brand-icon{width:42px;height:42px;border:1px solid var(--accent);border-radius:11px;position:relative;background:radial-gradient(circle at 20% 20%,#31513e,transparent 70%),#152b2b}.brand-icon:before,.brand-icon:after{content:"";position:absolute;background:var(--accent);width:6px;height:6px;border-radius:50%}.brand-icon:before{left:9px;top:11px;box-shadow:17px 9px 0 var(--accent)}.brand-icon:after{left:13px;bottom:9px}.brand-icon i{position:absolute;inset:0;background:linear-gradient(24deg,transparent 45%,#608779 47%,#608779 50%,transparent 52%),linear-gradient(-33deg,transparent 45%,#608779 47%,#608779 50%,transparent 52%)}.brand strong{display:block;font-size:18px;letter-spacing:-.045em}.brand small{font:700 10px var(--mono);letter-spacing:.15em;color:var(--a2)}.rail-section .eyebrow{margin-bottom:10px}.board-list{display:grid;gap:7px;max-height:36vh;overflow:auto}.board-entry{display:grid;text-align:left;width:100%;gap:4px;border-color:transparent;border-left:3px solid transparent;background:transparent;border-radius:8px}.board-entry:hover{background:#1a2c31}.board-entry.selected{border-left-color:var(--accent);background:#233934}.board-entry span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.board-entry small{font:11px var(--mono);color:var(--muted)}.rail-note{margin-top:auto;border-top:1px solid var(--line);padding-top:14px;font-size:12px;color:var(--muted)}.rail-note strong{color:var(--accent)}.rail input,.rail textarea{font-size:12px}
+.main{min-width:0;padding:24px clamp(14px,2.8vw,40px) 40px}.masthead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:20px}.goal{max-width:900px;font-size:14px;color:#b7c7c3;line-height:1.55}.status-ribbon{display:flex;align-items:center;gap:8px;white-space:nowrap;border:1px solid var(--line);border-radius:99px;padding:8px 12px;font:12px var(--mono);color:var(--muted)}.status-dot{height:8px;width:8px;border-radius:50%;background:#6b9794}.status-dot.running{background:var(--accent);box-shadow:0 0 0 3px #b9eb871a}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:17px}.summary .stat{background:var(--bg2);border:1px solid var(--line);border-radius:var(--round);padding:14px 16px}.stat strong{font:800 25px var(--mono);letter-spacing:-.06em;display:block}.stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}.tabs{border-bottom:1px solid var(--line);display:flex;gap:3px;overflow:auto;margin-bottom:20px}.tab{border:0;background:transparent;border-radius:0;border-bottom:2px solid transparent;color:#a6bcb6;padding:11px 16px;white-space:nowrap}.tab[aria-selected=true]{border-color:var(--accent);color:var(--accent);background:#182924}.view[hidden]{display:none!important}.panel{background:var(--bg2);border:1px solid var(--line);border-radius:var(--round);overflow:hidden;min-width:0}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.panel-body{padding:18px}.grid2{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(290px,.78fr);gap:14px}.workbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.workbar input{width:75px}.workbar .stretch{min-width:200px}.graph-wrap{overflow-x:auto;overflow-y:auto;max-height:70vh;min-height:440px;padding:16px;background:radial-gradient(circle at 15% 10%,#1d3833 0%,transparent 45%),#101d23;background-image:radial-gradient(circle at 15% 10%,#1d3833 0%,transparent 45%),radial-gradient(#2a4142 0.8px,transparent 0.8px);background-size:auto,24px 24px}.graph-layout{position:relative;display:flex;gap:36px;align-items:flex-start;width:max-content;min-width:100%;padding:10px 16px 16px}.graph-edges{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}.generation{position:relative;z-index:1;width:228px;display:flex;flex-direction:column;gap:12px}.generation-head{font:800 11px var(--mono);color:#a0b8ad;letter-spacing:.1em;display:flex;justify-content:space-between;border-bottom:1px solid #35504f;padding:0 0 10px}.idea-card{border:1px solid #39565a;background:#192b30;border-radius:10px;padding:12px;text-align:left;min-height:126px;display:flex;flex-direction:column;gap:7px;cursor:grab;transition:border-color .14s,background .14s,transform .14s;user-select:none}.idea-card:hover{border-color:#82afa0;background:#22383c}.idea-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px #b9eb8720}.idea-card.drag-over{outline:2px dashed var(--a2);outline-offset:2px}.idea-card.dragging{opacity:.45}.idea-card.archived{opacity:.55;border-style:dashed}.card-head{display:flex;justify-content:space-between;gap:8px}.card-title{font-size:13px;font-weight:800;line-height:1.35;word-break:break-word}.badge{font:800 10px var(--mono);border-radius:50px;border:1px solid #4e6961;padding:3px 7px;color:#c4e0d0;white-space:nowrap;height:max-content}.badge.gold{border-color:#b78842;background:#4a3520;color:var(--gold)}.card-desc{font-size:11px;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.micro-score{font:11px var(--mono);margin-top:auto;color:#a6c4bf}.micro-score b{color:var(--accent)}.graph-empty{padding:45px 20px;text-align:center;color:var(--muted);max-width:580px;margin:auto}.graph-foot{font:11px var(--mono);color:var(--muted);padding:9px 16px;border-top:1px solid var(--line)}
+.inspector-empty{padding:48px 22px;text-align:center;color:var(--muted)}.inspector{padding:18px;max-height:75vh;overflow:auto}.inspector h2{font-size:19px;margin:7px 0 10px;overflow-wrap:anywhere}.inspector p{font-size:13px}.detail-box{border:1px solid #38504f;border-radius:10px;padding:11px 12px;margin:13px 0;background:#17262b}.detail-box .eyebrow{margin-bottom:4px}.metric{display:grid;grid-template-columns:90px 50px minmax(0,1fr);gap:9px;align-items:center;margin:13px 0}.metric .bar-bg{height:7px;border-radius:8px;background:#304244;overflow:hidden}.metric .bar-bg i{display:block;background:var(--accent);height:100%}.metric .bar-bg i.overridden{background:var(--gold)}.metric strong{font:800 13px var(--mono)}.total-display{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 0 14px}.total-display strong{font:800 32px var(--mono);color:var(--accent)}.score-override{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.score-override label{font-size:11px}.lineage{display:flex;flex-wrap:wrap;gap:6px}.ancestor{border:1px solid #425b56;padding:5px 8px;border-radius:7px;background:#1e3234;font-size:11px;max-width:100%;text-align:left;word-break:break-word}.code-log{white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.7 var(--mono);background:#0c181d;border:1px solid #38514c;padding:13px;border-radius:9px;color:#c8d8ce;max-height:320px;overflow:auto}.code-log div+div{margin-top:6px}.hint{color:var(--muted);font-size:12px}
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tall-form{display:grid;gap:12px;max-width:840px}.route-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.option-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px}.option-row label{display:flex;align-items:center;gap:8px}.option-row input[type=number]{margin:0}.juries{overflow:auto}.score-table{width:100%;border-collapse:collapse;font-size:12px}.score-table th{text-align:left;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font:700 10px var(--mono);padding:12px;border-bottom:1px solid var(--line)}.score-table td{padding:12px;border-bottom:1px solid #284044;vertical-align:top}.score-table tr:hover{background:#1b3034}.score-table td strong{color:var(--accent)}.score-table button{max-width:340px;text-align:left}.cal-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.cal-card{border:1px solid #3d5553;border-radius:12px;padding:16px;background:#172a2c}.cal-card strong{display:block;font:800 28px var(--mono);margin:6px 0}.cal-card p{font-size:12px;color:var(--muted);margin:0}.runtime-log{max-height:330px;overflow:auto;background:#0d1a1d;padding:10px 14px;border-radius:9px;border:1px solid var(--line);font:12px/1.65 var(--mono);color:var(--muted)}.runtime-log p{margin:6px 0;padding-bottom:6px;border-bottom:1px solid #273d3e;font:inherit}.runtime-log span{color:var(--a2)}.notice{border-left:3px solid var(--a2);background:#183034;padding:11px 14px;color:#c2d5d1;font-size:12px}.notice.warn{border-color:var(--gold);background:#302c23}.two-action{display:grid;grid-template-columns:1fr 1fr;gap:10px}.chip{background:#254039;border-radius:99px;padding:4px 9px;color:var(--accent);font:11px var(--mono)}.empty{border:1px dashed var(--line2);border-radius:12px;padding:24px;color:var(--muted);text-align:center}
+.dialog{background:#111f25;color:var(--ink);border:1px solid #58766d;border-radius:16px;width:min(780px,calc(100vw - 28px));max-height:89vh;padding:0;box-shadow:0 24px 120px #0009}.dialog::backdrop{background:#02080bcc;backdrop-filter:blur(3px)}.dialog-header{display:flex;justify-content:space-between;align-items:center;padding:19px 22px;border-bottom:1px solid var(--line)}.dialog-content{padding:22px;overflow-y:auto;max-height:calc(89vh - 140px)}.dialog-footer{display:flex;gap:10px;justify-content:flex-end;padding:14px 22px;border-top:1px solid var(--line)}.dialog form{display:flex;flex-direction:column;max-height:89vh}.toast{position:fixed;bottom:20px;right:20px;z-index:50;max-width:min(450px,calc(100vw - 40px));background:#274039;color:#f6ffec;border:1px solid #7eb59b;border-radius:10px;padding:12px 16px;box-shadow:var(--shadow);font-size:13px}.toast.error{background:#432a2b;border-color:#c77979}.toast[hidden]{display:none}.hide{display:none!important}
+@media(max-width:1150px){.grid2{grid-template-columns:1fr}.graph-wrap{min-height:390px;max-height:60vh}.inspector{max-height:none}.rail{padding:18px 12px}.app{grid-template-columns:224px minmax(0,1fr)}}@media(max-width:760px){.app{grid-template-columns:1fr}.rail{border-right:0;border-bottom:1px solid var(--line);gap:12px;padding:15px;display:grid;grid-template-columns:1fr 1fr;align-items:start}.rail .brand{grid-column:1/-1}.rail-note{grid-column:1/-1;margin-top:0}.board-list{max-height:132px}.main{padding:17px 12px 30px}.masthead{flex-direction:column}.status-ribbon{align-self:flex-start}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.stat strong{font-size:21px}.tabs{margin-left:-12px;margin-right:-12px;padding-left:8px}.tab{padding:12px}.field-grid,.route-grid,.cal-grid{grid-template-columns:1fr}.graph-wrap{max-height:58vh}.generation{width:208px}.workbar .stretch{min-width:100%}.dialog-content{padding:14px}.two-action{grid-template-columns:1fr}}
+@media(max-width:520px){.rail{grid-template-columns:1fr}.rail .brand,.rail-note{grid-column:auto}.rail-section{min-width:0}.board-list{max-height:180px}.rail input,.rail textarea{font-size:14px}.workbar label{max-width:100%}}
+.evolution-lens{background:#1c2e2e;border-color:#4a766a}.evolution-lens summary{cursor:pointer;font:700 11px var(--mono);letter-spacing:.05em;color:var(--accent);padding:4px 0}.evolution-lens summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.evolution-lens strong.gain{color:var(--accent)}.evolution-lens strong.loss{color:var(--gold)}.evolution-lens p{margin:8px 0}.evolution-lens p:last-child{margin-bottom:0}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+<style>
+/* Evolution Rig's instrument design system: stateful information, not decorative spectacle. */
+:root{
+ --bg:#071013;--bg2:#0d1a1d;--panel:#152326;--panel2:#1a2d30;
+ --line:#294043;--line2:#48615f;--ink:#f1efe5;--muted:#a4b8b1;
+ --accent:#d9ad79;--a2:#9ccec0;--gold:#f1c681;--red:#e8a1a0;
+ --shadow:0 18px 58px rgba(0,0,0,.31);--round:8px;
+ --serif:Georgia,"Iowan Old Style","Baskerville",serif;
+}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(128deg,#0b1719 0%,#081115 34%,#091116 100%);color:var(--ink);font-size:14px}
+h1,h2,h3{letter-spacing:-.03em}h1{font:400 clamp(35px,4.3vw,61px)/1.06 var(--serif);letter-spacing:-.052em;max-width:20ch}
+h2{font-weight:650}h3{font-weight:650}
+.eyebrow{font-size:10px;letter-spacing:.2em;color:#c1a27c}
+button{background:#172b2c;color:#ecefe5;border-color:#47615b;border-radius:5px;padding:9px 12px;transition:background .16s,border-color .16s,color .16s}
+button:hover:not(:disabled){background:#294140;border-color:#9bb6a4}
+button.primary{background:#dbb884;color:#142522;border-color:#e6c998;font-weight:760}
+button.primary:hover:not(:disabled){background:#f1d09e}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid #f1cb92;outline-offset:3px}
+input,textarea,select{border-radius:5px;background:#0b191d;border-color:#45625e}
+input::placeholder,textarea::placeholder{color:#92aaa7}
+label{font-size:11px;color:#bfd1c8;letter-spacing:.065em}
+.app{grid-template-columns:246px minmax(0,1fr)}
+.rail{background:linear-gradient(180deg,#0c1b1c 0%,#0d191c 78%,#0b181b 100%);padding:27px 17px;gap:25px;position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid #36514d}
+.brand{padding-bottom:21px;border-bottom:1px solid #314642;gap:11px}
+.brand-icon{border-radius:50%;width:46px;height:46px;border:1px solid #b6a783;background:radial-gradient(circle at 50% 50%,#233b34 0%,#112224 53%,#0b181a 54%);box-shadow:0 0 0 4px #bca77e0b}
+.brand-icon:before{left:7px;top:11px;background:#e9c18a;box-shadow:19px 9px 0 #88c1b2}
+.brand-icon:after{bottom:7px;left:15px;background:#b4dec4}
+.brand-icon i{transform:rotate(13deg);opacity:.8}
+.brand strong{font-family:var(--serif);font-weight:600;font-size:19px;letter-spacing:-.035em}
+.brand small{font-size:9px;color:#a8c3b8;letter-spacing:.12em}
+.rail-section .eyebrow{margin-bottom:12px}
+.board-entry{border-radius:3px;padding:11px 11px}
+.board-entry.selected{background:#20332e;border-left-color:#e9ba78}
+.board-entry:hover{background:#20332e}
+.board-entry span{font-size:13px;font-weight:600}
+.rail-note{line-height:1.6;border-top:1px solid #42554b;padding-top:17px}
+.rail-note strong{color:#e5bb84}
+.main{padding:27px clamp(18px,3.3vw,52px) 35px}
+.masthead{padding:8px 0 22px;border-bottom:1px solid #3a514c;margin-bottom:20px;position:relative;min-height:137px}
+.masthead:after{content:"";position:absolute;bottom:-1px;left:0;width:85px;height:2px;background:#d3ab79}
+.goal{font-size:14px;color:#b1c4b8;max-width:720px;margin-top:15px;line-height:1.7}
+.status-ribbon{color:#d8c6a8;white-space:normal;font-size:11px;border-color:#526255;background:#111e20;padding:8px 12px}
+.status-dot{background:#c59a65}
+.status-dot.running{background:#a7d1ae;box-shadow:0 0 0 3px #b9eb871c}
+.summary{margin-bottom:19px;gap:1px;border:1px solid #354e4b;background:#354e4b;border-radius:5px;overflow:hidden}
+.summary .stat{background:#0d1b1e;border:0;border-radius:0;padding:14px 19px;min-height:94px}
+.stat strong{font:400 35px/1.1 var(--serif);color:#eac49b;letter-spacing:-.05em}
+.stat span{font:700 10px/1.7 var(--mono);color:#9cbab0;letter-spacing:.11em}
+.tabs{border-bottom:1px solid #36514a;margin-bottom:19px;gap:8px}
+.tab{font:700 11px var(--mono);letter-spacing:.065em;text-transform:uppercase;border:0;border-bottom:2px solid transparent;padding:12px 16px;color:#afc6bd}
+.tab[aria-selected=true]{border-bottom-color:#dfb57e;color:#eaca9d;background:#1b2927}
+.tab:hover:not(:disabled){background:#1b2927;color:#ecdfc8;border:0;border-bottom:2px solid #b79d7b}
+.panel{background:#101f22;border-radius:5px;border:1px solid #39504d}
+.panel-head{padding:16px 18px;border-color:#3b514d;gap:13px}
+.panel-head h2{font-family:var(--serif);font-size:23px;font-weight:400}
+.panel-body{padding:20px}
+.graph-wrap{background:radial-gradient(circle at 20% 20%,#1a3732 0%,transparent 36%),radial-gradient(#3e5751 0.7px,transparent .9px),#0b1c20;background-size:auto,24px 24px,auto;padding:17px;min-height:410px}
+.generation{width:240px}
+.generation-head{color:#c2c9ab;border-bottom-color:#556450}
+.idea-card{border-radius:4px;background:linear-gradient(151deg,#1a3032,#142529);border-color:#47625b;min-height:132px;position:relative;box-shadow:0 8px 18px #0002}
+.idea-card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:2px;background:#5d958a;opacity:.6}
+.idea-card.selected{border-color:#e7ba7a;box-shadow:0 0 0 1px #e7ba7a66,0 12px 23px #0004}
+.idea-card.selected::before{background:#e7ba7a;opacity:1}
+.idea-card:hover{background:#21383a;border-color:#9cc4b5}
+.idea-card.archived{opacity:.71}
+.card-title{font:600 14px/1.35 var(--sans)}
+.card-desc{font-size:12px;color:#b4c5bf}
+.micro-score{font-size:11px;color:#b9d5c9}
+.micro-score b{color:#eac38d}
+.badge{border-radius:3px;font-size:10px;background:#162626;color:#b1d6c6}
+.badge.gold{color:#f8d59e;background:#463423;border-color:#be8d53}
+.inspector{max-height:85vh;padding:18px}
+.inspector h2{font:400 26px/1.11 var(--serif)}
+.detail-box{border-radius:4px;background:#142629;border-color:#3b5952}
+.evolution-lens{background:#182e2b;border-color:#628071}
+.evolution-lens summary,.evolution-lens strong.gain{color:#edc28a}
+.total-display strong{color:#f0c38a;font-family:var(--serif);font-size:38px}
+.metric .bar-bg i{background:#a5c4a0}
+.metric .bar-bg i.overridden{background:#dfa870}
+.ancestor{background:#1a3434;border-color:#55736d;border-radius:3px}
+.cal-card{border-radius:4px;background:#14282a;border-color:#42605a}
+.cal-card strong{font-family:var(--serif);font-weight:400;font-size:36px;color:#f1c996}
+.chip{background:#24362f;color:#d7bb8d}
+.notice{background:#183134;border-color:#7bb5a7}
+.notice.warn{background:#322a20;border-color:#e0b27c}
+.dialog{background:#0c1a1e;border:1px solid #83755d;border-radius:7px}
+.toast{background:#233a32;border-color:#a3c6a6;border-radius:4px}
+/* The living diagram is a field instrument. Every point is a real idea; every edge is stored ancestry. */
+.observatory{margin:3px 0 23px;border:1px solid #576152;background:#09161a;box-shadow:0 20px 65px #0005;position:relative;min-width:0;overflow:hidden}
+.observatory::before{content:"";position:absolute;left:14px;top:14px;width:30px;height:30px;border-top:1px solid #c6a87c;border-left:1px solid #c6a87c;pointer-events:none;z-index:1}
+.obs-head{padding:23px 26px 20px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;background:linear-gradient(92deg,#1b2a27,#142321 60%,#102023);border-bottom:1px solid #526254}
+.obs-head .eyebrow{margin-bottom:9px}
+.obs-head h2{font:400 clamp(27px,2.6vw,40px)/1.14 var(--serif);letter-spacing:-.04em;color:#f7ead6}
+.obs-head p{color:#b4c9bd;font-size:12px;max-width:65ch;line-height:1.6;margin:10px 0 0}
+.obs-controls{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end;align-items:center;max-width:350px}
+.obs-controls button{font:700 11px var(--mono);padding:9px 10px;background:#1b2e2d;border-color:#5f7364;color:#e8dbc4}
+.obs-controls button:hover:not(:disabled){background:#34483c}
+.obs-controls button:disabled{opacity:.33}
+.obs-controls .obs-focus{background:#b99b73;color:#142621;border-color:#e7c391}
+.obs-controls .obs-focus:hover:not(:disabled){background:#e9c898}
+.obs-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;min-height:424px}
+.atlas-field{position:relative;min-width:0;min-height:420px;overflow:hidden;background:#0a1719}
+.atlas-field canvas{width:100%;height:420px;display:block;cursor:grab;touch-action:none}
+.atlas-field canvas:focus-visible{outline:2px solid #e2be87;outline-offset:-5px}
+.atlas-hud{position:absolute;top:18px;left:22px;right:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;pointer-events:none}
+.atlas-hud .eyebrow{color:#d5ba90}
+.atlas-readout{font:10px/1.6 var(--mono);letter-spacing:.08em;color:#a7c4b4;max-width:210px;text-align:right}
+.atlas-readout strong{font-weight:700;color:#ead5b5}
+.atlas-key{position:absolute;bottom:17px;right:15px;display:flex;gap:10px;flex-wrap:wrap;background:#091619cc;border:1px solid #344844;padding:8px 9px;max-width:calc(100% - 30px)}
+.atlas-key span{display:flex;gap:6px;align-items:center;font:10px var(--mono);color:#c3cec3}
+.key-mark{display:inline-block;width:7px;height:7px;border-radius:50%;background:#90c9b9}
+.key-mark.gold{background:#ecc389;box-shadow:0 0 0 2px #bca16e65}
+.key-mark.archive{background:transparent;border:1px solid #7f9389}
+.key-mark.hybrid{background:#9ab9ac;border:2px double #304744;transform:rotate(45deg);border-radius:1px}
+.atlas-notebook{border-left:1px solid #596751;background:linear-gradient(155deg,#172824,#0e1e21);padding:23px 19px 18px;display:flex;flex-direction:column;gap:16px;min-width:0;position:relative}
+.atlas-notebook::before{content:"OBSERVATION RECORD";position:absolute;right:19px;top:7px;font:8px var(--mono);letter-spacing:.19em;color:#809e90}
+.atlas-focus h3{font:400 28px/1.07 var(--serif);color:#f2e4c8;margin:11px 0;overflow-wrap:anywhere}
+.atlas-focus p{font-size:12px;color:#bfd0c4;line-height:1.6;margin:0}
+.atlas-evidence{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#48584c;border:1px solid #48584c}
+.atlas-evidence>div{background:#132523;padding:11px 8px;min-width:0}
+.atlas-evidence strong{display:block;font:400 27px var(--serif);color:#e8c28c;font-variant-numeric:tabular-nums}
+.atlas-evidence span{font:9px/1.5 var(--mono);text-transform:uppercase;letter-spacing:.07em;color:#b3c7b8;display:block}
+.atlas-trace{border-top:1px solid #4f6456;padding-top:13px;font-size:12px;line-height:1.6;color:#c4c9ae}
+.atlas-trace .eyebrow{display:block;margin-bottom:6px}
+.atlas-recent{margin-top:auto;border-top:1px solid #4f6456;padding-top:12px}
+.atlas-index{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.atlas-index button{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:11px var(--mono);color:#d5e3ce;border-color:#557163;background:#1d332d;text-align:left;padding:7px 8px}
+.atlas-index button[aria-current=true]{border-color:#e0bd88;color:#f3d6a7;background:#3c382d}
+.depth-bar{display:flex;align-items:center;flex-wrap:wrap;gap:15px;padding:12px 20px;background:#14221f;border-top:1px solid #50634f}
+.depth-bar label{font:700 10px var(--mono);letter-spacing:.09em;color:#d4bb98;white-space:nowrap}
+.depth-bar input[type=range]{flex:1;min-width:130px;width:auto;max-width:none;padding:0;border:0;background:transparent;accent-color:#e8b67a;cursor:pointer}
+.depth-bar input[type=range]:disabled{opacity:.35}
+.depth-bar output{font:10px var(--mono);color:#c4d7c8;min-width:118px}
+.depth-bar button{padding:6px 10px;font:11px var(--mono)}
+.obs-foot{padding:11px 20px;border-top:1px solid #485c50;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;color:#a7bdac;background:#0c1b1e;font:10px/1.6 var(--mono);letter-spacing:.03em}
+.obs-foot strong{color:#e1c28f;font-weight:700}
+.workbench-divider{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:28px 0 13px;border-top:1px solid #4c6258;padding-top:16px}
+.workbench-divider h2{font:400 25px var(--serif);color:#eddfc7}
+.workbench-divider p{font-size:12px;color:#b0c3b9;max-width:560px;margin:0}
+.workbar{margin-bottom:15px}
+.workbar input#nodeSearch{min-width:125px}
+.create-board-details{display:block}
+.create-board-details>summary{display:none;cursor:pointer;color:#e4c594;font:700 11px var(--mono);letter-spacing:.08em;margin-bottom:12px}
+.rail .create-board-details form{margin-top:0}
+@media(max-width:1350px){.obs-grid{grid-template-columns:minmax(0,1fr) 290px}.atlas-notebook{padding:19px 15px}.atlas-focus h3{font-size:25px}}
+@media(max-width:1150px){.app{grid-template-columns:220px minmax(0,1fr)}.rail{padding:19px 12px}.obs-head{align-items:flex-start;flex-direction:column}.obs-controls{max-width:none;justify-content:flex-start}.obs-grid{grid-template-columns:1fr}.atlas-field,.atlas-field canvas{min-height:390px;height:390px}.atlas-notebook{border-left:0;border-top:1px solid #586955;display:grid;grid-template-columns:1fr 1fr;gap:13px}.atlas-focus{grid-column:1/-1}.atlas-recent{margin-top:0}.atlas-evidence{align-self:start}}
+@media(max-width:760px){.app{grid-template-columns:1fr}.rail{height:auto;position:relative;overflow:visible;display:grid;grid-template-columns:1fr 1fr;padding:17px;gap:14px;border-right:0;border-bottom:1px solid #4b5c50}.rail .brand{grid-column:1/-1}.rail-note{grid-column:1/-1}.board-list{max-height:150px}.main{padding:19px 14px 35px}.masthead{min-height:0;padding-bottom:20px}.masthead h1{font-size:clamp(36px,8vw,51px)}.summary .stat{padding:12px 14px;min-height:79px}.stat strong{font-size:30px}.obs-head{padding:21px 18px 18px}.obs-head h2{font-size:32px}.atlas-notebook{grid-template-columns:1fr}.atlas-focus{grid-column:auto}.atlas-field,.atlas-field canvas{min-height:365px;height:365px}.depth-bar{display:flex;align-items:center;flex-wrap:wrap;gap:15px;padding:12px 20px;background:#14221f;border-top:1px solid #50634f}
+.depth-bar label{font:700 10px var(--mono);letter-spacing:.09em;color:#d4bb98;white-space:nowrap}
+.depth-bar input[type=range]{flex:1;min-width:130px;width:auto;max-width:none;padding:0;border:0;background:transparent;accent-color:#e8b67a;cursor:pointer}
+.depth-bar input[type=range]:disabled{opacity:.35}
+.depth-bar output{font:10px var(--mono);color:#c4d7c8;min-width:118px}
+.depth-bar button{padding:6px 10px;font:11px var(--mono)}
+.obs-foot{padding:10px 15px}.workbench-divider{flex-direction:column;gap:3px}.workbench-divider p{margin-top:0}.create-board-details>summary{display:list-item}.rail .create-board-details form{margin-top:12px}}
+@media(max-width:520px){.rail{grid-template-columns:1fr}.brand,.rail-note{grid-column:auto}.obs-controls{width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.obs-controls button{padding:10px 5px;min-width:0;font-size:10px}.obs-controls .obs-focus{grid-column:span 2}.obs-controls button[data-atlas-reset]{grid-column:span 2}.atlas-readout{max-width:135px;font-size:9px}.atlas-key{gap:7px}.atlas-key span{font-size:9px}.atlas-field,.atlas-field canvas{height:345px;min-height:345px}.obs-head h2{font-size:28px}.atlas-focus h3{font-size:26px}.stat span{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.atlas-field canvas{scroll-behavior:auto}.observatory,.obs-head,.atlas-notebook{animation:none!important;transition:none!important}}
+
+@media(max-width:520px){.depth-bar{padding:11px 15px;gap:9px}.depth-bar label{width:100%}.depth-bar input[type=range]{min-width:120px}.depth-bar output{min-width:75px}}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="rail" aria-label="Boards and workspace controls">
+  <div class="brand"><div class="brand-icon" aria-hidden="true"><i></i></div><div><strong>EVOLUTION RIG</strong><small>AN INSTRUMENT FOR POSSIBILITIES</small></div></div>
+  <section class="rail-section"><div class="eyebrow">01 / Boards</div><div id="boardList" class="board-list" role="list" aria-label="Available boards"></div></section>
+  <section class="rail-section"><div class="eyebrow">New independent board</div><details class="create-board-details" id="boardComposer" open><summary>Create a board</summary>
+    <form id="boardForm" class="stack"><label>Board title<input name="title" required maxlength="120" placeholder="e.g. Better offline workflows"></label><label>Goal / directive<textarea name="objective" required maxlength="1600" rows="3" placeholder="What should this board optimize for?"></textarea></label><button class="primary" type="submit">+ Create board</button></form></details>
+  </section>
+  <section class="rail-section"><div class="eyebrow">Workspace portability</div><div class="stack"><button class="ghost" id="downloadWorkspace" type="button">Export workspace JSON</button><button class="ghost" id="importWorkspace" type="button">Import workspace JSON</button><input hidden id="workspaceFile" type="file" accept=".json,application/json"></div></section>
+  <div class="rail-note"><strong>Private by default.</strong> Boards and ideas stay in this browser storage. There is no service or account. Export JSON periodically; browser storage can be cleared. Model calls leave the device only if you explicitly choose a remote provider. <div id="storageNotice" class="tiny-note" style="margin-top:9px"></div></div>
+</aside>
+<main class="main" id="main">
+  <header class="masthead"><div><div class="eyebrow" id="boardKicker">BOARD / NONE</div><h1 id="boardTitle">Create a board to begin.</h1><p id="boardObjective" class="goal">Define a goal, grow candidate ideas, compare them with an inspectable jury and export a strong candidate as a project.</p></div><div class="status-ribbon" id="autoStatus"><span class="status-dot" id="autoDot"></span><span id="autoStatusLabel">AUTOPILOT / IDLE</span></div></header>
+  <section class="summary" aria-label="Board statistics"><div class="stat"><strong id="statTotal">0</strong><span>Total ideas</span></div><div class="stat"><strong id="statActive">0</strong><span>Active candidates</span></div><div class="stat"><strong id="statGold">0</strong><span>Gold shortlisted</span></div><div class="stat"><strong id="statGenerations">0</strong><span>Deepest generation</span></div></section>
+  <nav class="tabs" id="viewTabs" role="tablist" aria-label="Workspace areas"><button class="tab" data-view="studio" role="tab" aria-selected="true">01 / Studio</button><button class="tab" data-view="jury" role="tab" aria-selected="false">02 / Jury</button><button class="tab" data-view="autopilot" role="tab" aria-selected="false">03 / Autopilot</button><button class="tab" data-view="models" role="tab" aria-selected="false">04 / Models</button></nav>
+  <section class="view" id="studio" role="tabpanel" aria-label="Idea studio">
+    <div class="workbar"><button class="primary" id="newSeed">+ New seed</button><button id="branchSelected">Branch selected</button><label class="bar" style="gap:6px">N <input type="number" id="branchCount" min="1" max="8" step="1" value="3" aria-label="Number of branch children"></label><button id="crossPicked">Crossbreed picked pair</button><span class="stretch"></span><label>Filter <select id="nodeFilter"><option value="active">Active</option><option value="all">All, including archived</option><option value="gold">Gold only</option></select></label><label>Search <input id="nodeSearch" placeholder="Title or mechanism" aria-label="Search ideas"></label></div>
+    <section class="observatory" id="observatory" aria-labelledby="atlasTitle">
+    <header class="obs-head"><div><div class="eyebrow">THE OBSERVATORY / CAUSAL SURVEY</div><h2 id="atlasTitle">Every possibility leaves a trace.</h2><p>The map is evidence, not a prediction. Every point is a recorded idea. Every thread is a real parent relationship. Even discarded paths remain.</p></div><div class="obs-controls" aria-label="Observatory navigation"><button id="atlasZoomOut" aria-label="Zoom out" title="Zoom out">− Zoom</button><button id="atlasZoomIn" aria-label="Zoom in" title="Zoom in">+ Zoom</button><button data-atlas-reset id="atlasReset" title="Fit full field (Home)">Fit field</button><button class="obs-focus" id="atlasFocus" title="Center and magnify selected idea">Trace selected</button></div></header>
+    <div class="obs-grid"><div class="atlas-field"><div class="atlas-hud"><div class="eyebrow">FIELD / <span id="atlasModeLabel">UNPOPULATED</span></div><div class="atlas-readout" id="atlasReadout">0 IDEAS · 0 LINKS<br>NO SURVEY DATA</div></div><canvas id="atlasCanvas" tabindex="0" role="img" aria-label="Interactive causal field. Every point corresponds to an idea; links show recorded ancestry. Click or tap a point to select. Drag to pan, scroll to zoom. Use the adjacent list, family tree, or jury table for keyboard and screen-reader access.">Your ideas and ancestry are also available in the accessible family tree and jury table below.</canvas><div class="atlas-key" aria-label="Diagram legend"><span><i class="key-mark"></i>Active</span><span><i class="key-mark gold"></i>Gold</span><span><i class="key-mark archive"></i>Archived</span><span><i class="key-mark hybrid"></i>Two parents</span></div></div>
+    <aside class="atlas-notebook" aria-label="Selected idea and survey findings"><div class="atlas-focus" aria-live="polite" aria-atomic="true"><div class="eyebrow" id="atlasFocusKicker">FIELD REPORT / AWAITING INPUT</div><h3 id="atlasFocusTitle">No idea selected.</h3><p id="atlasNarrative">Create a board and place a seed. The field will show the lineages you actually construct.</p></div><div class="atlas-evidence" aria-label="Trace counts"><div><strong id="atlasAncestorCount">0</strong><span>Ancestors</span></div><div><strong id="atlasDescendantCount">0</strong><span>Descendants</span></div><div><strong id="atlasArchiveCount">0</strong><span>Archived trails</span></div></div><div class="atlas-trace"><span class="eyebrow">EVIDENCE / NOT ORACLE</span><span id="atlasTraceText">The jury measures textual structure. No rating proves originality, feasibility or real-world impact.</span></div><div class="atlas-recent"><div class="eyebrow">SIGNALS / SELECT A RECORD</div><div class="atlas-index" id="atlasIndex" role="group" aria-label="Notable ideas in the current board"></div></div></aside></div>
+    <div class="depth-bar" aria-label="Timeline depth exploration"><label for="atlasDepth">UNFOLD / GENERATION DEPTH</label><input id="atlasDepth" type="range" min="0" max="0" value="0" step="1" aria-label="Show ideas through generation" disabled><output id="atlasDepthLabel" for="atlasDepth">NO GENERATIONS</output><button id="atlasUnfoldAll" class="sm ghost" disabled>Reveal all</button></div>
+    <div class="obs-foot"><span><strong id="atlasFootSummary">No generations recorded</strong> · click a node to follow its ancestry</span><span>Pointer: select / drag / zoom · Keyboard: use signal buttons below or focus the canvas for arrows / ± / Home</span></div>
+  </section>
+  <div class="workbench-divider"><h2>Work with the evidence</h2><p>Generate, combine and scrutinize candidates. The original family tree remains an accessible, editable record below.</p></div>
+    <div class="grid2"><section class="panel"><div class="panel-head"><div><h2>Family tree</h2><small>Drag one idea onto another to crossbreed. Select any card to inspect it.</small></div><button class="sm ghost" id="clearPick">Clear parents</button></div><div class="graph-wrap" id="graphWrap"><div class="graph-layout" id="graphLayout"><svg class="graph-edges" id="graphEdges" aria-hidden="true"></svg><div id="graphEmpty" class="graph-empty">Your first seed becomes generation zero.</div></div></div><div class="graph-foot"><span id="pickedLabel">PARENTS / none</span> <span style="float:right">Lines show ancestry, including archived ancestors.</span></div></section>
+    <aside class="panel" aria-label="Selected idea inspector"><div class="panel-head"><h2>Idea inspector</h2><span class="eyebrow" id="inspectId">NO SELECTION</span></div><div id="inspector" class="inspector-empty">Select an idea node to see its fields, scores, overrides, history and lineage.</div></aside></div>
+  </section>
+  <section class="view" id="jury" role="tabpanel" aria-label="Jury and calibration" hidden>
+    <div class="panel" style="margin-bottom:15px"><div class="panel-head"><div><h2>Reference anchor calibration</h2><small>Fixed weak / medium / strong fixtures; computed in JavaScript, never awarded by a language model.</small></div><span class="chip" id="calibrationBadge">CALIBRATING</span></div><div class="panel-body"><div id="anchorCards" class="cal-grid"></div><p class="tiny-note">Metric normalization uses the weak and strong fixtures. The medium fixture must land between them. Gold is blocked if anchor checks fail. This is a structural rubric, not external validation of market novelty or technical correctness.</p><button id="rerunAnchors" class="sm">Re-run reference jury</button></div></div>
+    <div class="panel"><div class="panel-head"><div><h2>Candidate jury ledger</h2><small>Every verdict is recalculable and every override is logged in the node inspector.</small></div></div><div class="juries"><table class="score-table"><thead><tr><th>Candidate</th><th>Origin</th><th>Originality</th><th>Feasibility</th><th>Impact</th><th>Total</th><th>Decision</th></tr></thead><tbody id="juryRows"></tbody></table></div></div>
+  </section>
+  <section class="view" id="autopilot" role="tabpanel" aria-label="Autonomous evolution">
+    <div class="grid2"><section class="panel"><div class="panel-head"><h2>Evolution autopilot</h2><span class="eyebrow">OPERATOR CONTROLLED</span></div><div class="panel-body stack">
+      <div class="notice warn">Runs only while this page remains open. Browsers may throttle timers in background tabs; closing the page stops evolution. No persistent service or hidden agent is installed.</div>
+      <div class="field-grid"><label>Maximum steps / hour<input id="stepsPerHour" type="number" min="1" max="120" value="12"></label><label>Minimum seconds between steps<input id="secondsBetween" type="number" min="5" max="3600" value="30"></label><label>Active population cap<input id="populationCap" type="number" min="4" max="250" value="24"></label><label>Prune threshold (out of 15)<input id="pruneThreshold" type="number" min="3" max="12" value="7"></label></div>
+      <p class="hint" id="effectiveCadence">Effective interval: 300 seconds per step (bounded by both controls).</p>
+      <div class="bar"><button class="primary" id="startAuto">Start autopilot</button><button id="stopAuto" disabled>Stop</button><button id="stepOnce">Run one step</button></div>
+      <div class="notice">Selection favors strong active candidates while occasionally exploring alternatives. Pruning means <strong>archiving</strong> the lowest-scoring low-value leaves, not deleting their ancestry.</div>
+    </div></section><section class="panel"><div class="panel-head"><h2>Execution log</h2><button class="sm" id="clearRuntimeLog">Clear view</button></div><div class="panel-body"><div id="runtimeLog" class="runtime-log" aria-live="polite"></div><p class="tiny-note">Logs include generation source, selected parents, child IDs and pruning decisions. Never includes API keys.</p></div></section></div>
+  </section>
+  <section class="view" id="models" role="tabpanel" aria-label="Model and network configuration">
+    <div class="grid2"><section class="panel"><div class="panel-head"><div><h2>Generation router</h2><small>All model output is treated as candidate text. Code owns all scores and gates.</small></div></div><div class="panel-body tall-form">
+      <label>Route<select id="provider"><option value="offline">Offline / procedural (no model)</option><option value="ollama">Ollama / local</option><option value="lmstudio">LM Studio / local</option><option value="mlx">MLX / OpenAI-compatible</option><option value="openrouter">OpenRouter / API</option><option value="anthropic">Anthropic / API</option><option value="openai">OpenAI / API</option><option value="azure">Azure OpenAI / API</option></select></label>
+      <label>Endpoint (exact chat URL)<input id="endpoint" type="url" spellcheck="false" placeholder="No endpoint for offline mode"></label><label>Model or deployment ID<input id="modelId" spellcheck="false" placeholder="Required for model routes"></label>
+      <label>API key / local access token<input id="apiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Optional for local; required for hosted API"></label>
+      <label class="check"><input type="checkbox" id="persistKey"> Save this key in this browser's localStorage (otherwise session only)</label>
+      <div class="bar"><button class="primary" id="saveRouter">Save routing configuration</button><button id="probeRouter">Test connection (may use tokens)</button><button class="ghost" id="forgetKey">Forget key</button></div>
+      <div class="notice" id="routerWarning">Offline mode generates deterministic recombinations and needs no network access.</div>
+      <div class="code-log" id="routerState" role="status" aria-live="polite"></div>
+    </div></section><section class="panel"><div class="panel-head"><h2>Trust boundaries</h2></div><div class="panel-body stack"><div class="detail-box"><div class="eyebrow">LOCAL</div><p>Seed creation, scoring, calibration, pruning, lineage, saving and exports work entirely in the browser.</p></div><div class="detail-box"><div class="eyebrow">MODEL ROUTES</div><p>Only user-triggered generations and connection tests contact the configured endpoint. Model payloads include the current board directive and selected parent fields.</p></div><div class="detail-box"><div class="eyebrow">CREDENTIALS</div><p>Keys live in sessionStorage by default or localStorage on explicit opt-in. They are not included in project ZIPs or workspace JSON. Browser storage is not a security vault; do not use high-privilege keys on shared computers.</p></div><div class="detail-box"><div class="eyebrow">CORS + BROWSER LIMITS</div><p>Some APIs block cross-origin browser requests. Ollama may need permitted origins; local HTTP endpoints should be bound to loopback. For strict offline guarantees, choose Offline. No secret-holding server proxy is bundled.</p></div><div class="detail-box"><div class="eyebrow">EXPORT</div><p>Gold project exports are standard ZIP folders. On browsers supporting directory write access, you can also choose an output folder without uploading data.</p></div></div></section></div>
+  </section>
+  <footer style="margin-top:25px;color:#708a89;font:11px var(--mono)">EVOLUTION RIG / LOCAL INSTRUMENT / NO EXTERNAL LIBRARIES / NOTHING RUNS WHEN CLOSED</footer>
+</main></div>
+<dialog class="dialog" id="ideaDialog" aria-labelledby="dialogTitle"><form id="ideaForm" novalidate><div class="dialog-header"><div><div class="eyebrow" id="dialogKicker">NEW / SEED</div><h2 id="dialogTitle">Create idea</h2></div><button type="button" class="ghost sm" id="closeDialog" aria-label="Close">Close</button></div><div class="dialog-content"><div class="field-grid" id="ideaFields"><label style="grid-column:1/-1">Title *<input name="title" required maxlength="160" placeholder="A concrete idea title"></label><label style="grid-column:1/-1">Problem to solve<textarea name="problem" maxlength="2000" rows="2"></textarea></label><label>Target audience<textarea name="audience" maxlength="2000" rows="2"></textarea></label><label>Mechanism / how it works<textarea name="mechanism" maxlength="2000" rows="3"></textarea></label><label>Differentiation / original angle<textarea name="difference" maxlength="2000" rows="3"></textarea></label><label>First execution plan<textarea name="plan" maxlength="2000" rows="3"></textarea></label><label>Validation method<textarea name="validation" maxlength="2000" rows="3"></textarea></label><label>Expected impact / benefit<textarea name="benefit" maxlength="2000" rows="3"></textarea></label><label>Constraints<textarea name="constraints" maxlength="2000" rows="3"></textarea></label><label style="grid-column:1/-1">Risks / unknowns<textarea name="risks" maxlength="2000" rows="2"></textarea></label></div></div><div class="dialog-footer"><button id="cancelIdea" type="button">Cancel</button><button class="primary" id="submitIdea" type="submit">Save idea</button></div></form></dialog>
+<div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
+<script>
+/* Evolution Rig core: deterministic, dependency-free, and shared by browser and Node tests. */
+(function (root, factory) {
+  const lib = factory();
+  if (typeof module !== 'undefined' && module.exports) module.exports = lib;
+  if (root) root.RigCore = lib;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const SCHEMA_VERSION = 1;
+  const FIELDS = ['title','problem','audience','mechanism','difference','plan','validation','benefit','constraints','risks'];
+  const METRICS = ['originality', 'feasibility', 'impact'];
+  const stopwords = new Set('a an the and or but for to of in on at with from this that is are be by as it we our their will could should would into can when then using use make an app tool idea system solution which where who one each through rather than'.split(' '));
+  const TEST_IDEAS = {
+    weak: {
+      title: 'An app that changes everything', problem: 'Problems', audience: 'Everyone',
+      mechanism: 'Magic technology', difference: '', plan: 'Build it',
+      validation: '', benefit: 'Amazing results', constraints: '', risks: ''
+    },
+    medium: {
+      title: 'Simple household task organizer',
+      problem: 'Roommates sometimes lose track of recurring chores and reminders.',
+      audience: 'Small households sharing ordinary tasks.',
+      mechanism: 'A browser checklist lets housemates mark tasks complete and filter by person.',
+      difference: 'Works without an account and allows a local download of tasks.',
+      plan: 'Build one list, then add local storage and export.',
+      validation: 'Try it for a week and count missed tasks.',
+      benefit: 'Fewer forgotten recurring tasks and less confusion.',
+      constraints: 'No server or new services.', risks: 'Browser data can be deleted.'
+    },
+    strong: {
+      title: 'Offline repair triage cards with field-proven recovery paths',
+      problem: 'Technicians without connectivity waste repeat visits repeating uncertain troubleshooting and lose the evidence behind decisions.',
+      audience: 'Small municipal maintenance teams working in basements and remote mechanical rooms with unreliable connectivity.',
+      mechanism: 'A fully local browser decision tree stores concise symptom cards, measured evidence, reversible checks, and next-step recovery instructions; it links every decision to its predecessor.',
+      difference: 'Unlike static checklists, each offline symptom card records the reason for its branch, unresolved alternatives, provenance and a one-click rollback path.',
+      plan: 'Build one HTML page with three known fault scenarios, local persistence and JSON export in two afternoons; run a field simulation with five technicians.',
+      validation: 'Measure median diagnosis time in minutes, incorrect branches and number of recovered decisions across 15 blinded scenarios before and after.',
+      benefit: 'Cut repeat troubleshooting time by 25 percent while keeping an auditable record and reducing unnecessary site visits for 5 technicians.',
+      constraints: 'No external server, no paid dependencies, no user identity collection and only three initial scenarios.',
+      risks: 'An incorrect decision card could mislead users; label uncertainty and require expert signoff before field use.'
+    },
+    padding: Object.fromEntries(FIELDS.map(field => [field,field==='title' ? 'Generic repetitive claim' : 'test pilot measure one local specific solution process '.repeat(15)]))
+  };
+  const MUTATIONS = [
+    {name:'Narrow the audience',prefix:'Focused', angle:'Start with one high-friction subgroup and optimize the first measurable outcome.',constraint:'Limit the pilot to one defined user segment and document excluded use cases.'},
+    {name:'Manual-first proof',prefix:'Field-tested',angle:'Replace the first automation with a manual test and measure the failure modes.',constraint:'Use paper or a small offline checklist before building complex software.'},
+    {name:'Reverse the workflow',prefix:'Reverse-flow',angle:'Start from the desired outcome and trace decisions backward to the minimum input.',constraint:'Show the complete decision path and allow the user to undo every step.'},
+    {name:'Audit trail',prefix:'Traceable',angle:'Attach evidence, uncertainty and source decisions to every consequential output.',constraint:'Keep a small local event log that exports with the project.'},
+    {name:'Constraint-led redesign',prefix:'Resilient',angle:'Design for no network, no account and graceful recovery from interruptions.',constraint:'No external dependency is necessary for the first useful increment.'},
+    {name:'Measure before scaling',prefix:'Measured',angle:'Add an explicit benchmark and reject versions that fail the baseline.',constraint:'Test against five examples before increasing scope.'},
+    {name:'Human veto',prefix:'Operator-led',angle:'Provide a reversible review gate before any consequential suggestion is acted on.',constraint:'No automatic destructive actions; the user can inspect and reject each step.'},
+    {name:'Smallest useful slice',prefix:'One-slice',angle:'Reduce the experience to one end-to-end task that can be completed in an afternoon.',constraint:'Build exactly one representative workflow before expanding.'},
+    {name:'Adversarial contrast',prefix:'Counterexample-driven',angle:'Design around a deliberately hard counterexample instead of a happy path.',constraint:'Document one known failure and a clear stop condition.'},
+    {name:'Portable handoff',prefix:'Portable',angle:'Turn every decision into a portable brief so another person can reproduce it.',constraint:'Export plain text and JSON without a proprietary format.'}
+  ];
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  function words(str) { return String(str || '').trim().split(/\s+/).filter(Boolean); }
+  // Text length alone is gameable: 100 repetitions of the same phrase are not
+  // 100 independent pieces of evidence. Reward informative vocabulary coverage.
+  function lengthSignal(str, needed) {
+    const count=words(str).length;
+    const distinct=terms(str).size;
+    return Math.min(clamp(count / needed),clamp(distinct / Math.max(3, needed*.58)));
+  }
+  function terms(text) {
+    return new Set(String(text || '').toLowerCase().match(/[a-z0-9]{3,}/g)?.filter(s=> !stopwords.has(s)) || []);
+  }
+  function similarity(a, b) {
+    const aa = terms(a), bb = terms(b);
+    if (!aa.size || !bb.size) return 0;
+    let common = 0; for (const s of aa) if (bb.has(s)) common++;
+    return common / (aa.size + bb.size - common);
+  }
+  function ideaText(i) {return [i.title,i.problem,i.mechanism,i.difference].join(' ');}
+  function hasMatch(text, re) {return re.test(String(text || '').toLowerCase()) ? 1 : 0;}
+  function feature(name, value, weight, reason) { return {name, value: +clamp(value).toFixed(4), weight, points: +(clamp(value)*weight).toFixed(4), reason}; }
+  function rawMetrics(idea, peers = []) {
+    const safePeers = peers.filter(p=>p.id !== idea.id && p.status !== 'archived');
+    let maxSim = 0;
+    for (const p of safePeers) maxSim = Math.max(maxSim, similarity(ideaText(idea), ideaText(p)));
+    const novelty = safePeers.length ? 1 - maxSim : 0.8;
+    const all = [idea.title,idea.problem,idea.mechanism,idea.difference,idea.plan,idea.validation,idea.benefit,idea.constraints].join(' ');
+    const of = [
+      feature('Explicit differentiation', lengthSignal(idea.difference,16), .25, 'A concrete distinction from ordinary alternatives.'),
+      feature('Described mechanism', lengthSignal(idea.mechanism,22), .22, 'How this would actually work.'),
+      feature('Novelty relative to board', novelty, .20, 'Maximum Jaccard token overlap with peer ideas, inverted.'),
+      feature('Specific problem framing', lengthSignal(idea.problem,17), .18, 'The problem is concrete rather than vague.'),
+      feature('Meaningful constraints', lengthSignal(idea.constraints,14), .15, 'Constraints force design choices rather than slogans.')
+    ];
+    const ff = [
+      feature('Execution plan',lengthSignal(idea.plan,25),.30,'A bounded build sequence exists.'),
+      feature('Test and validation',lengthSignal(idea.validation,22),.28,'A trial can falsify the proposal.'),
+      feature('Practical constraints',lengthSignal(idea.constraints,16),.16,'Scope and available resources are constrained.'),
+      feature('Named risks',lengthSignal(idea.risks,15),.13,'Failure modes have been acknowledged.'),
+      feature('Pilot/boundary signals',hasMatch(all,/\b(pilot|prototype|first|one|week|days|hour|local|offline|manual|limited|three|five|test)\b/),.13,'The text suggests a smaller testable increment.')
+    ];
+    const im = [
+      feature('Defined audience',lengthSignal(idea.audience,12),.20,'A real group is identified.'),
+      feature('Concrete pain point',lengthSignal(idea.problem,20),.24,'A relevant issue is described.'),
+      feature('Outcome statement',lengthSignal(idea.benefit,22),.26,'The benefit is understandable and specific.'),
+      feature('Measurable outcome',lengthSignal(idea.validation,22),.20,'A measurable proof of impact is proposed.'),
+      feature('Numeric or observational target',hasMatch(idea.benefit+' '+idea.validation,/\b\d+(?:\.\d+)?\b|\b(measure|count|rate|reduce|increase|compare|fewer|median|percentage)\b/),.10,'A target or observable change is specified.')
+    ];
+    const fantasy = hasMatch(all,/\b(magic|magical|infinite|instantaneously|teleport|solve everything|everyone will|guaranteed cure)\b/);
+    const weighted = fs => +(fs.reduce((s,f)=>s+f.points,0)).toFixed(4);
+    return { originality:weighted(of), feasibility:+clamp(weighted(ff)-fantasy*.2).toFixed(4), impact:weighted(im),
+      features:{originality:of,feasibility:ff,impact:im}, overlap:+maxSim.toFixed(4), fantasyPenalty: fantasy ? .2 : 0 };
+  }
+  function anchors() {
+    const names = ['weak','medium','strong'];
+    const computed = Object.fromEntries(names.map(n=>[n,rawMetrics(TEST_IDEAS[n],[])]));
+    const separated = METRICS.every(metric=>computed.strong[metric] - computed.weak[metric] >= .45);
+    const scores = Object.fromEntries(names.map(n=>[n,Object.fromEntries(METRICS.map(metric=>[metric,scoreRaw(computed[n][metric],computed.weak[metric],computed.strong[metric])]))]));
+    const totals=Object.fromEntries(names.map(n=>[n,METRICS.reduce((a,m)=>a+scores[n][m],0)]));
+    // Negative control: fluent repetition is not equivalent to evidence-rich reasoning.
+    const padded=rawMetrics(TEST_IDEAS.padding,[]);
+    const paddingTotal=METRICS.reduce((sum,m)=>sum+scoreRaw(padded[m],computed.weak[m],computed.strong[m]),0);
+    const passes=separated && totals.weak<=6 && totals.strong>=12 && totals.medium>=5 && totals.medium<=12 && paddingTotal<=11;
+    return {computed,scores,totals,passes,separated,paddingTotal,version:'reference-fixtures-v2'};
+  }
+  function scoreRaw(raw, weak, strong) {
+    if (strong-weak < .01) return 1;
+    return 1 + Math.round(4*clamp((raw-weak)/(strong-weak)));
+  }
+  function judge(idea, peers=[], benchmark=anchors()) {
+    const raw = rawMetrics(idea, peers);
+    const computed = Object.fromEntries(METRICS.map(m=>[m,scoreRaw(raw[m],benchmark.computed.weak[m],benchmark.computed.strong[m])]));
+    const overrides = {};
+    for (const m of METRICS) {
+      const v=idea?.overrides?.[m];
+      if (Number.isInteger(v) && v>=1 && v<=5) overrides[m]=v;
+    }
+    const effective=Object.fromEntries(METRICS.map(m=>[m,overrides[m] || computed[m]]));
+    const total=METRICS.reduce((sum,m)=>sum+effective[m],0);
+    const notes=[];
+    for (const m of METRICS) {
+      const f=raw.features[m];
+      notes.push(`${m}: raw ${raw[m].toFixed(2)}; weak anchor ${benchmark.computed.weak[m].toFixed(2)}; strong anchor ${benchmark.computed.strong[m].toFixed(2)}; computed ${computed[m]}/5${overrides[m]?' => overridden '+overrides[m]+'/5':''}.`);
+      notes.push('Signals: '+f.map(x=>`${x.name} ${(x.points*100).toFixed(1)}/${(x.weight*100).toFixed(0)} pts`).join('; '));
+    }
+    if (raw.fantasyPenalty) notes.push('Feasibility penalty applied to unsupported extraordinary claims.');
+    notes.push(`Reference gate ${benchmark.passes ? 'PASS':'FAIL'}; gold requires 13/15, all metrics >=4, no later non-improving near-duplicate and a top-decile slot.`);
+    return {raw,computed,overrides,effective,total,notes,benchmarkVersion:benchmark.version,calibrationPass:benchmark.passes,at:new Date().toISOString()};
+  }
+  function goldIds(ideas, benchmark=anchors(), verdicts=null) {
+    if (!benchmark.passes) return new Set();
+    const active=ideas.filter(i=>i.status!=='archived');
+    const assessed=active.map(i=>({idea:i,verdict:verdicts?.get(i.id)||judge(i,active,benchmark)}));
+    const earlier=(a,b)=>a.generation<b.generation || (a.generation===b.generation && (a.createdAt<b.createdAt || (a.createdAt===b.createdAt && a.id<b.id)));
+    const redundant=x=>assessed.some(y=>y.idea.id!==x.idea.id && earlier(y.idea,x.idea) && y.verdict.total>=x.verdict.total && similarity(ideaText(y.idea),ideaText(x.idea))>=.85);
+    // A strong source remains eligible when it spawns similar descendants. Only
+    // later near-copies that cannot beat their earlier peer are disqualified.
+    const qualified=assessed.filter(x=>x.verdict.total>=13 && METRICS.every(m=>x.verdict.effective[m]>=4) && !redundant(x))
+      .sort((a,b)=>b.verdict.total-a.verdict.total || b.verdict.effective.originality-a.verdict.effective.originality || a.idea.createdAt.localeCompare(b.idea.createdAt));
+    const slots=Math.max(1,Math.floor(active.length*.1));
+    return new Set(qualified.slice(0,slots).map(x=>x.idea.id));
+  }
+  function uid(prefix='n') { return prefix+'-'+(typeof crypto!=='undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,11)}`); }
+  function board(title, objective) {return {id:uid('b'),title:String(title).trim().slice(0,120),objective:String(objective).trim().slice(0,1600),createdAt:new Date().toISOString()};}
+  function normalizeIdea(payload,boardId,parents=[],generation=0,source='manual') {
+    const item={id:uid('i'),boardId,parents:[...new Set(parents)],generation,createdAt:new Date().toISOString(),status:'active',source,overrides:{},history:[]};
+    for(const k of FIELDS) item[k]=String(payload[k] || '').trim().slice(0,k==='title'?160:2000);
+    return item;
+  }
+  // Never silently truncate an idea's audit trail. Storage pressure is surfaced
+  // by the browser persist() warning and the operator can export an archive.
+  function record(item,kind,details) {item.history.push({time:new Date().toISOString(),kind,details:JSON.parse(JSON.stringify(details))});}
+  function localIdeas(parent,partner,objective,n=3,seq=0) {
+    const ideas=[];
+    const parents=partner?[parent,partner]:[parent];
+    for(let i=0;i<n;i++) {
+      const m=MUTATIONS[(seq+i+Number.parseInt(String(parent.id).replace(/[^0-9a-z]/gi,'').slice(-2),36)||0)%MUTATIONS.length];
+      const pick=v=>parents.map(p=>String(p[v]||'').trim()).filter(Boolean);
+      const join=v=>[...new Set(pick(v))].join(' / ');
+      const shortTitle=String(parent.title||'Untitled').replace(/^(Focused|Resilient|Measured|Traceable|Portable|Field-tested|One-slice|Operator-led|Reverse-flow|Counterexample-driven)\s+/,'');
+      const hybrid=partner ? ` + ${String(partner.title||'').slice(0,35)}` : '';
+      const title=`${m.prefix} ${shortTitle}${hybrid}`.slice(0,150);
+      ideas.push({
+        title,
+        problem:join('problem') || `Address the board goal: ${objective.slice(0,180)}`,
+        audience:join('audience') || 'People directly affected by the stated board goal.',
+        mechanism:`${join('mechanism')||'A deliberately small, inspectable workflow.'} ${m.angle}${partner?' Integrate both parent mechanisms with explicit checks at the seam.':''}`,
+        difference:`${join('difference')||'Differentiate with a testable operating constraint.'} ${m.angle}`,
+        plan:`${join('plan')||'Draft a minimum viable trial.'} Start with one test case, build the narrowest working slice, observe actual use, then decide whether to expand.`,
+        validation:`${join('validation')||'Record baseline and post-test outcomes.'} Compare five examples to the original idea and count measurable improvement and failure rates.`,
+        benefit:join('benefit')||'Reduce uncertainty and make the core outcome more reliable for a defined group.',
+        constraints:`${join('constraints')} ${m.constraint}`.trim(),
+        risks:`${join('risks')||'Unverified assumptions may undermine the expected benefit.'} Keep a rollback path and reject the idea if pilot evidence disagrees.`
+      });
+    }
+    return ideas;
+  }
+  // A lexical change receipt, not a semantic novelty judgment. Helps the
+  // operator inspect what a child inherited and which fields genuinely changed.
+  function lineageDelta(item, parents) {
+    const fields=['problem','audience','mechanism','difference','plan','validation','benefit','constraints','risks'];
+    if (!parents.length)return {changedFields:[],newMechanismTerms:[],parentCount:0};
+    const changedFields=fields.filter(field=>parents.every(p=>similarity(item[field],p[field])<.85));
+    const parentTerms=new Set(parents.flatMap(p=>[...terms(p.mechanism+' '+p.difference)]));
+    const newMechanismTerms=[...terms(item.mechanism+' '+item.difference)].filter(t=>!parentTerms.has(t)).slice(0,9);
+    return {changedFields,newMechanismTerms,parentCount:parents.length};
+  }
+  function familyTree(item,byId) {
+    // Iterative post-order walk: protects deep imported DAGs from stack limits
+    // and preserves every ancestor, not merely the first 500 generations.
+    const completed=new Set(),inProgress=new Set(),chain=[];
+    const stack=[{id:item.id,expanded:false}];
+    while(stack.length){
+      const frame=stack.pop(),cur=byId[frame.id];if(!cur||completed.has(frame.id))continue;
+      if(frame.expanded){
+        inProgress.delete(frame.id);completed.add(frame.id);
+        chain.push({id:cur.id,title:cur.title,generation:cur.generation,parents:cur.parents,source:cur.source,status:cur.status,createdAt:cur.createdAt});
+        continue;
+      }
+      if(inProgress.has(frame.id))continue; // malformed caller graph cycle
+      inProgress.add(frame.id);stack.push({id:frame.id,expanded:true});
+      for(let i=cur.parents.length-1;i>=0;i--){const id=cur.parents[i];if(!completed.has(id)&&!inProgress.has(id))stack.push({id,expanded:false});}
+    }
+    return chain;
+  }
+  function slug(s) {return String(s).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,65)||'idea';}
+  function cleanText(s) {return String(s||'').replace(/\r/g,'').replace(/\u0000/g,'');}
+  function md(s) {return cleanText(s).replace(/^#/gm,'\\#').trim() || '_Not specified_';}
+  function projectFiles(idea,boardInfo,allIdeas,benchmark=anchors()) {
+    const byId=Object.fromEntries(allIdeas.map(i=>[i.id,i]));
+    const chain=familyTree(idea,byId);
+    const verdict=judge(idea,allIdeas,benchmark);
+    const path=slug(idea.title);
+    const verdictExplain=verdict.notes.map(t=>'- '+t).join('\n');
+    const parents=chain.map(c=>`- Gen ${c.generation}: ${c.title} (${c.id}; ${c.status})`).join('\n');
+    const first=idea.plan||'Build one working representation of the central mechanism; test with one real example.';
+    const files={};
+    files[path+'/claude.md']=`# ${md(idea.title)}\n\n## Goal / board directive\n${md(boardInfo.objective)}\n\n## Core brief\nProblem: ${md(idea.problem)}\n\nAudience: ${md(idea.audience)}\n\nMechanism: ${md(idea.mechanism)}\n\nDifference: ${md(idea.difference)}\n\nExpected impact: ${md(idea.benefit)}\n\n## Smallest testable build increment\n${md(first)}\n\n**Validation:** ${md(idea.validation)}\n\n## Constraints and risks\nConstraints: ${md(idea.constraints)}\n\nRisks: ${md(idea.risks)}\n\n## Open questions\n- Which assumption is most likely to be wrong in a first trial?\n- What result would stop further work?\n- Who will validate the result and by what measure?\n\n## Historical lineage\n${parents}\n\n## Jury verdict\nOriginality ${verdict.effective.originality}/5; Feasibility ${verdict.effective.feasibility}/5; Impact ${verdict.effective.impact}/5; Total ${verdict.total}/15.\n\n${verdictExplain}\n\nThe jury is a transparent text-structure heuristic, not proof of real-world novelty, feasibility or impact. Independently validate before committing resources.\n`;
+    files[path+'/README.md']=`# ${md(idea.title)}\n\nPortable handoff generated by Evolution Rig. Begin with **claude.md**, then inspect the jury evidence and lineage JSON. No API keys are included.\n\n## First step\n${md(first)}\n\n## Structure\n- claude.md - agent-ready project directive\n- brief/first-increment.md - bounded first experiment\n- jury/verdict.json - score details, overrides and evidence\n- lineage/family-tree.json - ancestors and parent edges\n- source/idea.json - selected structured idea\n`;
+    files[path+'/brief/first-increment.md']=`# First increment\n\n${md(first)}\n\n## Evidence to collect\n${md(idea.validation)}\n\n## Stop rule\nDo not expand beyond this increment until measured outcomes and user review support the next step.\n`;
+    files[path+'/jury/verdict.json']=JSON.stringify({ideaId:idea.id,benchmark:{version:benchmark.version,passes:benchmark.passes,totals:benchmark.totals},verdict,history:idea.history},null,2);
+    files[path+'/lineage/family-tree.json']=JSON.stringify({currentIdeaId:idea.id,nodes:chain},null,2);
+    files[path+'/source/idea.json']=JSON.stringify({board:boardInfo,idea},null,2);
+    return {path,files,verdict};
+  }
+  const crcTable=(()=>{let t=[];for(let i=0;i<256;i++){let c=i;for(let j=0;j<8;j++)c=c&1?0xedb88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+  function crc32(bytes){let c=0xffffffff;for(const x of bytes)c=crcTable[(c^x)&255]^(c>>>8);return (c^0xffffffff)>>>0;}
+  function zipFiles(files){
+    const encoder=new TextEncoder();const local=[],central=[];let offset=0;const now=new Date();
+    const time=((now.getHours()&31)<<11)|((now.getMinutes()&63)<<5)|((Math.floor(now.getSeconds()/2))&31);
+    const date=(((Math.max(1980,now.getFullYear())-1980)&127)<<9)|(((now.getMonth()+1)&15)<<5)|(now.getDate()&31);
+    function header(len){const b=new Uint8Array(len);return {b,v:new DataView(b.buffer)};}
+    for(const [name,str] of Object.entries(files)){
+      const filename=encoder.encode(name),data=encoder.encode(str),crc=crc32(data);
+      if(filename.length>65535||data.length>0xffffffff)throw Error('File too large for portable ZIP');
+      const l=header(30+filename.length);
+      l.v.setUint32(0,0x04034b50,true);l.v.setUint16(4,20,true);l.v.setUint16(6,0x0800,true);l.v.setUint16(8,0,true);
+      l.v.setUint16(10,time,true);l.v.setUint16(12,date,true);l.v.setUint32(14,crc,true);l.v.setUint32(18,data.length,true);l.v.setUint32(22,data.length,true);l.v.setUint16(26,filename.length,true);l.b.set(filename,30);
+      local.push(l.b,data);
+      const c=header(46+filename.length);
+      c.v.setUint32(0,0x02014b50,true);c.v.setUint16(4,20,true);c.v.setUint16(6,20,true);c.v.setUint16(8,0x0800,true);c.v.setUint16(10,0,true);
+      c.v.setUint16(12,time,true);c.v.setUint16(14,date,true);c.v.setUint32(16,crc,true);c.v.setUint32(20,data.length,true);c.v.setUint32(24,data.length,true);
+      c.v.setUint16(28,filename.length,true);c.v.setUint32(42,offset,true);c.b.set(filename,46);central.push(c.b);
+      offset+=l.b.length+data.length;
+    }
+    const centralSize=central.reduce((s,x)=>s+x.length,0);
+    const end=header(22);end.v.setUint32(0,0x06054b50,true);end.v.setUint16(8,central.length,true);end.v.setUint16(10,central.length,true);end.v.setUint32(12,centralSize,true);end.v.setUint32(16,offset,true);
+    return new Blob([...local,...central,end.b],{type:'application/zip'});
+  }
+  function validateImport(raw) {
+    if(!raw || raw.schema!==SCHEMA_VERSION || !Array.isArray(raw.boards) || !Array.isArray(raw.ideas))throw Error('Unsupported or malformed workspace JSON');
+    if(raw.boards.length>200||raw.ideas.length>4000)throw Error('Import exceeds safe size limit');
+    if(raw.boards.some(b=>typeof b.id==='string'&&b.id.length>90)||raw.ideas.some(i=>typeof i.id==='string'&&i.id.length>100))throw Error('Import contains overlong identity strings; no changes applied');
+    const boards=raw.boards.filter(b=>typeof b.id==='string'&&typeof b.title==='string'&&typeof b.objective==='string').map(b=>({id:b.id,title:b.title.slice(0,120),objective:b.objective.slice(0,1600),createdAt:String(b.createdAt||new Date().toISOString()).slice(0,40)}));
+    const ids=new Set(boards.map(b=>b.id)),used=new Set();
+    if(ids.size!==boards.length)throw Error('Import contains duplicate board IDs; no changes applied');
+    const ideas=raw.ideas.filter(i=>typeof i.id==='string' && !used.has(i.id) && ids.has(i.boardId) && Array.isArray(i.parents))
+      .map(i=>{used.add(i.id);const o={id:i.id.slice(0,100),boardId:i.boardId,parents:i.parents.filter(x=>typeof x==='string').slice(0,2),generation:Math.max(0,Math.min(10000,Number(i.generation)||0)),createdAt:String(i.createdAt||new Date().toISOString()).slice(0,40),status:i.status==='archived'?'archived':'active',source:String(i.source||'import').slice(0,60),overrides:{},history:Array.isArray(i.history)?i.history.map(h=>({time:String(h?.time||'').slice(0,40),kind:String(h?.kind||'').slice(0,100),details:h?.details&&typeof h.details==='object' ? h.details : {}})):[]};for(const f of FIELDS)o[f]=String(i[f]||'').slice(0,f==='title'?160:2000);for(const m of METRICS)if(Number.isInteger(i.overrides?.[m])&&i.overrides[m]>=1&&i.overrides[m]<=5)o.overrides[m]=i.overrides[m];return o;});
+    const byId=new Map(ideas.map(i=>[i.id,i]));
+    for(const i of ideas)i.parents=[...new Set(i.parents)].filter(p=>p!==i.id && byId.has(p) && byId.get(p).boardId===i.boardId);
+    const complete=new Map(),visiting=new Set();
+    function getGen(item){
+      if(complete.has(item.id))return complete.get(item.id);
+      if(visiting.has(item.id))throw Error('Import contains cyclic ancestry; no changes applied');
+      visiting.add(item.id);const gen=item.parents.length?1+Math.max(...item.parents.map(p=>getGen(byId.get(p)))):0;visiting.delete(item.id);complete.set(item.id,gen);return gen;
+    }
+    for(const item of ideas)item.generation=getGen(item);
+    return {schema:SCHEMA_VERSION,boards,ideas,selectedBoardId:ids.has(raw.selectedBoardId)?raw.selectedBoardId:boards[0]?.id||null,selectedIdeaId:byId.has(raw.selectedIdeaId)?raw.selectedIdeaId:null,preferences:raw.preferences&&typeof raw.preferences==='object'?{...raw.preferences}: {}};
+  }
+  return {SCHEMA_VERSION,FIELDS,METRICS,TEST_IDEAS,MUTATIONS,rawMetrics,anchors,judge,goldIds,board,normalizeIdea,record,localIdeas,lineageDelta,familyTree,slug,projectFiles,zipFiles,validateImport,similarity};
+});
+
+</script>
+<script>
+/* Causal Observatory. A read-only view of real board ideas and recorded parent edges.
+   No synthetic nodes, scores, telemetry, clocks, external assets or data mutation. */
+(function (root) {
+'use strict';
+function createObservatory(canvas, onSelect) {
+  const ctx = canvas.getContext('2d', {alpha:false});
+  let data=[], byId=new Map(), verdicts=new Map(), gold=new Set(), selectedId=null;
+  let positions=new Map(), ancestors=new Set(), descendants=new Set();
+  let width=1,height=1,dpr=1,baseScale=1,worldRadius=100;
+  let pan={x:0,y:0}, zoom=1, focused=false, hoverId=null, activePointer=null;
+  let frame=0, visible=true, depthCap=null;
+  const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+  const hash=str=>{let x=2166136261;for(let i=0;i<str.length;i++){x^=str.charCodeAt(i);x=Math.imul(x,16777619);}return x>>>0;};
+  function layout() {
+    byId=new Map(data.map(n=>[n.id,n]));positions=new Map();
+    const groups=new Map();
+    for(const n of data){const g=Number.isFinite(n.generation)?n.generation:0;if(!groups.has(g))groups.set(g,[]);groups.get(g).push(n);}
+    const generations=[...groups.keys()].sort((a,b)=>a-b);
+    const maxGen=generations.at(-1)||0;
+    worldRadius=Math.max(110,78+maxGen*144);
+    for(const generation of generations){
+      const group=groups.get(generation).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt))||a.id.localeCompare(b.id));
+      const count=group.length;
+      group.forEach((n,i)=>{
+        const radius=78+generation*144;
+        const a=-Math.PI/2+(2*Math.PI*(i+.5))/(Math.max(1,count));
+        const drift=(hash(n.id)%1000/1000-.5)*Math.min(.12,1/Math.max(count,1));
+        positions.set(n.id,{x:Math.cos(a+drift)*radius,y:Math.sin(a+drift)*radius,generation});
+      });
+    }
+    const ancestorWalk=[selectedId];ancestors=new Set();
+    while(ancestorWalk.length){const id=ancestorWalk.pop();const n=byId.get(id);if(!n)continue;for(const p of n.parents||[]){if(!ancestors.has(p)){ancestors.add(p);ancestorWalk.push(p);}}}
+    const children=new Map();for(const n of data)for(const p of n.parents||[]){if(!children.has(p))children.set(p,[]);children.get(p).push(n.id);}
+    descendants=new Set();const queue=[selectedId];while(queue.length){const id=queue.pop();for(const c of children.get(id)||[]){if(!descendants.has(c)){descendants.add(c);queue.push(c);}}}
+    ancestors.delete(selectedId);descendants.delete(selectedId);
+    if(focused && positions.has(selectedId)){const n=positions.get(selectedId);pan={x:-n.x,y:-n.y};}
+  }
+  function size(){
+    const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return false;
+    width=rect.width;height=rect.height;dpr=clamp(window.devicePixelRatio||1,1,2);
+    const pxw=Math.round(width*dpr),pxh=Math.round(height*dpr);
+    if(canvas.width!==pxw||canvas.height!==pxh){canvas.width=pxw;canvas.height=pxh;}
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    baseScale=clamp(Math.min((width-108)/(worldRadius*2+120),(height-84)/(worldRadius*2+120)),.055,1.5);
+    return true;
+  }
+  const worldToScreen=p=>({x:width/2+(p.x+pan.x)*baseScale*zoom,y:height/2+(p.y+pan.y)*baseScale*zoom});
+  const screenToWorld=p=>({x:(p.x-width/2)/(baseScale*zoom)-pan.x,y:(p.y-height/2)/(baseScale*zoom)-pan.y});
+  function ring(x,y,r,color,lw=1){ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();}
+  function draw(){
+    frame=0;if(!visible||!size())return;
+    ctx.fillStyle='#091216';ctx.fillRect(0,0,width,height);
+    const bg=ctx.createRadialGradient(width*.43,height*.51,20,width*.45,height*.52,Math.max(width,height)*.8);
+    bg.addColorStop(0,'#172c2c');bg.addColorStop(.58,'#0c2022');bg.addColorStop(1,'#071013');ctx.fillStyle=bg;ctx.fillRect(0,0,width,height);
+    // Fixed drafting grid: a coordinate aid, never a simulated star field.
+    ctx.strokeStyle='rgba(139,181,169,.065)';ctx.lineWidth=1;
+    for(let x=24.5;x<width;x+=36){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,height);ctx.stroke();}
+    for(let y=16.5;y<height;y+=36){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();}
+    const origin=worldToScreen({x:0,y:0});
+    ctx.strokeStyle='rgba(201,205,184,.17)';ctx.beginPath();ctx.moveTo(0,origin.y+.5);ctx.lineTo(width,origin.y+.5);ctx.moveTo(origin.x+.5,0);ctx.lineTo(origin.x+.5,height);ctx.stroke();
+    const drawn=data.filter(n=>depthCap===null||n.generation<=depthCap);
+    const drawnIds=new Set(drawn.map(n=>n.id));
+    const gs=new Set(drawn.map(n=>n.generation));
+    if(!gs.size)gs.add(0);
+    for(const g of [...gs].sort((a,b)=>a-b)){
+      const r=(78+g*144)*baseScale*zoom;
+      if(r>Math.max(width,height)*2.2)continue;
+      ring(origin.x,origin.y,r,'rgba(189,195,174,.18)',1);
+      ctx.fillStyle='rgba(201,214,201,.58)';ctx.font='10px ui-monospace,SFMono-Regular,monospace';
+      const tx=origin.x+r+11,ty=origin.y-8;if(tx>18&&tx<width-80&&ty>12&&ty<height-14)ctx.fillText('GEN '+String(g).padStart(2,'0'),tx,ty);
+    }
+    // Connections are actual parent IDs. Archived ancestry is still drawn.
+    for(const n of drawn){const dst=positions.get(n.id);if(!dst)continue;
+      for(const pid of n.parents||[]){if(!drawnIds.has(pid))continue;const src=positions.get(pid);if(!src)continue;
+        const a=worldToScreen(src),b=worldToScreen(dst);
+        const inTrace=selectedId && ((n.id===selectedId&&ancestors.has(pid))||(ancestors.has(n.id)&&ancestors.has(pid))||(descendants.has(n.id)&&(pid===selectedId||descendants.has(pid))));
+        ctx.beginPath();ctx.moveTo(a.x,a.y);
+        const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+        ctx.quadraticCurveTo(mx+(b.y-a.y)*.075,my-(b.x-a.x)*.075,b.x,b.y);
+        ctx.lineWidth=inTrace?2.25:1;
+        ctx.strokeStyle=inTrace?'rgba(242,191,116,.9)':selectedId?'rgba(112,167,160,.17)':'rgba(123,166,161,.35)';
+        ctx.stroke();
+      }
+    }
+    // Draw quiet nodes first, selected last, keeping the selected trace legible.
+    const nodes=[...drawn].sort((a,b)=>Number(a.id===selectedId)-Number(b.id===selectedId));
+    for(const n of nodes){const p=positions.get(n.id);if(!p)continue;const s=worldToScreen(p);if(s.x<-26||s.x>width+26||s.y<-26||s.y>height+26)continue;
+      const focus=n.id===selectedId,related=ancestors.has(n.id)||descendants.has(n.id),isGold=gold.has(n.id),archived=n.status==='archived';
+      const score=verdicts.get(n.id)?.total??3;
+      const r=clamp((2.8+score*.25)*Math.sqrt(clamp(zoom,.65,2.8)),3.5,13);
+      const faded=selectedId&&!focus&&!related;
+      if(focus){ring(s.x,s.y,r+13,'rgba(242,191,116,.25)',2);ring(s.x,s.y,r+7,'rgba(242,191,116,.9)',1.3);}
+      else if(isGold){ring(s.x,s.y,r+5,faded?'rgba(232,175,104,.3)':'rgba(232,175,104,.8)',1.3);}
+      ctx.beginPath();ctx.arc(s.x,s.y,r,0,Math.PI*2);
+      ctx.fillStyle=archived?(faded?'#293738':'#556764'):isGold?(faded?'#775e44':'#eabd77'):faded?'#29474a':'#85c7b5';ctx.fill();
+      if(archived){ring(s.x,s.y,r,'rgba(191,201,184,.7)',1.1);ring(s.x,s.y,Math.max(1,r-2),'#0b1b20',1.5);}
+      if(n.parents?.length===2){ctx.fillStyle=isGold?'#1b1c18':'#071719';ctx.fillRect(s.x-1.15,s.y-1.15,2.3,2.3);}
+      const label=focus||n.id===hoverId||(!selectedId&&isGold);
+      if(label){const short=n.title.length>30?n.title.slice(0,28)+'…':n.title;
+        ctx.font=focus?'600 12px system-ui,sans-serif':'11px system-ui,sans-serif';
+        const textw=ctx.measureText(short).width;const bx=clamp(s.x-textw/2-9,6,width-textw-20);const by=s.y-r-36;
+        if(by>5&&by<height-22){ctx.fillStyle='rgba(5,16,19,.9)';ctx.fillRect(bx,by,textw+18,24);ctx.strokeStyle='rgba(178,189,170,.3)';ctx.strokeRect(bx+.5,by+.5,textw+17,23);ctx.fillStyle=focus?'#f6d7aa':'#f2eee2';ctx.fillText(short,bx+9,by+16);}
+      }
+    }
+    // The magnified ledger translates a sprawling genealogy into a concrete
+    // generational score trajectory. Values are jury heuristics, not outcomes.
+    if(selectedId && width>=610 && ancestors.size){
+      const trail=data.filter(n=>n.id===selectedId||ancestors.has(n.id));
+      const peaks=new Map();
+      for(const node of trail){const v=verdicts.get(node.id)?.total??3;peaks.set(node.generation,Math.max(v,peaks.get(node.generation)??3));}
+      const records=[...peaks].sort((a,b)=>a[0]-b[0]);
+      if(records.length>=2){
+        const bx=18,by=height-164,bw=234,bh=125;
+        ctx.fillStyle='rgba(7,22,24,.94)';ctx.fillRect(bx,by,bw,bh);
+        ctx.strokeStyle='rgba(198,173,129,.52)';ctx.strokeRect(bx+.5,by+.5,bw-1,bh-1);
+        ctx.fillStyle='#e8c28e';ctx.font='700 10px ui-monospace,monospace';ctx.fillText('ANCESTRAL SCORE / GENERATIONS',bx+12,by+19);
+        ctx.fillStyle='#a5beb2';ctx.font='9px ui-monospace,monospace';ctx.fillText('BEST JURY TOTAL AT EACH ANCESTRAL LEVEL',bx+12,by+35);
+        const minGen=records[0][0],maxGen=records.at(-1)[0];const px=g=>bx+18+(g-minGen)/(maxGen-minGen)*(bw-36);const py=v=>by+96-(v-3)/12*48;
+        for(const tick of [3,9,15]){const yy=py(tick);ctx.strokeStyle='rgba(160,187,164,.12)';ctx.beginPath();ctx.moveTo(bx+18,yy);ctx.lineTo(bx+bw-18,yy);ctx.stroke();}
+        ctx.lineWidth=2;ctx.strokeStyle='#e0ae77';ctx.beginPath();records.forEach(([g,v],i)=>{const x=px(g),y=py(v);if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);});ctx.stroke();
+        records.forEach(([g,v])=>{const x=px(g),y=py(v);ctx.fillStyle='#f0cc91';ctx.beginPath();ctx.arc(x,y,3.3,0,Math.PI*2);ctx.fill();});
+        ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#cbd7c3';ctx.fillText('G'+minGen+' / '+records[0][1],bx+12,by+115);
+        ctx.textAlign='right';ctx.fillText('G'+maxGen+' / '+records.at(-1)[1],bx+bw-12,by+115);ctx.textAlign='left';
+      }
+    }
+    // Physical scale legend derived from zoom; no invented time, distance or counts.
+    ctx.fillStyle='rgba(180,199,186,.69)';ctx.font='10px ui-monospace,SFMono-Regular,monospace';ctx.fillText('CAUSAL DISTANCE / GENERATIONS',20,height-20);
+    if(!data.length){ctx.textAlign='center';ctx.fillStyle='#d4d9cd';ctx.font='18px Georgia,serif';ctx.fillText('The field has no recorded ideas.',width/2,height/2-16);ctx.font='12px system-ui,sans-serif';ctx.fillStyle='#9eafa8';ctx.fillText('Create a seed. Its consequences will become visible here.',width/2,height/2+13);ctx.textAlign='left';}
+  }
+  function schedule(){if(frame||!visible)return;frame=requestAnimationFrame(draw);}
+  function localPoint(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+  function near(point){let best=null,dist=Infinity;for(const n of data){const p=positions.get(n.id);if(!p||(depthCap!==null&&n.generation>depthCap))continue;const q=worldToScreen(p);const d=Math.hypot(q.x-point.x,q.y-point.y);if(d<dist){dist=d;best=n;}}return dist<Math.max(14,10*zoom)?best:null;}
+  function pointerDown(e){if(e.button!==0&&e.pointerType==='mouse')return;activePointer={id:e.pointerId,start:localPoint(e),previous:localPoint(e),moved:false};canvas.setPointerCapture?.(e.pointerId);}
+  function pointerMove(e){const p=localPoint(e);
+    if(activePointer?.id===e.pointerId){const d=Math.hypot(p.x-activePointer.start.x,p.y-activePointer.start.y);if(d>5)activePointer.moved=true;
+      if(activePointer.moved){pan.x+=(p.x-activePointer.previous.x)/(baseScale*zoom);pan.y+=(p.y-activePointer.previous.y)/(baseScale*zoom);activePointer.previous=p;focused=false;canvas.style.cursor='grabbing';schedule();}return;
+    }
+    const next=near(p)?.id||null;if(next!==hoverId){hoverId=next;canvas.style.cursor=hoverId?'pointer':'grab';schedule();}
+  }
+  function pointerUp(e){if(!activePointer||activePointer.id!==e.pointerId)return;const p=localPoint(e);if(!activePointer.moved){const hit=near(p);if(hit)onSelect(hit.id);}activePointer=null;canvas.style.cursor=hoverId?'pointer':'grab';schedule();}
+  function wheel(e){e.preventDefault();const at=localPoint(e),before=screenToWorld(at);zoom=clamp(zoom*Math.exp(-e.deltaY*.0014),.36,5);const after=screenToWorld(at);pan.x+=after.x-before.x;pan.y+=after.y-before.y;focused=false;schedule();}
+  function key(e){if(e.key==='+'||e.key==='='){e.preventDefault();api.zoom(1.25);}else if(e.key==='-'||e.key==='_'){e.preventDefault();api.zoom(.8);}else if(e.key==='Home'){e.preventDefault();api.reset();}else if(['ArrowLeft','ArrowRight'].includes(e.key)&&data.length){e.preventDefault();const ordered=[...data].sort((a,b)=>a.generation-b.generation||String(a.createdAt).localeCompare(String(b.createdAt)));let index=ordered.findIndex(n=>n.id===selectedId);index=clamp(index+(e.key==='ArrowRight'?1:-1),0,ordered.length-1);onSelect(ordered[index].id);}}
+  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('pointerleave',()=>{hoverId=null;schedule();});canvas.addEventListener('wheel',wheel,{passive:false});canvas.addEventListener('keydown',key);
+  const api={
+    update(ideas,id,scores,goldIds){const boardChanged=data[0]?.boardId!==ideas[0]?.boardId;data=ideas;verdicts=scores;gold=goldIds;selectedId=id;
+      if(boardChanged){pan={x:0,y:0};zoom=1;focused=false;depthCap=null;}layout();schedule();},
+    reset(){pan={x:0,y:0};zoom=1;focused=false;depthCap=null;schedule();},
+    setDepth(n){depthCap=n===null?null:Math.max(0,Math.floor(n));schedule();},
+    zoom(factor){zoom=clamp(zoom*factor,.36,5);focused=false;schedule();},
+    focus(){const p=positions.get(selectedId);if(!p)return false;pan={x:-p.x,y:-p.y};zoom=clamp(1.65/Math.max(baseScale,.12),1.2,5);focused=true;schedule();return true;},
+    resize:schedule,
+    show(flag){visible=flag;if(flag)schedule();},
+    diagnostics(){return{nodeCount:data.length,edgeCount:data.reduce((a,n)=>a+(n.parents?.length||0),0),selectedId,ancestors:[...ancestors],descendants:[...descendants],zoom,depthCap,displayed:depthCap===null?data.length:data.filter(n=>n.generation<=depthCap).length,points:data.map(n=>{const s=worldToScreen(positions.get(n.id));return{id:n.id,generation:n.generation,x:s.x,y:s.y};})};},
+    destroy(){canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointermove',pointerMove);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',pointerUp);canvas.removeEventListener('wheel',wheel);canvas.removeEventListener('keydown',key);cancelAnimationFrame(frame);}
+  };
+  schedule();return api;
+}
+root.RigObservatory={createObservatory};
+})(globalThis);
+
+</script>
+<script>
+/* Evolution Rig browser UI. No npm, server, CDN, or framework. */
+(function () {
+'use strict';
+const C=globalThis.RigCore;
+if(!C)throw Error('Core library failed to load');
+const $=id=>document.getElementById(id);
+const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const time=s=>{try{return new Date(s).toLocaleString();}catch{return String(s||'unknown');}};
+const STORE='evolution-rig:state:v1', CONF_STORE='evolution-rig:config:v1', KEY_PREFIX='evolution-rig:secret:';
+const PRESETS={
+ offline:{endpoint:'',model:''},
+ ollama:{endpoint:'http://127.0.0.1:11434/api/chat',model:'gemma3:4b'},
+ lmstudio:{endpoint:'http://127.0.0.1:1234/v1/chat/completions',model:'loaded-model-id'},
+ mlx:{endpoint:'http://127.0.0.1:8080/v1/chat/completions',model:'loaded-model-id'},
+ openrouter:{endpoint:'https://openrouter.ai/api/v1/chat/completions',model:'openai/gpt-4.1-mini'},
+ anthropic:{endpoint:'https://api.anthropic.com/v1/messages',model:'claude-sonnet-4-5'},
+ openai:{endpoint:'https://api.openai.com/v1/chat/completions',model:'gpt-4.1-mini'},
+ azure:{endpoint:'https://YOUR-RESOURCE.openai.azure.com/openai/deployments/YOUR-DEPLOYMENT/chat/completions?api-version=2024-10-21',model:'YOUR-DEPLOYMENT'}
+};
+const defaultPrefs={stepsPerHour:12,secondsBetween:30,populationCap:24,pruneThreshold:7};
+let volatile=false, selectedView='studio', boardInDialog=null, editingId=null, picked=[], mode='idle', busy=false, autoTimer=null, autoStep=0, runtimeLogs=[];
+let calibrator=C.anchors();
+// The observatory is a second, non-authoritative view onto the existing graph.
+// No board data or model credentials are copied into the visualization.
+const observatory=globalThis.RigObservatory.createObservatory($('atlasCanvas'),setSelection);
+let atlasDepthChoice=null;
+function traceDescendants(id,ideas){
+ const childIds=new Map();
+ for(const idea of ideas)for(const parent of idea.parents){if(!childIds.has(parent))childIds.set(parent,[]);childIds.get(parent).push(idea.id);}
+ const found=new Set(),todo=[id];
+ while(todo.length){for(const child of childIds.get(todo.pop())||[]){if(!found.has(child)){found.add(child);todo.push(child);}}}
+ found.delete(id);return ideas.filter(i=>found.has(i.id));
+}
+function renderObservatory(){
+ const board=currentBoard(),ideas=currentIdeas(),selected=selectedIdea(),snapshot=getJurySnapshot();
+ observatory.update(ideas,selected?.id||null,snapshot.verdicts,snapshot.gold);
+ const count=ideas.length,archived=ideas.filter(i=>i.status==='archived').length;
+ const roots=ideas.filter(i=>i.parents.length===0).length;
+ const links=ideas.reduce((n,i)=>n+i.parents.length,0);
+ const deepest=ideas.length?Math.max(...ideas.map(i=>i.generation)):0;
+ const maxDepth=ideas.length?Math.max(...ideas.map(i=>i.generation)):0;
+ $('atlasDepth').max=maxDepth; $('atlasDepth').disabled=!ideas.length||maxDepth===0;
+ $('atlasDepth').value=atlasDepthChoice===null?maxDepth:Math.min(maxDepth,atlasDepthChoice);
+ $('atlasUnfoldAll').disabled=!ideas.length||maxDepth===0;
+ const shownDepth=atlasDepthChoice===null?maxDepth:Math.min(maxDepth,atlasDepthChoice);
+ const shownIdeas=ideas.filter(i=>i.generation<=shownDepth);
+ const shownIds=new Set(shownIdeas.map(i=>i.id));
+ const shownLinks=shownIdeas.reduce((n,i)=>n+i.parents.filter(id=>shownIds.has(id)).length,0);
+ $('atlasReadout').innerHTML=`<strong>${shownIdeas.length} / ${ideas.length} IDEAS · ${shownLinks} / ${links} LINKS</strong><br>${shownDepth+1} OF ${maxDepth+1} GENERATIONS DISCLOSED`;
+ $('atlasDepthLabel').textContent=atlasDepthChoice===null?'ALL / GEN '+String(maxDepth).padStart(2,'0'):'THROUGH / GEN '+String(shownDepth).padStart(2,'0');
+ observatory.setDepth(atlasDepthChoice);
+ $('atlasModeLabel').textContent=selected?'TRACE / '+String(selected.generation).padStart(2,'0'):count?'OVERVIEW / ALL GENERATIONS':'UNPOPULATED';
+ $('atlasFootSummary').textContent=count?`${roots} roots / ${Math.max(0,count-roots)} descendants / ${archived} archived`:'No generations recorded';
+ $('atlasFocus').disabled=!selected;
+ const notable=[...ideas].sort((a,b)=>(snapshot.verdicts.get(b.id)?.total||0)-(snapshot.verdicts.get(a.id)?.total||0)||a.createdAt.localeCompare(b.createdAt));
+ const index=$('atlasIndex');index.replaceChildren();
+ const shown=notable.slice(0,5);
+ if(selected&&!shown.some(n=>n.id===selected.id))shown.unshift(selected);
+ if(!shown.length){const note=document.createElement('span');note.className='tiny-note';note.textContent='No recorded signals. Add a seed below.';index.append(note);}
+ for(const idea of shown){const button=document.createElement('button');button.type='button';button.dataset.atlasSelect=idea.id;button.setAttribute('aria-current',String(selected?.id===idea.id));
+  const score=snapshot.verdicts.get(idea.id)?.total||0;button.textContent=score+'/15  ·  '+idea.title;button.title='Select and inspect '+idea.title;index.append(button);}
+ if(!selected){
+  $('atlasFocusKicker').textContent=count?'SURVEY / NO ACTIVE TRACE':'FIELD REPORT / AWAITING INPUT';
+  $('atlasFocusTitle').textContent=count?'The field remembers.':'No idea selected.';
+  $('atlasNarrative').textContent=count?`This board has ${count} recorded ideas across ${deepest+1} generation${deepest===0?'':'s'}. ${archived} archived route${archived===1?'':'s'} remain visible. Choose a signal to expose the causal record.`:'Create a board and place a seed. The field will show the lineages you actually construct.';
+  $('atlasAncestorCount').textContent=roots;
+  $('atlasDescendantCount').textContent=Math.max(0,count-roots);
+  $('atlasArchiveCount').textContent=archived;
+  $('atlasTraceText').textContent='The jury measures textual structure. No rating proves originality, feasibility or real-world impact.';
+  return;
+ }
+ const byId=Object.fromEntries(ideas.map(i=>[i.id,i]));
+ const ancestry=C.familyTree(selected,byId).filter(i=>i.id!==selected.id);
+ const descendants=traceDescendants(selected.id,ideas);
+ const archivedRelated=descendants.filter(i=>i.status==='archived').length;
+ const current=snapshot.verdicts.get(selected.id);
+ const sourceParents=selected.parents.map(id=>byId[id]?.title||'missing reference');
+ const recent=(selected.history||[]).at(-1);
+ const genesis=sourceParents.length===2?`A hybrid built from “${sourceParents[0]}” and “${sourceParents[1]}”.`:sourceParents.length===1?`This branch descends from “${sourceParents[0]}”.`:'A root proposal with no recorded parents.';
+ const archiveStatement=archivedRelated?`${archivedRelated} descendant route${archivedRelated===1?' was':'s were'} archived but remain traceable.`:'No descendant routes have been archived.';
+ $('atlasFocusKicker').textContent=`RECORD / GENERATION ${String(selected.generation).padStart(2,'0')} / ${selected.status.toUpperCase()}`;
+ $('atlasFocusTitle').textContent=selected.title;
+ $('atlasNarrative').textContent=`${genesis} ${descendants.length} recorded descendant${descendants.length===1?'':'s'}. ${archiveStatement}`;
+ $('atlasAncestorCount').textContent=ancestry.length;
+ $('atlasDescendantCount').textContent=descendants.length;
+ $('atlasArchiveCount').textContent=archivedRelated;
+ const historyText=recent?` Latest recorded event: ${recent.kind} (${time(recent.time)}).`:'';
+ const strongestDescendant=descendants.length?[...descendants].sort((a,b)=>(snapshot.verdicts.get(b.id)?.total||0)-(snapshot.verdicts.get(a.id)?.total||0))[0]:null;
+ const bestDelta=strongestDescendant?(snapshot.verdicts.get(strongestDescendant.id).total-current.total):null;
+ const bestText=strongestDescendant?` Highest-scoring descendant: ${strongestDescendant.title} (${snapshot.verdicts.get(strongestDescendant.id).total}/15, ${bestDelta>0?'+':''}${bestDelta} versus this record).`:'';
+ if(selected.generation>shownDepth)$('atlasNarrative').textContent+=' This record lies beyond the currently disclosed depth; reveal all or trace selected to see it.';
+ const safety=' A score reflects text structure, not proof of usefulness.';
+ $('atlasTraceText').textContent=`Jury ${current?.total??'—'}/15 · originality ${current?.effective?.originality??'—'} · feasibility ${current?.effective?.feasibility??'—'} · impact ${current?.effective?.impact??'—'}.${historyText}${bestText}${safety}`;
+}
+$('atlasIndex').addEventListener('click',e=>{const el=e.target.closest('[data-atlas-select]');if(el)setSelection(el.dataset.atlasSelect);});
+$('atlasDepth').addEventListener('input',e=>{atlasDepthChoice=Math.round(Number(e.target.value));observatory.setDepth(atlasDepthChoice);$('atlasDepthLabel').textContent='THROUGH / GEN '+String(atlasDepthChoice).padStart(2,'0');$('atlasModeLabel').textContent='UNFOLDED / GEN '+String(atlasDepthChoice).padStart(2,'0');renderObservatory();});
+$('atlasUnfoldAll').addEventListener('click',()=>{atlasDepthChoice=null;renderObservatory();});
+$('atlasZoomIn').addEventListener('click',()=>observatory.zoom(1.25));
+$('atlasZoomOut').addEventListener('click',()=>observatory.zoom(.8));
+$('atlasReset').addEventListener('click',()=>{atlasDepthChoice=null;observatory.reset();renderObservatory();});
+$('atlasFocus').addEventListener('click',()=>{atlasDepthChoice=null;renderObservatory();if(observatory.focus())$('atlasCanvas').focus({preventScroll:true});});
+
+function emptyState(){return {schema:1,boards:[],ideas:[],selectedBoardId:null,selectedIdeaId:null,preferences:{...defaultPrefs}};}
+function loadState(){try{const s=localStorage.getItem(STORE);if(s)return C.validateImport(JSON.parse(s));}catch(e){console.warn('Storage read failed',e);}return emptyState();}
+let state=loadState();
+let config={provider:'offline',endpoint:'',model:'',persistKey:false,profiles:{}};
+try{const v=JSON.parse(localStorage.getItem(CONF_STORE)||'null');if(v&&PRESETS[v.provider])config={...config,...v,profiles:v.profiles&&typeof v.profiles==='object'?v.profiles:{}};}catch{}
+const keyState={};
+function getKey(provider=config.provider){
+ if(keyState[provider]!==undefined)return keyState[provider];
+ try{const key=sessionStorage.getItem(KEY_PREFIX+provider)||localStorage.getItem(KEY_PREFIX+provider)||'';keyState[provider]=key;return key;}catch{return '';}
+}
+function saveKey(provider,key,persist){
+ keyState[provider]=key;
+ try{sessionStorage.removeItem(KEY_PREFIX+provider);localStorage.removeItem(KEY_PREFIX+provider);if(key)(persist?localStorage:sessionStorage).setItem(KEY_PREFIX+provider,key);}catch{notify('Credential storage unavailable; key stays in this page memory only.',true);}
+}
+function persist(options={}){
+ if(!options.preserveJury)invalidateJury();
+ try{localStorage.setItem(STORE,JSON.stringify(state));volatile=false;$('storageNotice').textContent='Local storage active. Export JSON for backup.';return true;}
+ catch(e){volatile=true;$('storageNotice').textContent='Storage blocked or full: current changes may be lost on reload. Export JSON now.';return false;}
+}
+function persistConfig(){
+ try{localStorage.setItem(CONF_STORE,JSON.stringify(config));}catch{notify('Could not persist model settings in this browser.',true);}
+}
+function notify(msg,error=false){const el=$('toast');el.textContent=msg;el.classList.toggle('error',error);el.hidden=false;clearTimeout(notify.timer);notify.timer=setTimeout(()=>el.hidden=true,5200);}
+function log(msg){runtimeLogs.unshift({at:new Date().toISOString(),msg});runtimeLogs=runtimeLogs.slice(0,150);renderRuntimeLog();}
+function renderRuntimeLog(){const el=$('runtimeLog');el.replaceChildren();if(!runtimeLogs.length){el.textContent='No evolution steps yet. Run one step to inspect the process.';return;}
+ for(const l of runtimeLogs){const p=document.createElement('p');const s=document.createElement('span');s.textContent='['+time(l.at)+'] ';p.append(s,document.createTextNode(l.msg));el.appendChild(p);}}
+function currentBoard(){return state.boards.find(x=>x.id===state.selectedBoardId)||null;}
+function currentIdeas(){return state.ideas.filter(i=>i.boardId===state.selectedBoardId);}
+function activeIdeas(){return currentIdeas().filter(i=>i.status!=='archived');}
+function selectedIdea(){const b=currentBoard();return state.ideas.find(i=>i.id===state.selectedIdeaId && i.boardId===b?.id)||null;}
+// One authoritative jury snapshot per board mutation. A 180-node board used to
+// rescore all peers repeatedly during one render (and again for every gold query).
+let jurySnapshot=null;
+function invalidateJury(){jurySnapshot=null;}
+function getJurySnapshot(){
+ if(jurySnapshot && jurySnapshot.boardId===state.selectedBoardId)return jurySnapshot;
+ const ideas=currentIdeas();const verdicts=new Map();
+ for(const idea of ideas)verdicts.set(idea.id,C.judge(idea,ideas,calibrator));
+ jurySnapshot={boardId:state.selectedBoardId,verdicts,gold:C.goldIds(ideas,calibrator,verdicts)};
+ return jurySnapshot;
+}
+function getScores(idea){return getJurySnapshot().verdicts.get(idea.id)||C.judge(idea,currentIdeas(),calibrator);}
+function getGold(){return getJurySnapshot().gold;}
+function setSelection(id){if(!currentIdeas().some(i=>i.id===id))return;state.selectedIdeaId=id;persist({preserveJury:true});renderHeader();renderGraph();renderInspector();renderJury();renderObservatory();}
+function renderHeader(){
+ const b=currentBoard(), arr=currentIdeas(), active=activeIdeas(), gold=getGold();
+ $('boardKicker').textContent=b?'BOARD / '+b.id.slice(0,11).toUpperCase():'BOARD / NONE';
+ $('boardTitle').textContent=b?b.title:'Create a board to begin.';
+ $('boardObjective').textContent=b?b.objective:'Define a goal, grow candidate ideas, compare them with an inspectable jury and export a strong candidate as a project.';
+ $('statTotal').textContent=arr.length;$('statActive').textContent=active.length;$('statGold').textContent=gold.size;
+ $('statGenerations').textContent=arr.length?Math.max(...arr.map(i=>i.generation)):0;
+ $('autoStatusLabel').textContent=mode==='running'?'AUTOPILOT / RUNNING':busy?'GENERATING / WAIT': 'AUTOPILOT / IDLE';$('autoDot').classList.toggle('running',mode==='running');
+ $('newSeed').disabled=!b;$('branchSelected').disabled=!selectedIdea()||busy;
+ $('crossPicked').disabled=picked.length!==2||busy;$('startAuto').disabled=mode==='running'||busy||!active.length;$('stopAuto').disabled=mode!=='running';$('stepOnce').disabled=busy||!active.length;
+}
+function renderBoardList(){
+ const target=$('boardList');target.replaceChildren();
+ if(!state.boards.length){const div=document.createElement('div');div.className='tiny-note';div.textContent='No boards yet.';target.append(div);return;}
+ for(const b of state.boards){const btn=document.createElement('button');btn.className='board-entry'+(b.id===state.selectedBoardId?' selected':'');btn.dataset.board=b.id;btn.type='button';
+ const name=document.createElement('span');name.textContent=b.title;const meta=document.createElement('small');meta.textContent=state.ideas.filter(i=>i.boardId===b.id).length+' IDEAS';btn.append(name,meta);target.append(btn);}
+}
+function renderGraph(){
+ const b=currentBoard(), ideas=currentIdeas(), gold=getGold(), filter=$('nodeFilter').value, query=$('nodeSearch').value.trim().toLowerCase();
+ const cards=ideas.filter(i=>(filter==='all'||(filter==='gold'?gold.has(i.id):i.status==='active')) && (!query || (i.title+' '+i.mechanism+' '+i.problem).toLowerCase().includes(query)));
+ const layout=$('graphLayout');layout.querySelectorAll('.generation').forEach(el=>el.remove());
+ const empty=$('graphEmpty');empty.hidden=cards.length>0;
+ if(!cards.length){empty.textContent=!b?'Create a board first.':!ideas.length?'Add your first seed to start an ancestry graph.':'No ideas match this filter.';$('graphEdges').innerHTML='';$('pickedLabel').textContent='PARENTS / '+(picked.length?picked.map(id=>ideas.find(i=>i.id===id)?.title||id).join(' + '):'none');return;}
+ const generations=[...new Set(cards.map(i=>i.generation))].sort((a,b)=>a-b);
+ for(const gen of generations){const col=document.createElement('div');col.className='generation';const subset=cards.filter(i=>i.generation===gen).sort((a,b)=>getScores(b).total-getScores(a).total || a.createdAt.localeCompare(b.createdAt));
+ col.innerHTML=`<div class="generation-head"><span>GEN ${String(gen).padStart(2,'0')}</span><span>${subset.length} NODES</span></div>`;
+ for(const i of subset){const v=getScores(i);const node=document.createElement('article');node.className='idea-card'+(i.id===state.selectedIdeaId?' selected':'')+(i.status==='archived'?' archived':'');node.tabIndex=0;node.setAttribute('role','button');node.draggable=true;node.dataset.node=i.id;node.setAttribute('aria-label',`Select ${i.title}; score ${v.total} of 15; drag onto another card to crossbreed`);
+ node.innerHTML=`<div class="card-head"><div class="card-title">${escape(i.title)}</div><span class="badge ${gold.has(i.id)?'gold':''}">${gold.has(i.id)?'GOLD':i.status==='archived'?'ARCHIVE':'GEN '+i.generation}</span></div><div class="card-desc">${escape(i.problem || i.mechanism || 'No problem or mechanism defined yet.')}</div><div class="micro-score"><b>${v.total}/15</b> <span>O${v.effective.originality} F${v.effective.feasibility} I${v.effective.impact}</span> ${i.parents.length>1?' / HYBRID':''}</div>`;
+ col.append(node);
+ }
+ layout.append(col);
+ }
+ $('pickedLabel').textContent='PARENTS / '+(picked.length?picked.map(id=>ideas.find(i=>i.id===id)?.title||id).join(' + '):'none');
+ requestAnimationFrame(drawEdges);
+}
+function drawEdges(){
+ const svg=$('graphEdges'),layout=$('graphLayout');svg.innerHTML='';
+ const rect=layout.getBoundingClientRect();svg.setAttribute('viewBox',`0 0 ${Math.ceil(layout.scrollWidth)} ${Math.ceil(layout.scrollHeight)}`);svg.setAttribute('width',layout.scrollWidth);svg.setAttribute('height',layout.scrollHeight);
+ const nodes=new Map([...layout.querySelectorAll('.idea-card')].map(el=>[el.dataset.node,el]));
+ const NS='http://www.w3.org/2000/svg';
+ for(const i of currentIdeas()){
+   const to=nodes.get(i.id);if(!to)continue;
+   for(const pid of i.parents){const from=nodes.get(pid);if(!from)continue;
+    const a=from.getBoundingClientRect(),b=to.getBoundingClientRect();const x1=a.right-rect.left,y1=a.top-rect.top+a.height/2,x2=b.left-rect.left,y2=b.top-rect.top+b.height/2;
+    const path=document.createElementNS(NS,'path');const d=Math.max(17,(x2-x1)*.45);path.setAttribute('d',`M${x1},${y1} C${x1+d},${y1} ${x2-d},${y2} ${x2},${y2}`);path.setAttribute('fill','none');path.setAttribute('stroke',i.parents.length>1?'#bba478':'#537a70');path.setAttribute('stroke-width',i.id===state.selectedIdeaId?'2.8':'1.5');path.setAttribute('opacity','.85');svg.append(path);
+   }
+ }
+}
+function valueBlock(k,val){const labels={problem:'Problem',audience:'Audience',mechanism:'Mechanism',difference:'Differentiation',plan:'Build path',validation:'Validation',benefit:'Expected benefit',constraints:'Constraints',risks:'Risks'};return `<div class="detail-box"><div class="eyebrow">${labels[k]}</div><p>${escape(val || 'Not specified')}</p></div>`;}
+function renderInspector(){
+ const el=$('inspector'),idea=selectedIdea();$('inspectId').textContent=idea?idea.id.slice(0,10).toUpperCase():'NO SELECTION';
+ if(!idea){el.className='inspector-empty';el.innerHTML='Select an idea node to see its fields, scores, overrides, history and lineage.';return;}
+ el.className='inspector';const jury=getScores(idea), gold=getGold(), byId=Object.fromEntries(currentIdeas().map(i=>[i.id,i]));const chain=C.familyTree(idea,byId);
+ const overrides=C.METRICS.map(m=>`<label>${m.slice(0,1).toUpperCase()+m.slice(1)}<select data-override="${m}" aria-label="Override ${m} score"><option value="auto" ${!idea.overrides?.[m]?'selected':''}>Auto (${jury.computed[m]})</option>${[1,2,3,4,5].map(n=>`<option value="${n}" ${idea.overrides?.[m]===n?'selected':''}>${n} / 5</option>`).join('')}</select></label>`).join('');
+ const parents=idea.parents.map(id=>byId[id]).filter(Boolean);
+ const delta=C.lineageDelta(idea,parents);
+ const strongestParent=parents.reduce((best,parent)=>Math.max(best,getScores(parent).total),0);
+ const scoreChange=jury.total-strongestParent;
+ const lens=parents.length?`<details class="detail-box evolution-lens" open><summary><strong>EVOLUTION LENS</strong> / ${parents.length===2?'HYBRID':'BRANCH'} RECEIPT</summary>
+  <p class="hint">Current ${jury.total}/15 vs strongest parent ${strongestParent}/15: <strong class="${scoreChange>0?'gain':scoreChange<0?'loss':''}">${scoreChange>0?'+':''}${scoreChange} points</strong> (same peer set).</p>
+  <p class="hint">Changed fields vs ${parents.length===2?'both parents':'parent'}: ${delta.changedFields.map(escape).join(', ')||'none clearly detected'}.</p>
+  <p class="hint">New mechanism terms: ${delta.newMechanismTerms.map(escape).join(' · ')||'none detected'}.</p>
+  <p class="tiny-note">Word-level comparison only. A score increase or unfamiliar phrase does not prove a better real-world idea.</p></details>`:'';
+ const history=(idea.history||[]).slice(-14).reverse().map(h=>`${time(h.time)} / ${h.kind}\n${JSON.stringify(h.details).slice(0,1200)}`).join('\n\n');
+ el.innerHTML=`<div class="bar"><span class="badge ${gold.has(idea.id)?'gold':''}">${gold.has(idea.id)?'GOLD / SHORTLISTED':idea.status==='archived'?'ARCHIVED':'ACTIVE'}</span><span class="chip">GEN ${idea.generation}</span><span class="tiny-note">${escape(idea.source)}</span></div>
+ <h2>${escape(idea.title)}</h2><p class="hint">Created ${escape(time(idea.createdAt))}</p>
+ <div class="total-display"><span class="eyebrow">JURY TOTAL</span><strong>${jury.total}<small style="font-size:15px">/15</small></strong></div>
+ ${lens}
+ ${C.METRICS.map(m=>`<div class="metric"><span style="text-transform:capitalize">${m}</span><strong>${jury.effective[m]}/5</strong><div class="bar-bg"><i class="${idea.overrides?.[m]?'overridden':''}" style="width:${jury.effective[m]*20}%"></i></div></div>`).join('')}
+ <div class="bar" style="margin-top:16px"><button class="sm primary" data-action="branch" ${busy?'disabled':''}>Branch this idea</button><button class="sm" data-action="edit">Edit fields</button><button class="sm" data-action="pick">${picked.includes(idea.id)?'Unpick parent':'Pick parent'}</button><button class="sm ${idea.status==='archived'?'':'danger'}" data-action="archive">${idea.status==='archived'?'Restore':'Archive'}</button></div>
+ <div class="two-action" style="margin-top:9px"><button data-action="exportZip" ${gold.has(idea.id)?'':'disabled title="Gold qualification required"'}>Export gold ZIP</button><button data-action="exportFolder" ${gold.has(idea.id)?'':'disabled title="Gold qualification required"'}>Export to folder</button></div>
+ ${!gold.has(idea.id)?'<p class="tiny-note">Gold needs 13+/15, no metric below 4, passing anchors, no later non-improving near-duplicate, and an available top-decile slot. Manual overrides remain visible in the jury history.</p>':''}
+ <div class="detail-box"><div class="eyebrow">MANUAL JURY OVERRIDE</div><p class="hint">Select 1-5 or revert to auto. Only your explicit changes override computed values.</p><div class="score-override">${overrides}</div><label style="margin-top:10px">Reason for override (recommended)<input id="overrideReason" placeholder="Why should the score differ?"></label></div>
+ ${['problem','audience','mechanism','difference','plan','validation','benefit','constraints','risks'].map(k=>valueBlock(k,idea[k])).join('')}
+ <div class="detail-box"><div class="eyebrow">FULL ANCESTRY / ${chain.length} NODES</div><div class="lineage">${chain.map(x=>`<button class="ancestor" data-ancestor="${escape(x.id)}" title="Select ancestor">${escape('G'+x.generation+' / '+x.title)}</button>`).join('')}</div></div>
+ <div class="detail-box"><div class="eyebrow">CURRENT INSPECTABLE VERDICT</div><div class="code-log">${jury.notes.map(t=>`<div>${escape(t)}</div>`).join('')}<div>Peer similarity: ${jury.raw.overlap}. All fields and anchor baselines are inspectable in Jury.</div></div></div>
+ <div class="detail-box"><div class="eyebrow">EVENT HISTORY</div><div class="code-log">${escape(history||'No recorded events yet.')}</div></div>`;
+}
+function renderJury(){
+ const target=$('juryRows'),arr=currentIdeas(),gold=getGold();target.replaceChildren();
+ if(!arr.length){const tr=document.createElement('tr');tr.innerHTML='<td colspan="7" class="muted">No candidates in the selected board.</td>';target.append(tr);return;}
+ arr.sort((a,b)=>getScores(b).total-getScores(a).total || a.createdAt.localeCompare(b.createdAt));
+ for(const i of arr){const j=getScores(i),tr=document.createElement('tr');tr.innerHTML=`<td><button class="ghost sm" data-jury-id="${escape(i.id)}">${escape(i.title)}</button><br><small>${i.status==='archived'?'ARCHIVED':i.parents.length>1?'HYBRID':'GEN '+i.generation}</small></td><td>${escape(i.source)}</td><td>${j.effective.originality}${i.overrides.originality?' *':''}</td><td>${j.effective.feasibility}${i.overrides.feasibility?' *':''}</td><td>${j.effective.impact}${i.overrides.impact?' *':''}</td><td><strong>${j.total}/15</strong></td><td>${gold.has(i.id)?'<span class="badge gold">GOLD</span>':i.status==='archived'?'Archived':'Review'}</td>`;target.append(tr);}
+}
+function renderAnchors(){
+ calibrator=C.anchors();$('calibrationBadge').textContent=calibrator.passes?'ANCHORS / PASS':'ANCHORS / FAIL';$('calibrationBadge').style.color=calibrator.passes?'var(--accent)':'var(--red)';
+ $('anchorCards').innerHTML=['weak','medium','strong'].map(name=>{
+  const total=calibrator.totals[name],scores=calibrator.scores[name];return `<div class="cal-card"><div class="eyebrow">${name.toUpperCase()} / FIXED FIXTURE</div><strong>${total}<span style="font-size:14px"> / 15</span></strong><p>${escape(C.TEST_IDEAS[name].title)}</p><div class="micro-score" style="margin-top:12px">O${scores.originality} / F${scores.feasibility} / I${scores.impact}</div></div>`;
+ }).join('');
+ $('anchorCards').innerHTML+=`<div class="cal-card"><div class="eyebrow">NEGATIVE CONTROL / PADDING</div><strong>${calibrator.paddingTotal}<span style="font-size:14px"> / 15</span></strong><p>Repeated boilerplate must not qualify as a strong idea.</p><div class="micro-score" style="margin-top:12px">REQUIRED ≤ 11 / 15</div></div>`;
+}
+function pickIdea(id){const item=currentIdeas().find(i=>i.id===id);if(!item)return;if(picked.includes(id))picked=picked.filter(x=>x!==id);else if(picked.length>=2)picked=[picked[1],id];else picked.push(id);renderHeader();renderGraph();renderInspector();}
+function openIdeaDialog(item=null){
+ if(!currentBoard())return notify('Create a board first.',true);
+ editingId=item?.id||null;boardInDialog=state.selectedBoardId;
+ $('dialogKicker').textContent=item?'EDIT / NODE':'NEW / ROOT SEED';$('dialogTitle').textContent=item?'Edit idea':'Create seed';
+ for(const f of C.FIELDS){const field=$('ideaForm').elements.namedItem(f);if(field)field.value=item?.[f]||'';}
+ const dlg=$('ideaDialog');if(!dlg.open)dlg.showModal();$('ideaForm').elements.namedItem('title').focus();
+}
+function closeIdeaDialog(){$('ideaDialog').close();editingId=null;boardInDialog=null;}
+function verdictReceipt(item,kind='jury.computed'){
+ const v=getScores(item);C.record(item,kind,{computed:v.computed,effective:v.effective,total:v.total,anchorVersion:v.benchmarkVersion,calibrationPass:v.calibrationPass,notes:v.notes});
+}
+function addIdeas(list,parents,source){
+ const board=currentBoard();if(!board)throw Error('No selected board');const existing=currentIdeas();let added=[];
+ const gen=parents.length?1+Math.max(...parents.map(id=>existing.find(i=>i.id===id)?.generation??0)):0;
+ for(const idea of list){if(!idea.title?.trim())continue;
+ const item=C.normalizeIdea(idea,board.id,parents,gen,source);C.record(item,'created',{source,parentIds:parents,boardId:board.id});state.ideas.push(item);added.push(item);}
+ if(added.length){invalidateJury();for(const item of added)verdictReceipt(item);state.selectedIdeaId=added[0].id;persist();renderAll();}
+ return added;
+}
+function editIdea(event){event.preventDefault();const data=Object.fromEntries(new FormData($('ideaForm')).entries());
+ if(!String(data.title||'').trim())return notify('Title is required.',true);
+ if(boardInDialog!==state.selectedBoardId)return notify('Board changed; close and reopen the editor.',true);
+ if(editingId){const idea=selectedIdea();if(!idea || idea.id!==editingId)return notify('Edited node is no longer selected.',true);
+ for(const f of C.FIELDS)idea[f]=String(data[f]||'').trim().slice(0,f==='title'?160:2000);
+ C.record(idea,'fields.edited',{fields:C.FIELDS});invalidateJury();verdictReceipt(idea,'jury.recomputed-after-edit');persist();closeIdeaDialog();renderAll();notify('Idea updated; jury recomputed.');}
+ else{const added=addIdeas([data],[],'manual seed');closeIdeaDialog();notify(added.length?'Root seed created.':'No idea created.',!added.length);}
+}
+function updateOverride(metric,val,reason){
+ const idea=selectedIdea();if(!idea||!C.METRICS.includes(metric))return;
+ const before=idea.overrides[metric]??'auto';if(val==='auto')delete idea.overrides[metric];else{const n=Number(val);if(!Number.isInteger(n)||n<1||n>5)return;idea.overrides[metric]=n;}
+ C.record(idea,'jury.manual-override',{metric,from:before,to:idea.overrides[metric]??'auto',reason:reason.trim()||'No reason supplied'});
+ invalidateJury();verdictReceipt(idea,'jury.recomputed-after-override');persist();renderAll();notify('Manual score override recorded.');
+}
+function archiveIdea(){const idea=selectedIdea();if(!idea)return;idea.status=idea.status==='archived'?'active':'archived';C.record(idea,'status.change',{status:idea.status});persist();renderAll();notify('Idea '+(idea.status==='archived'?'archived; lineage retained.':'restored.'));}
+function exportBlob(blob,filename){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);}
+function downloadWorkspace(){const safe={schema:C.SCHEMA_VERSION,boards:state.boards,ideas:state.ideas,selectedBoardId:state.selectedBoardId,selectedIdeaId:state.selectedIdeaId,preferences:state.preferences};const blob=new Blob([JSON.stringify(safe,null,2)],{type:'application/json'});exportBlob(blob,'evolution-rig-workspace-'+new Date().toISOString().slice(0,10)+'.json');log('Workspace JSON exported. Model keys excluded.');}
+async function importWorkspaceFile(file){
+ if(!file)return;try{if(file.size>12000000)throw Error('JSON file is too large (12 MB cap).');const data=C.validateImport(JSON.parse(await file.text()));if(!confirm('Replace all current boards and ideas with this imported workspace? Export a backup first.'))return;
+ stopAuto('Stopped for workspace import');atlasDepthChoice=null;state=data;picked=[];persist();renderAll();log('Workspace imported: '+state.boards.length+' boards, '+state.ideas.length+' ideas.');notify('Workspace imported.');}
+ catch(e){notify('Import rejected: '+e.message,true);}finally{$('workspaceFile').value='';}
+}
+function downloadProject(){const idea=selectedIdea();if(!idea)return;if(!getGold().has(idea.id))return notify('Only qualified gold ideas can be exported as projects.',true);
+ const project=C.projectFiles(idea,currentBoard(),currentIdeas(),calibrator);exportBlob(C.zipFiles(project.files),project.path+'-handoff.zip');C.record(idea,'project.export',{format:'zip',root:project.path});persist();renderInspector();log('Project ZIP exported for '+idea.title+'.');}
+async function exportProjectFolder(){const idea=selectedIdea();if(!idea||!getGold().has(idea.id))return notify('Select a qualified gold idea.',true);
+ if(typeof window.showDirectoryPicker!=='function')return notify('Directory write is unavailable in this browser. Use Export gold ZIP.',true);
+ try{
+   const parent=await window.showDirectoryPicker({mode:'readwrite'});const obj=C.projectFiles(idea,currentBoard(),currentIdeas(),calibrator);
+   const suffix=new Date().toISOString().replace(/[-:]/g,'').slice(0,15);const safeRoot=obj.path+'-'+suffix;
+   for(const [fileName,content] of Object.entries(obj.files)){
+     let dir=await parent.getDirectoryHandle(safeRoot,{create:true});const parts=fileName.split('/').slice(1);const base=parts.pop();
+     for(const folder of parts)dir=await dir.getDirectoryHandle(folder,{create:true});
+     const handle=await dir.getFileHandle(base,{create:true});const writable=await handle.createWritable();await writable.write(content);await writable.close();
+   }
+   C.record(idea,'project.export',{format:'directory',root:safeRoot});persist();renderInspector();log('Project folder written: '+safeRoot);notify('Project folder created: '+safeRoot);
+ }catch(e){if(e.name==='AbortError')return;notify('Folder export failed: '+e.message,true);}
+}
+function calcInterval(){const prefs=state.preferences;const perHour=clampNumber(prefs.stepsPerHour,1,120,12),secs=clampNumber(prefs.secondsBetween,5,3600,30);return Math.ceil(Math.max(3600/perHour,secs));}
+function clampNumber(val,min,max,fallback){let n=Number(val);return Number.isFinite(n)?Math.min(max,Math.max(min,Math.round(n))):fallback;}
+function renderCadence(){for(const id of Object.keys(defaultPrefs))$(id).value=state.preferences[id]??defaultPrefs[id];$('effectiveCadence').textContent=`Effective interval: ${calcInterval()} seconds per step (slower of the hourly cap and minimum-spacing limit).`;
+ $('autoStatusLabel').title='While page is open. Browser may throttle or suspend background tabs.';
+}
+function saveAutopilotPrefs(){for(const k of Object.keys(defaultPrefs)){const range={stepsPerHour:[1,120],secondsBetween:[5,3600],populationCap:[4,250],pruneThreshold:[3,12]}[k];state.preferences[k]=clampNumber($(k).value,...range,defaultPrefs[k]);}persist();renderCadence();if(mode==='running')scheduleNext();}
+function sortedCandidates(){return activeIdeas().sort((a,b)=>getScores(b).total-getScores(a).total || a.createdAt.localeCompare(b.createdAt));}
+function selectParents(){const active=sortedCandidates();if(!active.length)throw Error('Add a seed first');const top=active.slice(0,Math.min(5,active.length));const first=top[autoStep % top.length];let second=null;if(active.length>=2 && autoStep%3===2){second=active[(autoStep+1)%active.length];if(second.id===first.id)second=active.find(i=>i.id!==first.id)||null;}return [first,second];}
+function prune(){
+ const prefs=state.preferences;let active=activeIdeas(),cut=[];
+ const cap=clampNumber(prefs.populationCap,4,250,24),threshold=clampNumber(prefs.pruneThreshold,3,12,7);
+ // Every evolution step may prune one demonstrably weak leaf, even below the cap.
+ // Over-cap populations continue archiving the lowest-scoring leaves until bounded.
+ while(active.length>3){
+   const parentsOfActive=new Set(active.flatMap(i=>i.parents));
+   const leaves=active.filter(i=>i.parents.length>0 && !parentsOfActive.has(i.id)).sort((a,b)=>getScores(a).total-getScores(b).total);
+   if(!leaves.length)break;
+   const weak=leaves.find(i=>getScores(i).total<=threshold);
+   const overCap=active.length>cap;
+   if(!weak&&!overCap)break;
+   if(!overCap&&cut.length>=1)break;
+   const victim=weak||leaves[0];const score=getScores(victim).total;
+   victim.status='archived';
+   C.record(victim,'autopilot.pruned',{reason:weak?'score under pruning threshold':'population cap exceeded; archived lowest-scoring leaf',score,cap,threshold});
+   cut.push(victim.id);active=active.filter(i=>i.id!==victim.id);invalidateJury();
+ }
+ return cut;
+}
+function ideaSchema(count){
+ const properties=Object.fromEntries(C.FIELDS.map(field=>[field,{type:'string'}]));
+ return {type:'object',properties:{ideas:{type:'array',minItems:count,maxItems:count,items:{type:'object',properties,required:C.FIELDS,additionalProperties:false}}},required:['ideas'],additionalProperties:false};
+}
+async function modelCall(system,user,signal,structuredSchema=null){
+ const type=config.provider;if(type==='offline')throw Error('Offline route has no model endpoint');
+ const endpoint=String(config.endpoint||'').trim();const model=String(config.model||'').trim(),key=getKey();
+ if(!endpoint||!model)throw Error('Endpoint and model are required. Open Models to configure them.');
+ let url;try{url=new URL(endpoint);}catch{throw Error('Enter a valid endpoint URL.');}
+ if(!['http:','https:'].includes(url.protocol))throw Error('Only HTTP(S) model endpoints are supported.');
+ const local=['localhost','127.0.0.1','[::1]'].includes(url.hostname);
+ if(url.protocol!=='https:'&&!local)throw Error('Remote endpoints must use HTTPS. HTTP is only allowed on this device (localhost/loopback).');
+ if(!local&&!key)throw Error('A key is required for non-local routes.');
+ const headers={'Content-Type':'application/json'};let body;
+ if(type==='ollama'){
+   if(key)headers.Authorization='Bearer '+key;
+   body={model,messages:[{role:'system',content:system},{role:'user',content:user}],stream:false,format:structuredSchema||'json',options:{temperature:.75}};
+ }else if(type==='anthropic'){
+   headers['x-api-key']=key;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';
+   body={model,max_tokens:1600,system,messages:[{role:'user',content:user}]};
+ }else{
+   if(type==='azure')headers['api-key']=key;else if(key)headers.Authorization='Bearer '+key;
+   body={model,messages:[{role:'system',content:system},{role:'user',content:user}],temperature:.75,max_tokens:1800};
+ }
+ const controller=new AbortController();const cancel=()=>controller.abort();if(signal)signal.addEventListener('abort',cancel,{once:true});const timeout=setTimeout(()=>controller.abort(),65000);
+ try{
+ const res=await fetch(url.href,{method:'POST',headers,body:JSON.stringify(body),signal:controller.signal,cache:'no-store'});
+ const text=await res.text();if(!res.ok)throw Error(`${type} HTTP ${res.status}: ${text.slice(0,250)}`);
+ let json;try{json=JSON.parse(text);}catch{throw Error('Endpoint did not return valid JSON.');}
+ let content=type==='ollama'?json.message?.content:type==='anthropic'?json.content?.map(x=>x.text||'').join('\n'):json.choices?.[0]?.message?.content;
+ if(Array.isArray(content))content=content.map(x=>x.text||'').join('\n');
+ if(typeof content!=='string'||!content.trim())throw Error('Model returned no readable content.');
+ return content;
+ }catch(e){if(e.name==='AbortError')throw Error('Model request cancelled or timed out.');if(e instanceof TypeError)throw Error('Network/CORS failure. Verify endpoint, local server state and permitted browser Origin.');throw e;}
+ finally{clearTimeout(timeout);if(signal)signal.removeEventListener('abort',cancel);}
+}
+function parseModelIdeas(content,requested){
+ const cleaned=content.trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'');let parsed;
+ try{parsed=JSON.parse(cleaned);}catch{
+  const a=cleaned.indexOf('{'),b=cleaned.lastIndexOf('}'),c=cleaned.indexOf('['),d=cleaned.lastIndexOf(']');
+  const candidate=(a>=0&&b>a)?cleaned.slice(a,b+1):(c>=0&&d>c)?cleaned.slice(c,d+1):'';
+  try{parsed=JSON.parse(candidate);}catch{throw Error('Model did not return valid structured JSON. No ideas were added.');}
+ }
+ const records=Array.isArray(parsed)?parsed:Array.isArray(parsed.ideas)?parsed.ideas:null;
+ if(!records)throw Error('Model response must contain an ideas array.');
+ const ideas=records.slice(0,requested).filter(x=>x&&typeof x==='object'&&typeof x.title==='string'&&x.title.trim()).map(x=>Object.fromEntries(C.FIELDS.map(k=>[k,typeof x[k]==='string'?x[k].slice(0,2000):''])));
+ if(ideas.length!==requested)throw Error(`Model returned ${ideas.length} valid ideas, expected ${requested}; no partial branch saved.`);
+ return ideas;
+}
+async function generateChildren(parent,partner,n,sourceTag){
+ if(config.provider==='offline')return C.localIdeas(parent,partner,currentBoard().objective,n,currentIdeas().length+autoStep);
+ const system=`You are a rigorous idea variation engine. Generate exactly ${n} materially distinct new ideas, not scores. Respond with ONLY valid JSON: {"ideas":[{"title":"","problem":"","audience":"","mechanism":"","difference":"","plan":"","validation":"","benefit":"","constraints":"","risks":""}]}. Every field must be a useful concise string. Match the user's goal; include a minimum testable build and falsifiable test. No marketing slogans; avoid unsupported factual claims. The code, not you, computes all scores.`;
+ const brief={goal:currentBoard().objective,mutation:partner?'Crossbreed the two distinct parent ideas into hybrid descendants. Preserve both contributions.':'Branch from one parent with different operating mechanisms and constraints.',parents:[parent,partner].filter(Boolean).map(p=>Object.fromEntries(C.FIELDS.map(k=>[k,p[k]])))};
+ const output=await modelCall(system,JSON.stringify(brief),null,config.provider==='ollama'?ideaSchema(n):null);return parseModelIdeas(output,n);
+}
+async function branchIdea(parentId,partnerId=null,n=3,autonomous=false){
+ if(busy)throw Error('Generation already in progress');const board=currentBoard();if(!board)throw Error('No board is selected');const routeAtStart=config.provider;const ids=[parentId,partnerId].filter(Boolean);
+ if(new Set(ids).size!==ids.length)throw Error('Choose two distinct ideas to crossbreed');
+ const parents=ids.map(id=>currentIdeas().find(i=>i.id===id));if(parents.some(p=>!p))throw Error('The chosen parent is missing from this board');
+ busy=true;renderHeader();try{
+  const proposals=await generateChildren(parents[0],parents[1]||null,n,autonomous?'autopilot':'manual');
+  if(state.selectedBoardId!==board.id)throw Error('Board changed while generating; results discarded');
+  const added=addIdeas(proposals,ids,routeAtStart==='offline'?'procedural':'model: '+routeAtStart);
+  log(`${autonomous?'Autopilot':'Manual'} ${parents.length>1?'crossbreeding':'branching'}: ${ids.join(' + ')} -> ${added.map(i=>i.id).join(', ')||'none'} (${routeAtStart})`);
+  if(autonomous){const removed=prune();if(removed.length){persist();log('Archived low-priority leaves: '+removed.join(', '));}}
+  persist();renderAll();if(!autonomous)notify(added.length+' descendants generated.');return added;
+ }catch(e){log('Generation failed: '+e.message);if(!autonomous)notify(e.message,true);throw e;}
+ finally{busy=false;renderAll();}
+}
+async function runOneStep(){if(busy)return;const [a,b]=selectParents();autoStep++;await branchIdea(a.id,b?.id||null,1,true);}
+function scheduleNext(){clearTimeout(autoTimer);if(mode!=='running')return;autoTimer=setTimeout(async()=>{if(mode!=='running')return;try{await runOneStep();}catch(e){stopAuto('Paused on generation failure: '+e.message);notify('Autopilot paused: '+e.message,true);return;}scheduleNext();},calcInterval()*1000);}
+function startAuto(){if(mode==='running')return;if(!activeIdeas().length)return notify('Add an idea first.',true);saveAutopilotPrefs();mode='running';log('Autopilot started: '+calcInterval()+' seconds/step; model route '+config.provider+'.');scheduleNext();renderAll();}
+function stopAuto(reason='Operator stopped autopilot'){clearTimeout(autoTimer);autoTimer=null;const was=mode==='running';mode='idle';if(was)log(reason);renderHeader();}
+function renderProvider(){const p=config.provider;if(!PRESETS[p])config.provider='offline';$('provider').value=config.provider;$('endpoint').value=config.endpoint||'';$('modelId').value=config.model||'';$('apiKey').value=getKey(config.provider);$('persistKey').checked=!!config.persistKey;
+ $('endpoint').disabled=config.provider==='offline';$('modelId').disabled=config.provider==='offline';$('apiKey').disabled=config.provider==='offline';$('persistKey').disabled=config.provider==='offline';$('probeRouter').disabled=config.provider==='offline';
+ $('routerWarning').textContent=config.provider==='offline'?'Offline mode: deterministic recombinations, no network and no credentials.':
+ ['ollama','lmstudio','mlx'].includes(config.provider)?'Local model route: start your model server and allow this page Origin if the browser blocks requests. The app sends a prompt only when you generate or probe.':'Hosted API: the browser sends your key directly to the endpoint. Some vendors block browser CORS; browser keys are exposed to scripts on this page. Use restricted keys and review provider policies.';
+ $('routerState').textContent=`ACTIVE ROUTE: ${config.provider}\nENDPOINT: ${config.endpoint||'(none)'}\nMODEL: ${config.model||'(none)'}\nKEY: ${getKey()?'provided / '+(config.persistKey?'local storage':'session storage'):'none'}\nNo key is exported or stored on a server by this application.`;
+}
+function switchProvider(newP){
+ if(!PRESETS[newP])return;
+ if(config.provider!=='offline'){
+   config.profiles[config.provider]={endpoint:$('endpoint').value.trim(),model:$('modelId').value.trim(),persistKey:$('persistKey').checked};
+   saveKey(config.provider,$('apiKey').value.trim(),$('persistKey').checked);
+ }
+ config.provider=newP;const profile=config.profiles[newP]||PRESETS[newP];
+ config.endpoint=profile.endpoint;config.model=profile.model;config.persistKey=!!profile.persistKey;
+ persistConfig();renderProvider();log('Generator route selected: '+newP+'.');
+}
+function saveRouterSettings(){config.endpoint=$('endpoint').value.trim();config.model=$('modelId').value.trim();config.persistKey=$('persistKey').checked;config.profiles[config.provider]={endpoint:config.endpoint,model:config.model,persistKey:config.persistKey};saveKey(config.provider,$('apiKey').value.trim(),config.persistKey);persistConfig();renderProvider();notify('Routing saved in browser-only settings.');}
+async function probeRouter(){saveRouterSettings();if(config.provider==='offline')return notify('Offline mode is ready and uses no endpoint.');$('probeRouter').disabled=true;try{const response=await modelCall('Return only JSON with the object {"ok":true}.','Probe the connection.');
+ const valid=response.trim().length>0;log('Endpoint probe '+(valid?'succeeded':'returned empty')+' for '+config.provider+'.');notify(valid?'Model endpoint responded.':'Endpoint response was empty.',!valid);}
+ catch(e){log('Endpoint probe failed: '+e.message);notify('Probe failed: '+e.message,true);}finally{$('probeRouter').disabled=false;}
+}
+function renderAll(){renderBoardList();renderHeader();renderAnchors();renderGraph();renderInspector();renderJury();renderObservatory();renderRuntimeLog();}
+function changeView(view){if(!['studio','jury','autopilot','models'].includes(view))return;selectedView=view;
+ for(const el of document.querySelectorAll('.view'))el.hidden=el.id!==view;
+ for(const tab of document.querySelectorAll('.tab'))tab.setAttribute('aria-selected',String(tab.dataset.view===view));
+ if(view==='studio'){requestAnimationFrame(drawEdges);observatory.show(true);observatory.resize();}else observatory.show(false);
+}
+// Board and editor events
+$('boardForm').addEventListener('submit',e=>{e.preventDefault();const form=e.currentTarget,title=form.elements.namedItem('title').value.trim(),objective=form.elements.namedItem('objective').value.trim();if(!title||!objective)return;stopAuto('Stopped on board change');atlasDepthChoice=null;const b=C.board(title,objective);state.boards.push(b);state.selectedBoardId=b.id;state.selectedIdeaId=null;picked=[];persist();form.reset();if(window.innerWidth<=760)$('boardComposer').open=false;renderAll();changeView('studio');notify('Board created. Add its first seed.');});
+$('boardList').addEventListener('click',e=>{const b=e.target.closest('[data-board]');if(!b)return;stopAuto('Stopped on board change');atlasDepthChoice=null;state.selectedBoardId=b.dataset.board;state.selectedIdeaId=null;picked=[];persist();renderAll();changeView('studio');});
+$('viewTabs').addEventListener('click',e=>{const t=e.target.closest('[data-view]');if(t)changeView(t.dataset.view);});
+$('viewTabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const tabs=[...$('viewTabs').querySelectorAll('[role=tab]')];let i=tabs.indexOf(e.target);if(i<0)return;e.preventDefault();if(e.key==='Home')i=0;else if(e.key==='End')i=tabs.length-1;else i=(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;changeView(tabs[i].dataset.view);tabs[i].focus();});
+$('newSeed').addEventListener('click',()=>openIdeaDialog());$('closeDialog').addEventListener('click',closeIdeaDialog);$('cancelIdea').addEventListener('click',closeIdeaDialog);$('ideaForm').addEventListener('submit',editIdea);
+$('ideaDialog').addEventListener('click',e=>{if(e.target===$('ideaDialog'))closeIdeaDialog();});
+$('ideaDialog').addEventListener('close',()=>{editingId=null;boardInDialog=null;});
+$('branchSelected').addEventListener('click',async()=>{const idea=selectedIdea();if(!idea)return;try{await branchIdea(idea.id,null,clampNumber($('branchCount').value,1,8,3));}catch{}});
+$('crossPicked').addEventListener('click',async()=>{if(picked.length!==2)return;try{await branchIdea(picked[0],picked[1],clampNumber($('branchCount').value,1,8,3));picked=[];renderAll();}catch{}});
+$('clearPick').addEventListener('click',()=>{picked=[];renderAll();});$('nodeFilter').addEventListener('change',renderGraph);$('nodeSearch').addEventListener('input',renderGraph);
+$('graphLayout').addEventListener('click',e=>{const card=e.target.closest('[data-node]');if(card)setSelection(card.dataset.node);});
+$('graphLayout').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-node]')){e.preventDefault();setSelection(e.target.dataset.node);}});
+$('graphLayout').addEventListener('dragstart',e=>{const card=e.target.closest('[data-node]');if(!card)return;e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('text/plain',card.dataset.node);card.classList.add('dragging');});
+$('graphLayout').addEventListener('dragend',()=>{document.querySelectorAll('.dragging,.drag-over').forEach(el=>el.classList.remove('dragging','drag-over'));});
+$('graphLayout').addEventListener('dragover',e=>{const card=e.target.closest('[data-node]');if(!card||!e.dataTransfer)return;e.preventDefault();e.dataTransfer.dropEffect='copy';card.classList.add('drag-over');});
+$('graphLayout').addEventListener('dragleave',e=>{const card=e.target.closest('[data-node]');if(card)card.classList.remove('drag-over');});
+$('graphLayout').addEventListener('drop',async e=>{const card=e.target.closest('[data-node]');if(!card)return;e.preventDefault();document.querySelectorAll('.drag-over,.dragging').forEach(el=>el.classList.remove('drag-over','dragging'));const source=e.dataTransfer.getData('text/plain');if(!source||source===card.dataset.node)return notify('Drop one distinct idea onto another to crossbreed.',true);
+ try{await branchIdea(source,card.dataset.node,clampNumber($('branchCount').value,1,8,3));}catch{}});
+$('inspector').addEventListener('click',e=>{const ancestor=e.target.closest('[data-ancestor]');if(ancestor){setSelection(ancestor.dataset.ancestor);return;}
+ const action=e.target.closest('[data-action]')?.dataset.action;if(!action)return;
+ if(action==='branch'){const idea=selectedIdea();if(idea)branchIdea(idea.id,null,clampNumber($('branchCount').value,1,8,3)).catch(()=>{});}
+ if(action==='edit')openIdeaDialog(selectedIdea());
+ if(action==='pick')pickIdea(selectedIdea()?.id);
+ if(action==='archive')archiveIdea();
+ if(action==='exportZip')downloadProject();
+ if(action==='exportFolder')exportProjectFolder();
+});
+$('inspector').addEventListener('change',e=>{const field=e.target.closest('[data-override]');if(field){const reason=$('overrideReason')?.value||'';updateOverride(field.dataset.override,field.value,reason);}});
+$('juryRows').addEventListener('click',e=>{const el=e.target.closest('[data-jury-id]');if(el){setSelection(el.dataset.juryId);changeView('studio');}});
+$('rerunAnchors').addEventListener('click',()=>{renderAll();notify(calibrator.passes?'Reference calibration passed.':'Reference calibration FAILED: gold is disabled.',!calibrator.passes);});
+$('downloadWorkspace').addEventListener('click',downloadWorkspace);$('importWorkspace').addEventListener('click',()=>$('workspaceFile').click());$('workspaceFile').addEventListener('change',e=>importWorkspaceFile(e.target.files[0]));
+// Autopilot controls
+for(const id of Object.keys(defaultPrefs))$(id).addEventListener('change',saveAutopilotPrefs);
+$('startAuto').addEventListener('click',startAuto);$('stopAuto').addEventListener('click',()=>stopAuto());$('stepOnce').addEventListener('click',async()=>{if(busy)return;saveAutopilotPrefs();try{await runOneStep();notify('One evolution step finished.');}catch(e){notify('Evolution step failed: '+e.message,true);}});
+$('clearRuntimeLog').addEventListener('click',()=>{runtimeLogs=[];renderRuntimeLog();});
+// Model controls
+$('provider').addEventListener('change',e=>switchProvider(e.target.value));$('saveRouter').addEventListener('click',saveRouterSettings);$('probeRouter').addEventListener('click',probeRouter);
+$('forgetKey').addEventListener('click',()=>{saveKey(config.provider,'',false);$('apiKey').value='';config.persistKey=false;if(config.profiles[config.provider])config.profiles[config.provider].persistKey=false;persistConfig();renderProvider();notify('Key cleared from session and localStorage for current provider.');});
+window.addEventListener('resize',()=>{if(selectedView==='studio'){requestAnimationFrame(drawEdges);observatory.resize();}});
+window.addEventListener('beforeunload',()=>{clearTimeout(autoTimer);});
+// Deliberate public pure-core diagnostics, with no access to credentials or private state.
+globalThis.EvolutionRigTest={core:C,calibration:()=>C.anchors(),getPublicState:()=>({boards:state.boards.length,ideas:state.ideas.length,provider:config.provider,mode}),getAtlasDiagnostics:()=>observatory.diagnostics()};
+if(window.innerWidth<=760 && state.boards.length)$('boardComposer').open=false;
+renderCadence();renderProvider();renderAll();changeView('studio');
+if(!calibrator.passes)notify('Scoring reference gate failed. Gold export is disabled.',true);
+})();
+
+</script>
+</body></html>
