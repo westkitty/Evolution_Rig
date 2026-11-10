@@ -314,7 +314,7 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   <section class="rail-section"><div class="eyebrow">New independent board</div><details class="create-board-details" id="boardComposer" open><summary>Create a board</summary>
     <form id="boardForm" class="stack"><label>Board title<input name="title" required maxlength="120" placeholder="e.g. Better offline workflows"></label><label>Goal / directive<textarea name="objective" required maxlength="1600" rows="3" placeholder="What should this board optimize for?"></textarea></label><button class="primary" type="submit">+ Create board</button></form></details>
   </section>
-  <section class="rail-section"><div class="eyebrow">The Seed Vault / 20 origins</div><p class="tiny-note">Twenty fully specified ideas — including a crochet-flavored origin — that you can plant as a new board or add to the one you have.</p><div class="stack"><button type="button" class="ghost" id="boardStarters">Explore twenty starters ↗</button><button type="button" class="ghost" id="boardGuide" aria-haspopup="dialog" aria-controls="guideDialog">How this works ↗</button></div></section>
+  <section class="rail-section"><div class="eyebrow">The Seed Vault / 20 origins</div><p class="tiny-note">Twenty fully specified ideas you can plant as a new board or add to the one you have.</p><div class="stack"><button type="button" class="ghost" id="boardStarters">Explore twenty starters ↗</button><button type="button" class="ghost" id="boardGuide" aria-haspopup="dialog" aria-controls="guideDialog">How this works ↗</button></div></section>
   <section class="rail-section"><div class="eyebrow">Workspace portability</div><div class="stack"><button class="ghost" id="downloadWorkspace" type="button">Export workspace JSON</button><button class="ghost" id="importWorkspace" type="button">Import workspace JSON</button><input hidden id="workspaceFile" type="file" accept=".json,application/json"></div></section>
   <div class="rail-note"><strong>Private by default.</strong> Boards and ideas stay in this browser storage. There is no service or account. Export JSON periodically; browser storage can be cleared. Model calls leave the device only if you explicitly choose a remote provider. <div id="storageNotice" class="tiny-note" style="margin-top:9px"></div></div>
 </aside>
@@ -404,7 +404,7 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
       <section class="guide-card"><span>03 / EVOLUTION</span><h3>Branching explores nearby futures.</h3><p><strong>Branch selected</strong> spawns children from one parent. <strong>Crossbreed picked pair</strong> combines two chosen parents. Archived ideas keep their ancestry instead of disappearing.</p></section>
       <section class="guide-card"><span>04 / THE JURY</span><h3>Scores are structural, not prophetic.</h3><p>The jury compares originality, feasibility, and impact using local rules. Gold is a shortlist flag, not proof that an idea will succeed in the real world.</p></section>
       <section class="guide-card"><span>05 / THE FIELD</span><h3>The observatory shows the causal map.</h3><p>Every point is a real idea. Every line is a recorded parent relationship. The field is evidence of what you actually created, not a fantasy prediction engine.</p></section>
-      <section class="guide-card"><span>06 / THE SEED VAULT</span><h3>Starter ideas are curated launch vectors.</h3><p>Open <strong>Seed Vault / 20</strong> to browse authored beginnings, including a crochet-flavored origin. You can plant one as a new board, add it to the current board, or edit it first.</p></section>
+      <section class="guide-card"><span>06 / THE SEED VAULT</span><h3>Starter ideas are curated launch vectors.</h3><p>Open <strong>Seed Vault / 20</strong> to browse authored beginnings. Plant one as a new board, add it to the current board, or edit it first.</p></section>
       <section class="guide-card"><span>07 / AUTOPILOT</span><h3>Autopilot is explicit and temporary.</h3><p>Autopilot only runs while this page stays open. The browser can throttle timers in background tabs. Closing the page stops the system.</p></section>
       <section class="guide-card"><span>08 / EXPORT + SAFETY</span><h3>Your data stays with you.</h3><p>Workspaces, projects, and model settings stay in the browser unless you export them. Hosted model routes are optional. Offline mode requires no network at all.</p></section>
     </div>
@@ -862,18 +862,18 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
    risks:'Rehearsed scripts can become manipulative; surface uncertainty and invite genuine listening.'
   },
   {
-   id:'crochet-constellations',category:'Craft',title:'Crochet Constellation Lab',
-   tagline:'Turn yarn, pattern logic, and tactile making into a designed universe.',
-   objective:'Prototype a creative system for developing crochet-based projects, pattern experiments, and tactile artifacts that can evolve like ideas in a studio.',
-   problem:'Crochet ideas often live as scattered notes, screenshots, half-remembered stitches, and unfinished experiments with no shared structure for iteration.',
-   audience:'Crocheters, fiber artists, pattern designers, craft teachers, and people who think best with their hands.',
-   mechanism:'Each seed records the object to make, stitch language, material choices, construction logic, use case, failure points, and a first swatch or prototype test.',
-   difference:'Treats crochet as a serious design medium: patterns, wearability, texture, labor, and tactile learning all become visible evidence rather than fuzzy inspiration.',
-   plan:'Start with one small concept — for example a creature, bag, wearable, or modular blanket tile — and map three pattern directions with stitch counts, yarn assumptions, and one quick swatch for each.',
-   validation:'Have another crocheter try to reproduce one branch from the recorded instructions; compare clarity, material fit, and whether the finished object matches the intended form.',
-   benefit:'Makes crochet development more reusable, easier to teach, and better at preserving what worked, what failed, and what deserves another iteration.',
-   constraints:'Do not imply a pattern is tested when it is only speculative; distinguish inspiration, draft pattern language, and verified stitch instructions.',
-   risks:'Poorly documented stitch counts or shaping assumptions can waste hours of labor; keep uncertainty obvious and preserve failed swatches as useful evidence.'
+   id:'skills-that-travel',category:'People',title:'Skills That Travel',
+   tagline:'Teach one useful thing without building another platform.',
+   objective:'Create exchangeable offline lessons that transfer practical skills between people with limited connectivity.',
+   problem:'Valuable community knowledge remains trapped in long videos, private chats, or inaccessible accounts.',
+   audience:'Volunteers, community workshops, families, first-time repairers.',
+   mechanism:'Package one task as an illustrated checklist, common failures, a self-check, and a printable emergency fallback.',
+   difference:'Lesson quality is verified by independent task completion, not views or instructor popularity.',
+   plan:'Convert one ordinary low-risk skill into a phone-friendly local HTML lesson and a one-page printout.',
+   validation:'Have three novices attempt the skill without coaching; record completion, confusion points, and correction time.',
+   benefit:'Practical knowledge that survives device, connectivity, and teacher turnover.',
+   constraints:'Start with low-risk tasks; require qualified oversight for electrical, medical, or other hazardous instruction.',
+   risks:'Ambiguous steps can cause damage; test with genuine beginners and include stop conditions.'
   },
   {
    id:'heat-refuge-guide',category:'Planet',title:'The Heat Refuge Field Guide',
@@ -1589,7 +1589,7 @@ function changeView(view){if(!['studio','jury','autopilot','models'].includes(vi
 // persistence, and ancestry paths as seeds authored in the workbench.
 const starterIdeas=globalThis.RigStarterIdeas;
 if(!Array.isArray(starterIdeas)||starterIdeas.length!==20)throw Error('Starter catalog is incomplete');
-const starterCategories=['All','Systems','Worlds','People','Planet','Craft','Strange'];
+const starterCategories=['All','Systems','Worlds','People','Planet','Strange'];
 let starterCategory='All',starterQuery='',starterSelected=starterIdeas[0].id,starterOrigin=null;
 const selectedStarter=()=>starterIdeas.find(item=>item.id===starterSelected)||null;
 const starterFields=item=>Object.fromEntries(C.FIELDS.map(key=>[key,item[key]||'']));
