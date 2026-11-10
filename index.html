@@ -314,7 +314,7 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   <section class="rail-section"><div class="eyebrow">New independent board</div><details class="create-board-details" id="boardComposer" open><summary>Create a board</summary>
     <form id="boardForm" class="stack"><label>Board title<input name="title" required maxlength="120" placeholder="e.g. Better offline workflows"></label><label>Goal / directive<textarea name="objective" required maxlength="1600" rows="3" placeholder="What should this board optimize for?"></textarea></label><button class="primary" type="submit">+ Create board</button></form></details>
   </section>
-  <section class="rail-section"><div class="eyebrow">The Seed Vault / 20 origins</div><p class="tiny-note">Twenty fully specified ideas you can plant as a new board or add to the one you have.</p><div class="stack"><button type="button" class="ghost" id="boardStarters">Explore twenty starters ↗</button><button type="button" class="ghost" id="boardGuide" aria-haspopup="dialog" aria-controls="guideDialog">How this works ↗</button></div></section>
+  <section class="rail-section"><div class="eyebrow">The Seed Vault / 20 origins</div><p class="tiny-note">Twenty fully specified ideas you can plant as a new board or add to the one you have.</p><div class="stack"><button type="button" class="ghost" id="boardStarters">Explore twenty starters ↗</button><button type="button" class="ghost" id="boardLab" aria-haspopup="dialog" aria-controls="rigLab">Open Evolution Lab</button><button type="button" class="ghost" id="boardGuide" aria-haspopup="dialog" aria-controls="guideDialog">How this works ↗</button></div></section>
   <section class="rail-section"><div class="eyebrow">Workspace portability</div><div class="stack"><button class="ghost" id="downloadWorkspace" type="button">Export workspace JSON</button><button class="ghost" id="importWorkspace" type="button">Import workspace JSON</button><input hidden id="workspaceFile" type="file" accept=".json,application/json"></div></section>
   <div class="rail-note"><strong>Private by default.</strong> Boards and ideas stay in this browser storage. There is no service or account. Export JSON periodically; browser storage can be cleared. Model calls leave the device only if you explicitly choose a remote provider. <div id="storageNotice" class="tiny-note" style="margin-top:9px"></div></div>
 </aside>
@@ -334,7 +334,7 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
       <button id="hudZoomIn" type="button" aria-label="Zoom in" title="Zoom in">+</button>
       <button id="hudFit" type="button" aria-label="Fit complete field" title="Fit field">Fit</button>
       <button id="hudTrace" type="button" aria-label="Center on selected idea" title="Trace selected idea">Trace</button>
-      <button id="hudStarters" type="button" aria-haspopup="dialog" aria-controls="starterDialog" aria-label="Explore twenty starter ideas">Seeds</button>
+      <button id="hudLab" type="button" aria-haspopup="dialog" aria-controls="rigLab" title="Open Evolution Lab">Lab</button><button id="hudStarters" type="button" aria-haspopup="dialog" aria-controls="starterDialog" aria-label="Explore twenty starter ideas">Seeds</button>
       <button id="hudGuide" type="button" aria-haspopup="dialog" aria-controls="guideDialog" aria-label="Open the field manual">Guide</button>
       <button id="hudInfo" type="button" aria-expanded="false" aria-controls="atlasNotebook" aria-label="Show selected idea field report">Record</button>
     </div>
@@ -345,7 +345,7 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   <section class="summary" aria-label="Board statistics"><div class="stat"><strong id="statTotal">0</strong><span>Total ideas</span></div><div class="stat"><strong id="statActive">0</strong><span>Active candidates</span></div><div class="stat"><strong id="statGold">0</strong><span>Gold shortlisted</span></div><div class="stat"><strong id="statGenerations">0</strong><span>Deepest generation</span></div></section>
   <nav class="tabs" id="viewTabs" role="tablist" aria-label="Workspace areas"><button class="tab" data-view="studio" role="tab" aria-selected="true">01 / Studio</button><button class="tab" data-view="jury" role="tab" aria-selected="false">02 / Jury</button><button class="tab" data-view="autopilot" role="tab" aria-selected="false">03 / Autopilot</button><button class="tab" data-view="models" role="tab" aria-selected="false">04 / Models</button></nav>
   <section class="view" id="studio" role="tabpanel" aria-label="Idea studio">
-    <div class="workbar"><button class="primary" id="newSeed">+ New seed</button><button class="ghost" id="workbenchStarters" aria-haspopup="dialog" aria-controls="starterDialog">Seed Vault / 20</button><button class="ghost" id="workbenchGuide" aria-haspopup="dialog" aria-controls="guideDialog">How it works</button><button id="branchSelected">Branch selected</button><label class="bar" style="gap:6px">N <input type="number" id="branchCount" min="1" max="8" step="1" value="3" aria-label="Number of branch children"></label><button id="crossPicked">Crossbreed picked pair</button><span class="stretch"></span><label>Filter <select id="nodeFilter"><option value="active">Active</option><option value="all">All, including archived</option><option value="gold">Gold only</option></select></label><label>Search <input id="nodeSearch" placeholder="Title or mechanism" aria-label="Search ideas"></label></div>
+    <div class="workbar"><button class="primary" id="newSeed">+ New seed</button><button class="ghost" id="workbenchStarters" aria-haspopup="dialog" aria-controls="starterDialog">Seed Vault / 20</button><button class="ghost" id="workbenchLab" type="button" aria-haspopup="dialog" aria-controls="rigLab">Evolution Lab</button><button class="ghost" id="workbenchGuide" aria-haspopup="dialog" aria-controls="guideDialog">How it works</button><button id="branchSelected">Branch selected</button><label class="bar" style="gap:6px">N <input type="number" id="branchCount" min="1" max="8" step="1" value="3" aria-label="Number of branch children"></label><button id="crossPicked">Crossbreed picked pair</button><span class="stretch"></span><label>Filter <select id="nodeFilter"><option value="active">Active</option><option value="all">All, including archived</option><option value="gold">Gold only</option></select></label><label>Search <input id="nodeSearch" placeholder="Title or mechanism" aria-label="Search ideas"></label></div>
     <section class="observatory" id="observatory" aria-labelledby="atlasTitle">
     <header class="obs-head"><div><div class="eyebrow">THE OBSERVATORY / CAUSAL SURVEY</div><h2 id="atlasTitle">Every possibility leaves a trace.</h2><p>The map is evidence, not a prediction. Every point is a recorded idea. Every thread is a real parent relationship. Even discarded paths remain.</p></div><div class="obs-controls" aria-label="Observatory navigation"><button id="atlasZoomOut" aria-label="Zoom out" title="Zoom out">− Zoom</button><button id="atlasZoomIn" aria-label="Zoom in" title="Zoom in">+ Zoom</button><button data-atlas-reset id="atlasReset" title="Fit full field (Home)">Fit field</button><button class="obs-focus" id="atlasFocus" title="Center and magnify selected idea">Trace selected</button></div></header>
     <div class="obs-grid"><div class="atlas-field"><div class="atlas-hud"><div class="eyebrow">FIELD / <span id="atlasModeLabel">UNPOPULATED</span></div><div class="atlas-readout" id="atlasReadout">0 IDEAS · 0 LINKS<br>NO SURVEY DATA</div></div><aside class="field-prologue" id="fieldPrologue" aria-labelledby="fieldPrologueTitle" hidden><span class="field-prologue-label">FIELD NOTE / ORIGIN ZERO</span><h2 id="fieldPrologueTitle">Everything begins with a choice.</h2><p id="fieldPrologueText">The field will record every lineage you create. No invented paths. No erased ancestors.</p><button id="fieldPrologueStart" type="button">Open a board <span aria-hidden="true">↗</span></button><button id="fieldPrologueStarters" type="button" aria-haspopup="dialog" aria-controls="starterDialog">Browse 20 starter ideas <span aria-hidden="true">↗</span></button><button id="fieldPrologueGuide" type="button" aria-haspopup="dialog" aria-controls="guideDialog">Read the field manual <span aria-hidden="true">↗</span></button></aside><canvas id="atlasCanvas" tabindex="0" role="img" aria-label="Interactive causal field. Every point corresponds to an idea; links show recorded ancestry. Click or tap a point to select. Drag to pan, scroll to zoom. Use the adjacent list, family tree, or jury table for keyboard and screen-reader access.">Your ideas and ancestry are also available in the accessible family tree and jury table below.</canvas><div class="atlas-key" aria-label="Diagram legend"><span><i class="key-mark"></i>Active</span><span><i class="key-mark gold"></i>Gold</span><span><i class="key-mark archive"></i>Archived</span><span><i class="key-mark hybrid"></i>Two parents</span></div></div>
@@ -383,6 +383,14 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
   </section>
   <footer style="margin-top:25px;color:#708a89;font:11px var(--mono)">EVOLUTION RIG / LOCAL INSTRUMENT / NO EXTERNAL LIBRARIES / NOTHING RUNS WHEN CLOSED</footer>
 </main></div>
+<dialog id="rigLab" aria-labelledby="rigLabTitle">
+ <div class="rig-lab-shell">
+  <header class="rig-lab-head"><div><span class="lab-overline">EVOLUTION RIG / MISSION CONTROL</span><h2 id="rigLabTitle">The Evolution Lab</h2><p>Real experiments. Inspectable trade-offs. Your universe, under your control.</p></div><button type="button" id="labClose" class="ghost">Close ×</button></header>
+  <nav id="rigLabNav" class="rig-lab-nav" aria-label="Lab sections"></nav>
+  <main id="rigLabBody" class="rig-lab-body" tabindex="-1"></main>
+  <footer class="rig-lab-foot"><span id="labContext">LOCAL / NOTHING CHANGES UNTIL YOU ACT</span><span id="labStatus" role="status" aria-live="polite"></span></footer>
+ </div>
+</dialog>
 <div class="hud-scrim" id="hudScrim" hidden aria-hidden="true"></div>
 <dialog id="starterDialog" aria-labelledby="starterHeading" aria-describedby="starterIntro">
   <div class="starter-shell">
@@ -571,9 +579,9 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
     return new Set(qualified.slice(0,slots).map(x=>x.idea.id));
   }
   function uid(prefix='n') { return prefix+'-'+(typeof crypto!=='undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,11)}`); }
-  function board(title, objective) {return {id:uid('b'),title:String(title).trim().slice(0,120),objective:String(objective).trim().slice(0,1600),createdAt:new Date().toISOString()};}
+  function board(title, objective) {return {id:uid('b'),title:String(title).trim().slice(0,120),objective:String(objective).trim().slice(0,1600),createdAt:new Date().toISOString(),rules:[],generationStyle:'refine'};}
   function normalizeIdea(payload,boardId,parents=[],generation=0,source='manual') {
-    const item={id:uid('i'),boardId,parents:[...new Set(parents)],generation,createdAt:new Date().toISOString(),status:'active',source,overrides:{},history:[]};
+    const item={id:uid('i'),boardId,parents:[...new Set(parents)],generation,createdAt:new Date().toISOString(),status:'active',source,overrides:{},history:[],experiments:[],reviews:[],editSnapshots:[],sourceLink:null};
     for(const k of FIELDS) item[k]=String(payload[k] || '').trim().slice(0,k==='title'?160:2000);
     return item;
   }
@@ -681,11 +689,17 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
     if(!raw || raw.schema!==SCHEMA_VERSION || !Array.isArray(raw.boards) || !Array.isArray(raw.ideas))throw Error('Unsupported or malformed workspace JSON');
     if(raw.boards.length>200||raw.ideas.length>4000)throw Error('Import exceeds safe size limit');
     if(raw.boards.some(b=>typeof b.id==='string'&&b.id.length>90)||raw.ideas.some(i=>typeof i.id==='string'&&i.id.length>100))throw Error('Import contains overlong identity strings; no changes applied');
-    const boards=raw.boards.filter(b=>typeof b.id==='string'&&typeof b.title==='string'&&typeof b.objective==='string').map(b=>({id:b.id,title:b.title.slice(0,120),objective:b.objective.slice(0,1600),createdAt:String(b.createdAt||new Date().toISOString()).slice(0,40)}));
+    const boards=raw.boards.filter(b=>typeof b.id==='string'&&typeof b.title==='string'&&typeof b.objective==='string').map(b=>({id:b.id,title:b.title.slice(0,120),objective:b.objective.slice(0,1600),createdAt:String(b.createdAt||new Date().toISOString()).slice(0,40),generationStyle:b.generationStyle==='explore'?'explore':'refine',rules:Array.isArray(b.rules)?b.rules.slice(0,25).filter(x=>x&&['include','exclude'].includes(x.kind)&&typeof x.phrase==='string').map(x=>({id:String(x.id||'').slice(0,80),kind:x.kind,phrase:x.phrase.trim().slice(0,120)})).filter(x=>x.phrase):[]}));
     const ids=new Set(boards.map(b=>b.id)),used=new Set();
     if(ids.size!==boards.length)throw Error('Import contains duplicate board IDs; no changes applied');
     const ideas=raw.ideas.filter(i=>typeof i.id==='string' && !used.has(i.id) && ids.has(i.boardId) && Array.isArray(i.parents))
-      .map(i=>{used.add(i.id);const o={id:i.id.slice(0,100),boardId:i.boardId,parents:i.parents.filter(x=>typeof x==='string').slice(0,2),generation:Math.max(0,Math.min(10000,Number(i.generation)||0)),createdAt:String(i.createdAt||new Date().toISOString()).slice(0,40),status:i.status==='archived'?'archived':'active',source:String(i.source||'import').slice(0,60),overrides:{},history:Array.isArray(i.history)?i.history.map(h=>({time:String(h?.time||'').slice(0,40),kind:String(h?.kind||'').slice(0,100),details:h?.details&&typeof h.details==='object' ? h.details : {}})):[]};for(const f of FIELDS)o[f]=String(i[f]||'').slice(0,f==='title'?160:2000);for(const m of METRICS)if(Number.isInteger(i.overrides?.[m])&&i.overrides[m]>=1&&i.overrides[m]<=5)o.overrides[m]=i.overrides[m];return o;});
+      .map(i=>{used.add(i.id);const o={id:i.id.slice(0,100),boardId:i.boardId,parents:i.parents.filter(x=>typeof x==='string').slice(0,2),generation:Math.max(0,Math.min(10000,Number(i.generation)||0)),createdAt:String(i.createdAt||new Date().toISOString()).slice(0,40),status:i.status==='archived'?'archived':'active',source:String(i.source||'import').slice(0,60),overrides:{},history:Array.isArray(i.history)?i.history.map(h=>({time:String(h?.time||'').slice(0,40),kind:String(h?.kind||'').slice(0,100),details:h?.details&&typeof h.details==='object' ? h.details : {}})):[]};for(const f of FIELDS)o[f]=String(i[f]||'').slice(0,f==='title'?160:2000);for(const m of METRICS)if(Number.isInteger(i.overrides?.[m])&&i.overrides[m]>=1&&i.overrides[m]<=5)o.overrides[m]=i.overrides[m];
+      // Additive v2 metadata lives inside schema-1-compatible optional fields.
+      o.experiments=Array.isArray(i.experiments)?i.experiments.slice(-100).filter(x=>x&&typeof x==='object').map(x=>({id:String(x.id||'').slice(0,80),status:['planned','observed','inconclusive','contradicted'].includes(x.status)?x.status:'planned',hypothesis:String(x.hypothesis||'').slice(0,1000),method:String(x.method||'').slice(0,1000),baseline:String(x.baseline||'').slice(0,1000),result:String(x.result||'').slice(0,1800),source:String(x.source||'').slice(0,800),at:String(x.at||'').slice(0,40)})):[];
+      o.reviews=Array.isArray(i.reviews)?i.reviews.slice(-100).filter(x=>x&&typeof x==='object').map(x=>({id:String(x.id||'').slice(0,80),at:String(x.at||'').slice(0,40),originality:Math.max(1,Math.min(5,Number(x.originality)||1)),feasibility:Math.max(1,Math.min(5,Number(x.feasibility)||1)),impact:Math.max(1,Math.min(5,Number(x.impact)||1)),note:String(x.note||'').slice(0,1000)})):[];
+      o.editSnapshots=Array.isArray(i.editSnapshots)?i.editSnapshots.slice(-30).filter(x=>x&&typeof x==='object').map(x=>({at:String(x.at||'').slice(0,40),fields:Object.fromEntries(FIELDS.map(k=>[k,String(x.fields?.[k]||'').slice(0,k==='title'?160:2000)]))})):[];
+      o.sourceLink=i.sourceLink&&typeof i.sourceLink==='object'?{boardId:String(i.sourceLink.boardId||'').slice(0,100),ideaId:String(i.sourceLink.ideaId||'').slice(0,100),title:String(i.sourceLink.title||'').slice(0,160),at:String(i.sourceLink.at||'').slice(0,40)}:null;
+      return o;});
     const byId=new Map(ideas.map(i=>[i.id,i]));
     for(const i of ideas)i.parents=[...new Set(i.parents)].filter(p=>p!==i.id && byId.has(p) && byId.get(p).boardId===i.boardId);
     const complete=new Map(),visiting=new Set();
@@ -995,6 +1009,80 @@ body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-
 
 </script>
 <script>
+/* Evolution Lab — deterministic browser + Node helpers. No network, DOM, storage or synthetic evidence. */
+(function(root,factory){const o=factory();if(typeof module!=='undefined'&&module.exports)module.exports=o;if(root)root.RigUplift=o;})(typeof globalThis!=='undefined'?globalThis:this,function(){
+'use strict';
+const fields=['title','problem','audience','mechanism','difference','plan','validation','benefit','constraints','risks'];
+const metrics=['originality','feasibility','impact'];
+const plain=s=>String(s??'');
+const text=i=>fields.map(k=>plain(i?.[k])).join(' ').toLowerCase();
+const terms=s=>new Set(plain(s).toLowerCase().match(/[a-z0-9]{3,}/g)||[]);
+const intersect=(a,b)=>[...a].filter(x=>b.has(x));
+const id=()=>typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():'r-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+const safe=(s,n=1200)=>plain(s).trim().slice(0,n);
+function ruleReport(rules,idea){const t=text(idea),violations=[];for(const r of rules||[]){const phrase=safe(r.phrase,120).toLowerCase();if(!phrase)continue;const present=t.includes(phrase);if(r.kind==='include'&&!present)violations.push({rule:r,reason:'Required literal absent'});if(r.kind==='exclude'&&present)violations.push({rule:r,reason:'Forbidden literal present'});}return{pass:violations.length===0,violations,checked:(rules||[]).length,disclaimer:'Literal text checks only; cannot establish semantic compliance.'};}
+function exploreIdeas(parent,partner,objective,n=3,seq=0){
+ const mechanisms=[
+  ['Material-first','Make a printable physical protocol with evidence cards, human review stamps, and a short manual experiment that can be carried out without software.','Test with three paper prototypes; measure completion and errors.'],
+  ['Peer-exchange','Use a local shared-folder exchange where each participant passes a portable record to another; record handoffs, conflicts, and independently observed outcomes.','Test exchange across two devices with no shared cloud account.'],
+  ['Observation-first','Operate an offline field notebook that captures comparable observations before proposing interventions, then traces every hypothesis to its measurements.','Collect five manual observations and challenge one tempting false conclusion.'],
+  ['Role-inversion','Transfer the first decision back to the affected participant with a reversible choice card, separating human consent from automated recommendations.','Run a scripted trial where the person rejects the suggested action.'],
+  ['Micro-simulation','Prototype a local adversarial rehearsal in which the same starting case is run through competing plans; expose all assumptions and falsification criteria.','Test one known hard counterexample and show what diverged.'],
+  ['Minimum-service','Deliver the main benefit as an explicit human service or teachable procedure before any software, with written handoff and a small repeatable checklist.','Run one facilitated session and measure whether a second facilitator can repeat it.']
+ ];const out=[];
+ for(let i=0;i<n;i++){const [prefix,mechanism,plan]=mechanisms[(seq+i)%mechanisms.length];const other=partner?' / '+partner.title:'';out.push({
+ title:(prefix+' '+parent.title+other).slice(0,155),
+ problem:parent.problem||'The board objective has not yet been validated.',
+ audience:parent.audience||'Participants affected by the board objective.',
+ mechanism:mechanism+' Target the stated problem without assuming the parent mechanism is necessary. '+(partner?'Validate a distinct contribution from the second parent. ':''),
+ difference:'The delivery mechanism changes from the parent approach to '+prefix.toLowerCase()+'. The operator must still assess whether this is materially different in practice.',
+ plan:plan+' Record actual costs and compare against the parent before scaling.',
+ validation:'Compare task outcomes, failure rates, and human comprehension against the recorded parent over at least five cases.',
+ benefit:parent.benefit||'Reduce uncertainty in a repeatable test.',
+ constraints:[parent.constraints,partner?.constraints,'Remain within the board objective; do not claim any result without testing.'].filter(Boolean).join(' '),
+ risks:'Changing delivery mechanisms may introduce new failure paths. Review all inherited risks. '+(parent.risks||'')
+ });}
+ return out;
+}
+function compareIdeas(ideas){return{fields,ideas:ideas.slice(0,3).map(i=>({id:i.id,title:i.title,fields:Object.fromEntries(fields.slice(1).map(k=>[k,plain(i[k])]))}))};}
+function dominates(a,b){return metrics.every(k=>a[k]>=b[k])&&metrics.some(k=>a[k]>b[k]);}
+function pareto(ideas,score){const records=ideas.map(i=>({idea:i,metrics:score(i).effective,total:score(i).total}));return records.map(a=>({...a,frontier:!records.some(b=>b.idea.id!==a.idea.id&&dominates(b.metrics,a.metrics))}));}
+function search(boards,ideas,query){const q=safe(query,160).toLowerCase();if(!q)return[];const b=new Map(boards.map(x=>[x.id,x]));return ideas.filter(i=>text(i).includes(q)||plain(b.get(i.boardId)?.title).toLowerCase().includes(q)).slice(0,100).map(i=>({idea:i,board:b.get(i.boardId)}));}
+function semanticEdges(ideas,limit=120){
+ // Index only actual terms; common boilerplate is excluded to avoid falsely
+ // connecting every idea. A bounded posting list avoids N^2 graph comparison.
+ const stop=new Set('the and with this from that into your when use using can will for are not one first more than only such each some other then also their been have make which while'.split(' '));
+ const termMaps=ideas.map(i=>terms(i.mechanism+' '+i.constraints+' '+i.problem));
+ const postings=new Map();termMaps.forEach((set,n)=>{for(const term of set){if(stop.has(term))continue;if(!postings.has(term))postings.set(term,[]);postings.get(term).push(n);}});
+ const related=new Map(),maxPosting=Math.min(80,Math.max(8,Math.ceil(ideas.length*.28)));
+ for(const [term,ids] of postings){if(ids.length<2||ids.length>maxPosting||(ideas.length>2&&ids.length/ideas.length>=.85))continue;
+  for(let a=0;a<ids.length;a++)for(let b=a+1;b<ids.length;b++){
+    const x=ids[a],y=ids[b],key=x+'|'+y;let record=related.get(key);
+    if(!record){record={x,y,shared:[]};related.set(key,record);}record.shared.push(term);
+  }
+ }
+ const edges=[];for(const pair of related.values()){
+  if(pair.shared.length<3)continue;const left=ideas[pair.x],right=ideas[pair.y];if(left.parents?.includes(right.id)||right.parents?.includes(left.id))continue;
+  const union=new Set([...termMaps[pair.x],...termMaps[pair.y]]);const strength=union.size?pair.shared.length/union.size:0;
+  if(strength>=.08)edges.push({a:left.id,b:right.id,shared:pair.shared.slice(0,9),strength:+strength.toFixed(4)});
+ }
+ return edges.sort((a,b)=>b.strength-a.strength).slice(0,limit);
+}
+function novelty(idea,parents,similarity){if(!parents.length)return{lexicalSimilarity:0,addedMechanismTerms:[],warning:false};const parentText=parents.map(p=>p.mechanism+' '+p.difference).join(' ');const a=terms(idea.mechanism+' '+idea.difference),b=terms(parentText);const added=[...a].filter(t=>!b.has(t));const lexicalSimilarity=Math.max(...parents.map(p=>similarity(idea.title+' '+idea.mechanism+' '+idea.difference,p.title+' '+p.mechanism+' '+p.difference)));return{lexicalSimilarity:+lexicalSimilarity.toFixed(3),addedMechanismTerms:added.slice(0,12),warning:lexicalSimilarity>=.72||added.length<2};}
+function brief(idea,board,score,gold){const e=Array.isArray(idea.experiments)?idea.experiments:[];const sec=(label,value)=>'## '+label+'\n'+(plain(value).trim()||'_Not specified_')+'\n';return[
+ '# '+safe(idea.title,160),'', 'Status: '+(idea.status==='archived'?'ARCHIVED':'ACTIVE')+' / '+(gold?'GOLD SHORTLIST':'UNQUALIFIED CANDIDATE'), 'Board: '+safe(board?.title), 'Generation: '+idea.generation, 'Structural jury: '+score.total+'/15. **This is not proof of real-world merit.**', '',...fields.slice(1).map(k=>sec(k[0].toUpperCase()+k.slice(1),idea[k])),
+ '## Experimental evidence',e.length?e.map(x=>'- '+x.status+': '+x.hypothesis+' | observation: '+(x.result||'not yet recorded')+' | source: '+(x.source||'not supplied')).join('\n'):'No observed experimental outcomes recorded.', '',
+ '## Provenance','Idea ID: '+idea.id,'Parent IDs: '+(idea.parents.join(', ')||'none'),'Source: '+idea.source,'',
+ 'Not a qualified project handoff. Verify assumptions before using this idea.'
+ ].join('\n');}
+function trace(idea,ideas){const byId=Object.fromEntries(ideas.map(i=>[i.id,i]));if(!idea)return[];const stack=[idea.id],visited=new Set(),chain=[];while(stack.length){const id=stack.pop();if(visited.has(id))continue;visited.add(id);const item=byId[id];if(!item)continue;chain.push({id:item.id,title:item.title,generation:item.generation,parents:item.parents,status:item.status,source:item.source});for(const p of item.parents||[])stack.push(p);}return chain.sort((a,b)=>a.generation-b.generation||a.title.localeCompare(b.title));}
+function reviewComparison(ideas,score){const ratings=ideas.flatMap(i=>(i.reviews||[]).map(r=>({ideaId:i.id,review:r,computed:score(i).computed})));if(!ratings.length)return{count:0,meanAbsoluteError:null};let error=0;for(const r of ratings)for(const m of metrics)error+=Math.abs(r.review[m]-r.computed[m]);return{count:ratings.length,meanAbsoluteError:+(error/(ratings.length*3)).toFixed(3)};}
+function autopilotPreview(ideas,score,step,prefs){const active=ideas.filter(i=>i.status!=='archived').sort((a,b)=>score(b).total-score(a).total||a.createdAt.localeCompare(b.createdAt));if(!active.length)return null;const top=active.slice(0,Math.min(5,active.length));const first=top[step%top.length];let second=null;if(active.length>=2&&step%3===2){second=active[(step+1)%active.length];if(second.id===first.id)second=active.find(i=>i.id!==first.id)||null;}const leaves=active.filter(i=>i.parents.length&&!active.some(k=>k.parents.includes(i.id))).sort((a,b)=>score(a).total-score(b).total);const possible=leaves[0]||null;return{first:first.id,firstTitle:first.title,second:second?.id||null,secondTitle:second?.title||null,possibleArchive:possible?.id||null,possibleArchiveTitle:possible?.title||null,cap:Math.max(4,Number(prefs.populationCap)||24),threshold:Math.max(3,Number(prefs.pruneThreshold)||7),disclaimer:'Preview of parent choice before generation. Future offspring, provider replies, and pruning outcomes are not known or promised.'};}
+return{fields,metrics,id,safe,exploreIdeas,ruleReport,compareIdeas,dominates,pareto,search,semanticEdges,novelty,brief,trace,reviewComparison,autopilotPreview};
+});
+
+</script>
+<script>
 /* Causal Observatory. A read-only view of real board ideas and recorded parent edges.
    No synthetic nodes, scores, telemetry, clocks, external assets or data mutation. */
 (function (root) {
@@ -1005,7 +1093,7 @@ function createObservatory(canvas, onSelect) {
   let positions=new Map(), ancestors=new Set(), descendants=new Set();
   let width=1,height=1,dpr=1,baseScale=1,worldRadius=100;
   let pan={x:0,y:0}, zoom=1, focused=false, hoverId=null, activePointer=null;
-  let frame=0, visible=true, depthCap=null;
+  let frame=0, visible=true, depthCap=null, semanticEdges=[], semanticMode=false;
   const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
   const hash=str=>{let x=2166136261;for(let i=0;i<str.length;i++){x^=str.charCodeAt(i);x=Math.imul(x,16777619);}return x>>>0;};
   function layout() {
@@ -1066,10 +1154,22 @@ function createObservatory(canvas, onSelect) {
       ctx.fillStyle='rgba(201,214,201,.58)';ctx.font='10px ui-monospace,SFMono-Regular,monospace';
       const tx=origin.x+r+11,ty=origin.y-8;if(tx>18&&tx<width-80&&ty>12&&ty<height-14)ctx.fillText('GEN '+String(g).padStart(2,'0'),tx,ty);
     }
+    // Optional shared-term overlay: each edge is supported by explicit fields and
+    // inspected in the Lab. It is never presented as an actual parent relation.
+    if(semanticMode){
+      for(const edge of semanticEdges){if(!drawnIds.has(edge.a)||!drawnIds.has(edge.b))continue;
+        const pa=positions.get(edge.a),pb=positions.get(edge.b);if(!pa||!pb)continue;
+        const a=worldToScreen(pa),b=worldToScreen(pb);
+        if((a.x<-40&&b.x<-40)||(a.x>width+40&&b.x>width+40)||(a.y<-40&&b.y<-40)||(a.y>height+40&&b.y>height+40))continue;
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineWidth=1;
+        ctx.setLineDash([3,7]);ctx.strokeStyle='rgba(168,155,255,.55)';ctx.stroke();ctx.setLineDash([]);
+      }
+    }
     // Connections are actual parent IDs. Archived ancestry is still drawn.
     for(const n of drawn){const dst=positions.get(n.id);if(!dst)continue;
       for(const pid of n.parents||[]){if(!drawnIds.has(pid))continue;const src=positions.get(pid);if(!src)continue;
         const a=worldToScreen(src),b=worldToScreen(dst);
+        if((a.x<-40&&b.x<-40)||(a.x>width+40&&b.x>width+40)||(a.y<-40&&b.y<-40)||(a.y>height+40&&b.y>height+40))continue;
         const inTrace=selectedId && ((n.id===selectedId&&ancestors.has(pid))||(ancestors.has(n.id)&&ancestors.has(pid))||(descendants.has(n.id)&&(pid===selectedId||descendants.has(pid))));
         ctx.beginPath();ctx.moveTo(a.x,a.y);
         const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
@@ -1092,7 +1192,7 @@ function createObservatory(canvas, onSelect) {
       ctx.fillStyle=archived?(faded?'#293738':'#556764'):isGold?(faded?'#775e44':'#eabd77'):faded?'#29474a':'#85c7b5';ctx.fill();
       if(archived){ring(s.x,s.y,r,'rgba(191,201,184,.7)',1.1);ring(s.x,s.y,Math.max(1,r-2),'#0b1b20',1.5);}
       if(n.parents?.length===2){ctx.fillStyle=isGold?'#1b1c18':'#071719';ctx.fillRect(s.x-1.15,s.y-1.15,2.3,2.3);}
-      const label=focus||n.id===hoverId||(!selectedId&&isGold);
+      const label=focus||n.id===hoverId||(!selectedId&&isGold&&data.length<=180);
       if(label){const short=n.title.length>30?n.title.slice(0,28)+'…':n.title;
         ctx.font=focus?'600 12px system-ui,sans-serif':'11px system-ui,sans-serif';
         const textw=ctx.measureText(short).width;const bx=clamp(s.x-textw/2-9,6,width-textw-20);const by=s.y-r-36;
@@ -1143,16 +1243,173 @@ function createObservatory(canvas, onSelect) {
       if(boardChanged){pan={x:0,y:0};zoom=1;focused=false;depthCap=null;}layout();schedule();},
     reset(){pan={x:0,y:0};zoom=1;focused=false;depthCap=null;schedule();},
     setDepth(n){depthCap=n===null?null:Math.max(0,Math.floor(n));schedule();},
+    setSemanticEdges(edges,enabled){semanticEdges=Array.isArray(edges)?edges.slice(0,120):[];semanticMode=!!enabled;schedule();},
     zoom(factor){zoom=clamp(zoom*factor,.36,5);focused=false;schedule();},
     focus(){const p=positions.get(selectedId);if(!p)return false;pan={x:-p.x,y:-p.y};zoom=clamp(1.65/Math.max(baseScale,.12),1.2,5);focused=true;schedule();return true;},
     resize:schedule,
     show(flag){visible=flag;if(flag)schedule();},
-    diagnostics(){return{nodeCount:data.length,edgeCount:data.reduce((a,n)=>a+(n.parents?.length||0),0),selectedId,ancestors:[...ancestors],descendants:[...descendants],zoom,depthCap,displayed:depthCap===null?data.length:data.filter(n=>n.generation<=depthCap).length,points:data.map(n=>{const s=worldToScreen(positions.get(n.id));return{id:n.id,generation:n.generation,x:s.x,y:s.y};})};},
+    diagnostics(){return{nodeCount:data.length,edgeCount:data.reduce((a,n)=>a+(n.parents?.length||0),0),semanticEdgeCount:semanticMode?semanticEdges.length:0,selectedId,ancestors:[...ancestors],descendants:[...descendants],zoom,depthCap,displayed:depthCap===null?data.length:data.filter(n=>n.generation<=depthCap).length,points:data.map(n=>{const s=worldToScreen(positions.get(n.id));return{id:n.id,generation:n.generation,x:s.x,y:s.y};})};},
     destroy(){canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointermove',pointerMove);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',pointerUp);canvas.removeEventListener('wheel',wheel);canvas.removeEventListener('keydown',key);cancelAnimationFrame(frame);}
   };
   schedule();return api;
 }
 root.RigObservatory={createObservatory};
+})(globalThis);
+
+</script>
+<script>
+/* Evolution Lab: opt-in workbench for bounded, inspectable extensions.
+   All mutations delegate to the authoritative app state and existing persistence.
+   No new provider, tracking, CDN, continuous frame loop or automatic project creation. */
+(function(root){'use strict';
+function createLab(api){
+ const U=root.RigUplift,C=root.RigCore,$=id=>document.getElementById(id);
+ const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const dialog=$('rigLab'),nav=$('rigLabNav'),body=$('rigLabBody');
+ const sections=[['flight','First flight'],['rules','Mission locks'],['evidence','Experiments'],['diversity','Diversity'],['compare','Compare'],['compass','Compass'],['search','Search'],['sky','Connections'],['review','Blind review'],['lineage','Lineage'],['history','Revisions'],['reuse','Reuse'],['recovery','Recovery'],['autopilot','Rehearsal'],['usage','Usage'],['export','Briefs'],['scale','Scale']];
+ let section='flight',opener=null,searchQuery='',comparison=[],semantic=false,firstFlight=0;
+ let preview=null,remoteAllowed=false,requestCap=5,requestUsed=0;
+ let receipts=[],checkpointDb=null,checkpointStatus='Snapshots not yet checked.',checkpointRows=[],checkpointTimer=0,crossTabConflict=false;
+ let benchmarkInfo='Not measured on this device.';
+ const state=()=>api.getState(),board=()=>api.currentBoard(),idea=()=>api.selected(),current=()=>api.currentIdeas(),scores=i=>api.score(i);
+ const p=(s)=>`<p>${e(s)}</p>`;
+ const tag=(s)=>`<span class="lab-tag">${e(s)}</span>`;
+ const intro=(title,desc)=>`<h3>${e(title)}</h3><p>${e(desc)}</p>`;
+ const note=s=>`<div class="lab-note">${e(s)}</div>`;
+ const ready=()=>board()?true:false;
+ const pickIdea=()=>idea()?true:false;
+ const optionList=(values,selected)=>values.map(([value,label])=>`<option value="${e(value)}"${String(value)===String(selected)?' selected':''}>${e(label)}</option>`).join('');
+ const button=(title,action,extra='')=>`<button type="button" data-lab-action="${e(action)}" ${extra}>${e(title)}</button>`;
+ function publish(msg,error=false){$('labStatus').textContent=msg;$('labStatus').style.color=error?'#ffb6bd':'#a8f3dd';}
+ const rules=()=>board()?.rules||[];
+ function reportSelection(){const i=idea();return i?`SELECTED / ${i.title}`:'NO IDEA SELECTED';}
+ function labFlight(){let phase=0;if(state().boards.length)phase=1;if(current().length)phase=2;if(current().some(x=>x.parents.length))phase=3;firstFlight=phase;
+ const acts=[['01','Select a beginning','Open Seeds and plant one curated idea as a new board or write your own. No data is created until you confirm.'],['02','Create a descendant','Select a root, use Branch, and see a new real parent relationship recorded.'],['03','Trace the evidence','Choose a descendant and use Trace to inspect its recorded ancestry.']];
+ return intro('First flight','A three-step invitation, not an automatic demo. The app never invents sample projects in your workspace.')+
+ `<div class="lab-grid three">${acts.map(([n,h,d],ix)=>`<div class="lab-card">${tag(n+(phase>ix?' / READY':' / NEXT'))}<h4>${e(h)}</h4>${p(d)}</div>`).join('')}</div>`+
+ `<div class="lab-actions">${button('Open Seed Vault','seeds')}${button('Open selected idea','selected')}${button('Trace selected','trace')}${button('Return to field','close')}</div>`+note('The steps reflect current board contents; completion is not saved as invented activity.');}
+ function labRules(){const b=board();if(!b)return intro('Mission locks','Create or select a board before defining hard constraints.');
+ return intro('Mission locks','Literal, operator-authored include/exclude guards. Generation rejects a proposal that violates a lock; these checks do not establish semantic compliance.')+
+ `<div class="lab-grid"><div class="lab-card"><h4>${e(b.title)}</h4>${rules().length?rules().map(r=>`<div class="lab-row">${tag(r.kind)} ${e(r.phrase)} ${button('Remove','rule-remove',`data-id="${e(r.id)}"`)}</div>`).join(''):p('No hard rules. Existing prose constraints remain unchanged.')}</div>`+
+ `<div class="lab-card"><h4>Add exact-text rule</h4><form class="lab-form" data-lab-form="rule"><label>Rule type<select name="kind"><option value="include">Required phrase in generated fields</option><option value="exclude">Forbidden phrase in generated fields</option></select></label><label>Literal phrase<input name="phrase" required maxlength="120" placeholder="e.g. offline"></label><button class="primary" type="submit">Add mission lock</button></form></div></div>`+note('Rules apply to new generated descendants, not retrospectively to existing user records. Rejected model output may still consume provider quota.');}
+ function labEvidence(){const i=idea();if(!i)return intro('Experiment evidence','Select an idea first. The Lab records actual user observations separately from textual jury scores.');const entries=i.experiments||[];
+ return intro('Experiment evidence',`For ${i.title}. Observations must be supplied by a person; plans alone are not experimental results.`)+
+ `<div class="lab-grid"><div class="lab-card"><h4>Record a test</h4><form class="lab-form" data-lab-form="evidence"><label>Status<select name="status"><option value="planned">Planned / no result</option><option value="observed">Observed result</option><option value="inconclusive">Inconclusive</option><option value="contradicted">Contradicts hypothesis</option></select></label><label>Falsifiable hypothesis<textarea name="hypothesis" required maxlength="1000"></textarea></label><label>Method / protocol<textarea name="method" maxlength="1000"></textarea></label><label>Baseline or control<textarea name="baseline" maxlength="1000"></textarea></label><label>Observed result / discrepancy<textarea name="result" maxlength="1800"></textarea></label><label>Source, notebook or receipt reference<input name="source" maxlength="800"></label><button class="primary" type="submit">Save evidence record</button></form></div>`+
+ `<div class="lab-card"><h4>Evidence ledger / ${entries.length}</h4>${entries.slice().reverse().map(x=>`<div class="lab-row">${tag(x.status)}<strong>${e(x.hypothesis)}</strong><p>Method: ${e(x.method||'Not recorded')} · Baseline: ${e(x.baseline||'Not recorded')}</p><p>Result: ${e(x.result||'No observation recorded')}</p><p>Source: ${e(x.source||'Not supplied')}</p><small>${e(x.at||'')}</small></div>`).join('')||p('No experiments yet.')}</div></div>`+note('The jury remains a prose-structure heuristic. Evidence here is operator-provided and not externally verified by this application.');}
+ function labDiversity(){const b=board();if(!b)return intro('Diversity controls','Select a board to choose its offline generation strategy.');const descendants=current().filter(i=>i.parents.length);const recent=descendants.slice(-16);return intro('Exploration or refinement','Refine uses the original procedural mutation templates. Explore deliberately changes the proposed delivery mechanism among a bounded set of six alternative operating models. Neither mode proves semantic novelty.')+
+ `<div class="lab-card"><form class="lab-form" data-lab-form="diversity"><label>Offline generation mode<select name="style"><option value="refine" ${b.generationStyle!=='explore'?'selected':''}>Refine / original incremental templates</option><option value="explore" ${b.generationStyle==='explore'?'selected':''}>Explore / shift delivery mechanism</option></select></label><button type="submit" class="primary">Save mode for this board</button></form></div>`+
+ `<div class="lab-card"><h4>Recent lineage change receipts</h4>${recent.length?recent.map(i=>{const r=(i.history||[]).findLast(h=>h.kind==='diversity.lexical');return `<div class="lab-row"><b>${e(i.title)}</b>${r?`<p>Lexical overlap ${e(r.details.lexicalSimilarity)} · ${r.details.warning?'REVIEW: possible paraphrase':'Different vocabulary recorded'}</p><p>New mechanism terms: ${e((r.details.addedMechanismTerms||[]).join(', ')||'None')}</p>`:p('No recorded lexical delta.')}</div>`;}).join(''):p('No branches yet.')}</div>`+note('A different vocabulary is not evidence of a better solution. Test the actual mechanism and outcome.');}
+ function labCompare(){const b=board();if(!b)return intro('Comparison Chamber','Choose a board to compare its ideas.');let choices=current(),ids=comparison.filter(id=>choices.some(i=>i.id===id));if(!ids.length&&idea())ids=[idea().id];const chosen=ids.slice(0,3).map(id=>choices.find(i=>i.id===id)).filter(Boolean);
+ return intro('Comparison Chamber','Select up to three distinct ideas. Compare independent branches by actual recorded fields, not just their jury totals.')+
+ `<div class="lab-card"><form class="lab-form" data-lab-form="compare"><div class="lab-grid three">${[0,1,2].map((_,n)=>`<label>Candidate ${n+1}<select name="pick${n}"><option value="">None</option>${optionList(choices.map(i=>[i.id,i.title]),ids[n])}</select></label>`).join('')}</div><button type="submit" class="primary">Compare these candidates</button></form></div>`+
+ (chosen.length>=2?`<div class="lab-table-wrap"><table><thead><tr><th>Field</th>${chosen.map(i=>`<th>${e(i.title)}</th>`).join('')}</tr></thead><tbody>${U.fields.slice(1).map(f=>`<tr><th>${e(f)}</th>${chosen.map(i=>`<td>${e(i[f]||'Not specified')}</td>`).join('')}</tr>`).join('')}<tr><th>Jury total (heuristic)</th>${chosen.map(i=>`<td>${scores(i).total}/15</td>`).join('')}</tr></tbody></table></div>`:note('Choose at least two candidates and press Compare.'));
+ }
+ function labCompass(){const items=U.pareto(current(),scores);if(!items.length)return intro('Pareto Compass','Create candidates first.');const x=v=>((v-1)/4*84+8),y=v=>((v-1)/4*80+9);
+ return intro('Pareto Compass','A visible trade-off map using the current jury values. Frontier means no other candidate is at least as strong in all three jury dimensions with one strict improvement; it is not an objective real-world winner.')+
+ `<div class="lab-plot" role="group" aria-label="Feasibility increases to the right; impact increases upward. Each button selects its recorded idea.">${items.slice(0,180).map((r,n)=>`<button class="lab-point ${r.frontier?'frontier':''}" style="left:${x(r.metrics.feasibility)}%;bottom:${y(r.metrics.impact)}%" data-lab-action="select" data-id="${e(r.idea.id)}" title="${e(r.idea.title)}: feasibility ${r.metrics.feasibility}, impact ${r.metrics.impact}, originality ${r.metrics.originality}">${n<9?'·':''}</button>`).join('')}</div><div class="lab-axis">FEASIBILITY → · IMPACT ↑ · GOLD POINTS = NON-DOMINATED ON ALL THREE METRICS</div>`+
+ `<div class="lab-table-wrap"><table><thead><tr><th>Candidate</th><th>O</th><th>F</th><th>I</th><th>Frontier</th></tr></thead><tbody>${items.slice(0,180).map(r=>`<tr><td><button data-lab-action="select" data-id="${e(r.idea.id)}">${e(r.idea.title)}</button></td><td>${r.metrics.originality}</td><td>${r.metrics.feasibility}</td><td>${r.metrics.impact}</td><td>${r.frontier?'Yes':'No'}</td></tr>`).join('')}</tbody></table></div>`;
+ }
+ function labSearch(){const matches=U.search(state().boards,state().ideas,searchQuery);
+ return intro('Universe search','Search across every board and inspect proposals without sending anything to a server.')+
+ `<form data-lab-form="search" class="lab-actions"><input type="search" name="query" aria-label="Search all boards" placeholder="Problem, constraint, mechanism…" value="${e(searchQuery)}" style="max-width:480px"><button class="primary" type="submit">Search all boards</button></form>`+
+ `<div class="lab-rows">${matches.length?matches.map(m=>`<div class="lab-row"><b>${e(m.idea.title)}</b><p>${e(m.board?.title||'Unknown board')} / generation ${m.idea.generation} / ${m.idea.status}</p>${button('Open idea','select',`data-id="${e(m.idea.id)}"`)}</div>`).join(''):p(searchQuery?'No matches in the local workspace.':'Enter a query. Nothing is indexed remotely.')}</div>`;
+ }
+ function labSky(){const edges=U.semanticEdges(current());return intro('Semantic connections','An optional evidence-backed overlay. Shared words in mechanisms, constraints, and problems form candidate connections; these are lexical similarities, not semantic proofs.')+
+ `<div class="lab-actions">${button(semantic?'Turn overlay off':'Show shared-term overlay','semantic')}${tag(edges.length+' source-backed candidate links')}</div>`+
+ `<div class="lab-rows">${edges.slice(0,35).map(x=>{const a=current().find(i=>i.id===x.a),b=current().find(i=>i.id===x.b);return `<div class="lab-row"><strong>${e(a?.title)} ↔ ${e(b?.title)}</strong><p>Shared terms: ${e(x.shared.join(' · '))}. Lexical Jaccard ${x.strength}. </p>${button('Select first','select',`data-id="${e(x.a)}"`)} ${button('Select second','select',`data-id="${e(x.b)}"`)}</div>`;}).join('')||p('No eligible shared-term links. Empty results are valid; the system invents no links.')}</div>`;
+ }
+ function labReview(){const i=idea();if(!i)return intro('Blind review','Select an idea before recording a human judgment.');const human=U.reviewComparison(current(),scores);
+ return intro('Blind review',`Rate ${i.title} from its proposal, not from the jury numbers. The deterministic ratings are deliberately hidden in this panel until submission.`)+
+ `<div class="lab-card"><h4>${e(i.title)}</h4><p>${e(i.problem)}</p><p><strong>Mechanism:</strong> ${e(i.mechanism)}</p><p><strong>Validation:</strong> ${e(i.validation)}</p><form data-lab-form="review" class="lab-form">${U.metrics.map(m=>`<label>${e(m)} / human estimate<select name="${m}">${[1,2,3,4,5].map(n=>`<option value="${n}">${n} / 5</option>`).join('')}</select></label>`).join('')}<label>Optional reason / source of judgment<textarea name="note" maxlength="1000"></textarea></label><button type="submit" class="primary">Record this review</button></form></div>`+
+ `<div class="lab-card"><h4>Comparison after submission</h4><p>${human.count} user-entered reviews in this board; ${human.count?'mean absolute deviation from computed dimensions: '+human.meanAbsoluteError+'/5':'none yet'}. This is not inter-rater agreement or an external scientific calibration.</p></div>`;
+ }
+ function labLineage(){const i=idea();if(!i)return intro('Lineage navigator','Select an idea to traverse its parent chain.');const chain=U.trace(i,current());return intro('Lineage navigator','A nonvisual, ordered alternative to the spatial causal map. Every row is derived from an actual recorded idea and parent ID.')+
+ `<div class="lab-rows">${chain.map(x=>`<div class="lab-row">${tag('GEN '+x.generation)} ${tag(x.status)}<strong>${e(x.title)}</strong><p>Parent IDs: ${e(x.parents.join(', ')||'none')} · source ${e(x.source)}</p>${button('Inspect record','select',`data-id="${e(x.id)}"`)}</div>`).join('')}</div>`;
+ }
+ function labHistory(){const i=idea();if(!i)return intro('Revision history','Select an idea to see saved field snapshots.');const snaps=i.editSnapshots||[];return intro('Revision history',`Reversible field revisions for ${i.title}. Restoring a snapshot changes only that idea's text fields, not its ancestry or descendants.`)+
+ `<div class="lab-rows">${snaps.length?snaps.slice().reverse().map((x,idx)=>`<div class="lab-row"><strong>${e(x.fields.title)}</strong><p>${e(x.at)} · prior mechanism: ${e(x.fields.mechanism.slice(0,180))}</p>${button('Restore these fields','undo',`data-index="${snaps.length-1-idx}"`)}</div>`).join(''):p('No earlier field edits saved yet. Future edits will retain up to 30 revisions per idea.')}</div>`;
+ }
+ function labReuse(){const i=idea();if(!i)return intro('Cross-board reuse','Select an idea and create a separate destination board first.');const destinations=state().boards.filter(b=>b.id!==i.boardId);
+ return intro('Cross-board reuse','Copy as an independent new root in another board. The original stays unchanged; a source-link receipt remembers the relationship without breaking ancestry isolation.')+
+ (destinations.length?`<form data-lab-form="copy" class="lab-form"><label>Destination board<select name="boardId">${optionList(destinations.map(b=>[b.id,b.title]),destinations[0].id)}</select></label><button type="submit" class="primary">Copy selected idea as a new root</button></form>`:note('Create another board to enable cross-board reuse.'));
+ }
+ function labRecovery(){return intro('Recovery & checkpoints','Manual and bounded automatic snapshots are stored locally in IndexedDB when available. Restore requires a preview and confirmation; existing workspace JSON export remains available.')+
+ `<div class="lab-actions">${button('Save checkpoint now','checkpoint')}${button('Refresh local checkpoints','refresh-checkpoints')}${button('Export workspace JSON','workspace-export')}</div>`+
+ note(checkpointStatus+(crossTabConflict?' Another tab changed this workspace. Export your current page before reloading; further writes are blocked.':''))+
+ `<div class="lab-rows">${checkpointRows.map(row=>`<div class="lab-row"><strong>${e(row.at)}</strong>${tag(row.reason)}<p>${row.boards} boards · ${row.ideas} ideas · ${row.bytes} bytes</p>${button('Preview & restore','restore',`data-id="${e(row.id)}"`)}</div>`).join('')||p('No local snapshots found. IndexedDB may be unavailable in this context.')}</div>`;
+ }
+ function labAuto(){const value=U.autopilotPreview(current(),scores,api.autoStep(),state().preferences);return intro('Autopilot rehearsal','Preview the next deterministic parent choice before allowing a real generation step. This is a dry run: no ideas, logs, or storage are changed by pressing Preview.')+
+ (value?`<div class="lab-card"><h4>Next deterministic selection</h4>${p('First parent: '+value.firstTitle)}${p('Second parent: '+(value.secondTitle||'None'))}${p('Current lowest-scoring leaf: '+(value.possibleArchiveTitle||'None'))}${p('Population cap: '+value.cap+' · pruning threshold: '+value.threshold)}${note(value.disclaimer)}</div>`:note('Create an active seed to rehearse generation.'))+
+ `<div class="lab-actions">${button('Open autopilot controls','autopilot-settings')}</div>`;
+ }
+ function labUsage(){return intro('Provider usage governor','Hosted model calls are blocked until you explicitly enable them for this browser session. Hard request limits can stop new calls; estimated token counts are not authoritative billing information.')+
+ `<div class="lab-grid"><div class="lab-card"><h4>Session allowance</h4><form data-lab-form="usage" class="lab-form"><label class="check"><input name="allow" type="checkbox" ${remoteAllowed?'checked':''}> Allow this session to send configured hosted model requests</label><label>Maximum total requests this page session<input type="number" name="cap" min="1" max="100" value="${requestCap}"></label><button class="primary" type="submit">Apply usage controls</button></form><p>Requests used: ${requestUsed} / ${requestCap}. Local offline generation remains unrestricted.</p></div><div class="lab-card"><h4>Request receipts</h4>${receipts.slice().reverse().map(r=>`<div class="lab-row">${tag(r.provider)} ${tag(r.status)} ${e(r.at)}<p>Input estimate ${r.inputEstimate} characters; output ${r.outputChars} characters. Actual provider billing is unknown.</p></div>`).join('')||p('No model requests in this page session.')}</div></div>`;
+ }
+ function labExport(){const i=idea();return intro('Portable candidate briefs','A human-readable Markdown brief can be exported for any selected idea, including non-gold and archived ones. Qualified project ZIP rules remain unchanged.')+
+ (i?`<div class="lab-card"><h4>${e(i.title)}</h4><p>${e(i.status)} · Jury ${scores(i).total}/15 · Gold: ${api.isGold(i)?'yes':'no'}</p>${button('Download candidate brief (.md)','brief')}</div>`:note('Select an idea to export its candidate brief.'));
+ }
+ function labScale(){const n=current().length;return intro('Large-board runtime','The observatory culls offscreen geometry and limits labels. Use a local measurement; no claimed speed gain is inferred from a code change.')+
+ `<div class="lab-grid"><div class="lab-card"><h4>Current board</h4>${tag(n+' ideas')}${tag(current().reduce((s,i)=>s+i.parents.length,0)+' ancestry links')}<p id="labBenchmark">${e(benchmarkInfo)}</p>${button('Measure one render','benchmark')}</div><div class="lab-card"><h4>Render controls</h4><p>Semantic links are derived from shared terms, capped in memory, and opt-in. Labels remain visible for focus and hover.</p><p>No remote telemetry or continuous animation loop is installed.</p></div></div>`;
+ }
+ const renderers={flight:labFlight,rules:labRules,evidence:labEvidence,diversity:labDiversity,compare:labCompare,compass:labCompass,search:labSearch,sky:labSky,review:labReview,lineage:labLineage,history:labHistory,reuse:labReuse,recovery:labRecovery,autopilot:labAuto,usage:labUsage,export:labExport,scale:labScale};
+ function render(){if(!dialog.open)return;nav.replaceChildren();for(const [k,label] of sections){const b=document.createElement('button');b.type='button';b.dataset.labSection=k;b.textContent=label;b.setAttribute('aria-current',String(k===section));nav.append(b);}body.innerHTML=renderers[section]();$('labContext').textContent='LOCAL / '+(board()?board().title:'NO BOARD')+' / '+reportSelection();}
+ function open(k='flight',origin=null){opener=origin||document.activeElement;section=renderers[k]?k:'flight';if(!dialog.open)dialog.showModal();render();$('labClose').focus({preventScroll:true});if(k==='recovery')refreshCheckpoints();}
+ function close(){if(dialog.open)dialog.close();}
+ nav.addEventListener('click',ev=>{const b=ev.target.closest('[data-lab-section]');if(!b)return;section=b.dataset.labSection;render();body.scrollTop=0;if(section==='recovery')refreshCheckpoints();});
+ for(const id of ['hudLab','workbenchLab','boardLab'])$(id).addEventListener('click',ev=>open('flight',ev.currentTarget));
+ $('labClose').addEventListener('click',close);
+ dialog.addEventListener('close',()=>{if(opener?.isConnected&&!opener.closest('[inert]'))opener.focus({preventScroll:true});opener=null;});
+ function mutate(fn,description){if(crossTabConflict)throw Error('Another tab changed workspace storage. Export this page and reload before making further writes.');fn();api.invalidate();if(!api.persist())throw Error('Storage failed; export workspace JSON.');api.render();publish(description);render();}
+ async function createDb(){if(!('indexedDB' in root)){checkpointStatus='IndexedDB is not available in this browser.';return null;}return new Promise(resolve=>{let req;try{req=indexedDB.open('evolution-rig-checkpoints',1);}catch(e){checkpointStatus='IndexedDB blocked: '+e.message;return resolve(null);}req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('snapshots'))req.result.createObjectStore('snapshots',{keyPath:'id'});};req.onsuccess=()=>resolve(req.result);req.onerror=()=>{checkpointStatus='IndexedDB could not open; export workspace JSON manually.';resolve(null);};});}
+ const dbPromise=createDb();dbPromise.then(db=>{checkpointDb=db;if(db)refreshCheckpoints();});
+ async function saveCheckpoint(reason='manual'){const db=checkpointDb||await dbPromise;if(!db)throw Error('Local IndexedDB is unavailable. Export workspace JSON instead.');const data=JSON.stringify(state());const snap={id:U.id(),at:new Date().toISOString(),reason,bytes:data.length,boards:state().boards.length,ideas:state().ideas.length,data};
+ await new Promise((resolve,reject)=>{const tx=db.transaction('snapshots','readwrite');tx.objectStore('snapshots').put(snap);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||new Error('Snapshot transaction failed'));});
+ const all=await listSnapshots();for(const stale of all.slice(8)){await new Promise(resolve=>{const tx=db.transaction('snapshots','readwrite');tx.objectStore('snapshots').delete(stale.id);tx.oncomplete=resolve;tx.onerror=resolve;});}
+ checkpointStatus='Local checkpoint saved '+snap.at+' ('+reason+').';await refreshCheckpoints();return snap;}
+ async function listSnapshots(){const db=checkpointDb||await dbPromise;if(!db)return[];return new Promise(resolve=>{const tx=db.transaction('snapshots','readonly');const req=tx.objectStore('snapshots').getAll();req.onsuccess=()=>resolve((req.result||[]).sort((a,b)=>b.at.localeCompare(a.at)));req.onerror=()=>resolve([]);});}
+ async function refreshCheckpoints(){checkpointRows=(await listSnapshots()).map(({id,at,reason,boards,ideas,bytes})=>({id,at,reason,boards,ideas,bytes}));if(dialog.open&&section==='recovery')render();}
+ function scheduleCheckpoint(){if(crossTabConflict)return;clearTimeout(checkpointTimer);checkpointTimer=setTimeout(()=>saveCheckpoint('automatic').catch(err=>{checkpointStatus='Automatic snapshot unavailable: '+err.message;}),4000);}
+ async function restoreCheckpoint(id){const all=await listSnapshots(),snap=all.find(x=>x.id===id);if(!snap)return publish('Snapshot not found.',true);let data;try{data=C.validateImport(JSON.parse(snap.data));}catch(err){return publish('Snapshot invalid: '+err.message,true);}const yes=confirm(`Restore checkpoint ${snap.at}?\n${data.boards.length} boards, ${data.ideas.length} ideas.\nThe current workspace will be replaced after preserving a safety checkpoint.`);if(!yes)return;try{await saveCheckpoint('before restore');api.restoreWorkspace(data);publish('Checkpoint restored.');render();}catch(err){publish('Restore blocked: '+err.message,true);}}
+ body.addEventListener('submit',async ev=>{const form=ev.target.closest('[data-lab-form]');if(!form)return;ev.preventDefault();const name=form.dataset.labForm,d=Object.fromEntries(new FormData(form).entries());try{
+  if(name==='rule'){if(!board())throw Error('Select a board.');const phrase=U.safe(d.phrase,120);if(!phrase)throw Error('Provide a rule phrase.');mutate(()=>{board().rules.push({id:U.id(),kind:d.kind==='exclude'?'exclude':'include',phrase});},'Mission lock saved.');}
+  if(name==='evidence'){if(!idea())throw Error('Select an idea.');if(!String(d.hypothesis||'').trim())throw Error('A hypothesis is required.');mutate(()=>{idea().experiments=idea().experiments||[];idea().experiments.push({id:U.id(),at:new Date().toISOString(),status:d.status,hypothesis:U.safe(d.hypothesis,1000),method:U.safe(d.method,1000),baseline:U.safe(d.baseline,1000),result:U.safe(d.result,1800),source:U.safe(d.source,800)});C.record(idea(),'experiment.recorded',{status:d.status});},'Experiment record saved; jury score unchanged.');}
+  if(name==='diversity'){if(!board())throw Error('Select a board.');mutate(()=>{board().generationStyle=d.style==='explore'?'explore':'refine';},'Board generation style updated.');}
+  if(name==='compare'){comparison=['pick0','pick1','pick2'].map(k=>d[k]).filter(Boolean).filter((x,n,a)=>a.indexOf(x)===n);if(comparison.length<2)throw Error('Select two different ideas.');render();publish('Comparison updated.');}
+  if(name==='search'){searchQuery=U.safe(d.query,160);render();publish('Search complete.');}
+  if(name==='review'){if(!idea())throw Error('Select an idea.');mutate(()=>{idea().reviews=idea().reviews||[];idea().reviews.push({id:U.id(),at:new Date().toISOString(),originality:Number(d.originality),feasibility:Number(d.feasibility),impact:Number(d.impact),note:U.safe(d.note,1000)});C.record(idea(),'human.review',{count:idea().reviews.length});},'Human review saved separately from jury metrics.');}
+  if(name==='copy'){const origin=idea(),target=state().boards.find(x=>x.id===d.boardId);if(!origin||!target||target.id===origin.boardId)throw Error('Choose a different destination board.');mutate(()=>{const copy=C.normalizeIdea(origin,target.id,[],0,'cross-board copy');copy.sourceLink={boardId:origin.boardId,ideaId:origin.id,title:origin.title,at:new Date().toISOString()};C.record(copy,'copied.from',copy.sourceLink);state().ideas.push(copy);state().selectedBoardId=target.id;state().selectedIdeaId=copy.id;},'Independent root copy created with source receipt.');}
+  if(name==='usage'){remoteAllowed=!!d.allow;requestCap=Math.max(1,Math.min(100,Number(d.cap)||5));render();publish(remoteAllowed?'Hosted model calls authorized for this session.':'Hosted model calls disabled.');}
+ }catch(err){publish(err.message,true);}});
+ body.addEventListener('click',async ev=>{const b=ev.target.closest('[data-lab-action]');if(!b)return;const act=b.dataset.labAction;try{
+  if(act==='close'){close();return;}
+  if(act==='seeds'){close();$('hudStarters').click();return;}
+  if(act==='selected'){if(!idea())throw Error('Select an idea first.');close();$('hudInfo').click();return;}
+  if(act==='trace'){if(!idea())throw Error('Select an idea first.');close();$('hudTrace').click();return;}
+  if(act==='rule-remove'){mutate(()=>{board().rules=rules().filter(x=>x.id!==b.dataset.id);},'Mission lock removed.');return;}
+  if(act==='semantic'){semantic=!semantic;api.setSemantic(semantic?U.semanticEdges(current()):[],semantic);render();publish(semantic?'Shared-term connections shown in the field.':'Ancestry-only view restored.');return;}
+  if(act==='select'){api.selectAcrossBoards(b.dataset.id);render();publish('Selected recorded idea.');return;}
+  if(act==='undo'){const i=idea(),index=Number(b.dataset.index),snap=i?.editSnapshots?.[index];if(!snap)throw Error('Revision unavailable.');if(!confirm('Restore the recorded text fields of '+i.title+'? Descendants and history remain intact.'))return;mutate(()=>{const now=Object.fromEntries(C.FIELDS.map(k=>[k,i[k]]));i.editSnapshots.splice(index,1);i.editSnapshots.push({at:new Date().toISOString(),fields:now});for(const key of C.FIELDS)i[key]=snap.fields[key];C.record(i,'fields.restored',{from:snap.at});},'Fields restored; lineage preserved.');return;}
+  if(act==='checkpoint'){await saveCheckpoint();render();publish('Checkpoint saved.');return;}
+  if(act==='refresh-checkpoints'){await refreshCheckpoints();publish('Checkpoint list refreshed.');return;}
+  if(act==='restore'){await restoreCheckpoint(b.dataset.id);return;}
+  if(act==='workspace-export'){api.exportWorkspace();publish('Workspace JSON download initiated.');return;}
+  if(act==='autopilot-settings'){close();api.openAutoSettings();return;}
+  if(act==='brief'){const i=idea();if(!i)throw Error('Select an idea.');api.exportBrief(U.brief(i,board(),scores(i),api.isGold(i)),i);publish('Candidate brief download initiated.');return;}
+  if(act==='benchmark'){const start=performance.now();const edges=U.semanticEdges(current()),front=U.pareto(current(),scores);const elapsed=+(performance.now()-start).toFixed(2);benchmarkInfo=`Derived ${edges.length} candidate semantic edges and ${front.length} Pareto records in ${elapsed} ms (analysis only; not a measured rendering FPS).`;render();publish('Local derivation measured.');return;}
+ }catch(err){publish(err.message,true);}});
+ function captureEdit(i){i.editSnapshots=i.editSnapshots||[];i.editSnapshots.push({at:new Date().toISOString(),fields:Object.fromEntries(C.FIELDS.map(k=>[k,i[k]]))});if(i.editSnapshots.length>30)i.editSnapshots.shift();}
+ function guard(proposals,b){const bad=proposals.map((p,index)=>({index,result:U.ruleReport(b.rules||[],p)})).filter(x=>!x.result.pass);if(bad.length){const display=bad.slice(0,3).map(x=>`child ${x.index+1}: ${x.result.violations.map(v=>v.reason+' ('+v.rule.phrase+')').join(', ')}`).join('; ');throw Error('Mission-lock check rejected generation: '+display+'. No ideas saved.');}}
+ function noveltyReceipt(ideas,parents){for(const i of ideas){const n=U.novelty(i,parents,C.similarity);C.record(i,'diversity.lexical',{...n,disclaimer:'Lexical measurements, not verified semantic originality.'});}}
+ function beforeModelRequest(provider,inputChars){const local=['ollama','lmstudio','mlx'].includes(provider);if(!local&&!remoteAllowed)throw Error('Hosted requests are disabled. Open Lab → Usage to authorize this session.');if(requestUsed>=requestCap)throw Error('Model request cap reached for this session. Open Lab → Usage to change the cap.');requestUsed++;const receipt={at:new Date().toISOString(),provider,inputEstimate:inputChars||0,outputChars:0,status:'pending'};receipts.push(receipt);return receipt;}
+ function afterModelRequest(receipt,result,error){receipt.status=error?'failed':'returned';receipt.outputChars=String(result||'').length;if(dialog.open&&section==='usage')render();}
+ function refresh(){if(dialog.open)render();}
+ function setSemanticAfterBoard(){if(semantic)api.setSemantic(U.semanticEdges(current()),true);}
+ // Cross-tab changes never overwrite silently, even if the user continues editing in memory.
+ root.addEventListener('storage',event=>{if(event.key==='evolution-rig:state:v1'&&event.newValue!==event.oldValue){crossTabConflict=true;checkpointStatus='Another tab changed the workspace; writes from this tab are blocked until reloaded.';if(dialog.open)render();}});
+ root.addEventListener('pagehide',()=>{clearTimeout(checkpointTimer);}, {once:true});
+ return{open,refresh,guard,captureEdit,noveltyReceipt,beforeModelRequest,afterModelRequest,scheduleCheckpoint,saveCheckpoint,refreshCheckpoints,setSemanticAfterBoard,get crossTabConflict(){return crossTabConflict;}};
+}
+root.RigLab={createLab};
 })(globalThis);
 
 </script>
@@ -1179,6 +1436,7 @@ const PRESETS={
 const defaultPrefs={stepsPerHour:12,secondsBetween:30,populationCap:24,pruneThreshold:7};
 let volatile=false, selectedView='studio', boardInDialog=null, editingId=null, picked=[], mode='idle', busy=false, autoTimer=null, autoStep=0, runtimeLogs=[];
 let calibrator=C.anchors();
+let lab=null; // Initialized after original app functions, before first render.
 // The observatory is a second, non-authoritative view onto the existing graph.
 // No board data or model credentials are copied into the visualization.
 const observatory=globalThis.RigObservatory.createObservatory($('atlasCanvas'),setSelection);
@@ -1280,7 +1538,8 @@ function saveKey(provider,key,persist){
 }
 function persist(options={}){
  if(!options.preserveJury)invalidateJury();
- try{localStorage.setItem(STORE,JSON.stringify(state));volatile=false;$('storageNotice').textContent='Local storage active. Export JSON for backup.';return true;}
+ if(lab?.crossTabConflict){volatile=true;$('storageNotice').textContent='Another tab changed your workspace; this tab cannot save. Export your edits and reload.';return false;}
+ try{localStorage.setItem(STORE,JSON.stringify(state));volatile=false;$('storageNotice').textContent='Local storage active. Export JSON for backup.';if(!options.preserveJury)lab?.scheduleCheckpoint();return true;}
  catch(e){volatile=true;$('storageNotice').textContent='Storage blocked or full: current changes may be lost on reload. Export JSON now.';return false;}
 }
 function persistConfig(){
@@ -1307,7 +1566,7 @@ function getJurySnapshot(){
 }
 function getScores(idea){return getJurySnapshot().verdicts.get(idea.id)||C.judge(idea,currentIdeas(),calibrator);}
 function getGold(){return getJurySnapshot().gold;}
-function setSelection(id){if(!currentIdeas().some(i=>i.id===id))return;state.selectedIdeaId=id;persist({preserveJury:true});renderHeader();renderGraph();renderInspector();renderJury();renderObservatory();}
+function setSelection(id){if(!currentIdeas().some(i=>i.id===id))return;state.selectedIdeaId=id;persist({preserveJury:true});renderHeader();renderGraph();renderInspector();renderJury();renderObservatory();lab?.refresh();}
 function renderHeader(){
  const b=currentBoard(), arr=currentIdeas(), active=activeIdeas(), gold=getGold();
  $('boardKicker').textContent=b?'BOARD / '+b.id.slice(0,11).toUpperCase():'BOARD / NONE';
@@ -1423,6 +1682,7 @@ function editIdea(event){event.preventDefault();const data=Object.fromEntries(ne
  if(!String(data.title||'').trim())return notify('Title is required.',true);
  if(boardInDialog!==state.selectedBoardId)return notify('Board changed; close and reopen the editor.',true);
  if(editingId){const idea=selectedIdea();if(!idea || idea.id!==editingId)return notify('Edited node is no longer selected.',true);
+ lab?.captureEdit(idea);
  for(const f of C.FIELDS)idea[f]=String(data[f]||'').trim().slice(0,f==='title'?160:2000);
  C.record(idea,'fields.edited',{fields:C.FIELDS});invalidateJury();verdictReceipt(idea,'jury.recomputed-after-edit');persist();closeIdeaDialog();renderAll();notify('Idea updated; jury recomputed.');}
  else{const added=addIdeas([data],[],'manual seed');closeIdeaDialog();notify(added.length?'Root seed created.':'No idea created.',!added.length);}
@@ -1508,6 +1768,7 @@ async function modelCall(system,user,signal,structuredSchema=null){
    if(type==='azure')headers['api-key']=key;else if(key)headers.Authorization='Bearer '+key;
    body={model,messages:[{role:'system',content:system},{role:'user',content:user}],temperature:.75,max_tokens:1800};
  }
+ const receipt=lab?.beforeModelRequest(type,system.length+user.length);
  const controller=new AbortController();const cancel=()=>controller.abort();if(signal)signal.addEventListener('abort',cancel,{once:true});const timeout=setTimeout(()=>controller.abort(),65000);
  try{
  const res=await fetch(url.href,{method:'POST',headers,body:JSON.stringify(body),signal:controller.signal,cache:'no-store'});
@@ -1516,8 +1777,9 @@ async function modelCall(system,user,signal,structuredSchema=null){
  let content=type==='ollama'?json.message?.content:type==='anthropic'?json.content?.map(x=>x.text||'').join('\n'):json.choices?.[0]?.message?.content;
  if(Array.isArray(content))content=content.map(x=>x.text||'').join('\n');
  if(typeof content!=='string'||!content.trim())throw Error('Model returned no readable content.');
+ lab?.afterModelRequest(receipt,content,null);
  return content;
- }catch(e){if(e.name==='AbortError')throw Error('Model request cancelled or timed out.');if(e instanceof TypeError)throw Error('Network/CORS failure. Verify endpoint, local server state and permitted browser Origin.');throw e;}
+ }catch(e){if(receipt&&receipt.status==='pending')lab?.afterModelRequest(receipt,'',e);if(e.name==='AbortError')throw Error('Model request cancelled or timed out.');if(e instanceof TypeError)throw Error('Network/CORS failure. Verify endpoint, local server state and permitted browser Origin.');throw e;}
  finally{clearTimeout(timeout);if(signal)signal.removeEventListener('abort',cancel);}
 }
 function parseModelIdeas(content,requested){
@@ -1534,7 +1796,7 @@ function parseModelIdeas(content,requested){
  return ideas;
 }
 async function generateChildren(parent,partner,n,sourceTag){
- if(config.provider==='offline')return C.localIdeas(parent,partner,currentBoard().objective,n,currentIdeas().length+autoStep);
+ if(config.provider==='offline')return currentBoard().generationStyle==='explore'?globalThis.RigUplift.exploreIdeas(parent,partner,currentBoard().objective,n,currentIdeas().length+autoStep):C.localIdeas(parent,partner,currentBoard().objective,n,currentIdeas().length+autoStep);
  const system=`You are a rigorous idea variation engine. Generate exactly ${n} materially distinct new ideas, not scores. Respond with ONLY valid JSON: {"ideas":[{"title":"","problem":"","audience":"","mechanism":"","difference":"","plan":"","validation":"","benefit":"","constraints":"","risks":""}]}. Every field must be a useful concise string. Match the user's goal; include a minimum testable build and falsifiable test. No marketing slogans; avoid unsupported factual claims. The code, not you, computes all scores.`;
  const brief={goal:currentBoard().objective,mutation:partner?'Crossbreed the two distinct parent ideas into hybrid descendants. Preserve both contributions.':'Branch from one parent with different operating mechanisms and constraints.',parents:[parent,partner].filter(Boolean).map(p=>Object.fromEntries(C.FIELDS.map(k=>[k,p[k]])))};
  const output=await modelCall(system,JSON.stringify(brief),null,config.provider==='ollama'?ideaSchema(n):null);return parseModelIdeas(output,n);
@@ -1546,7 +1808,9 @@ async function branchIdea(parentId,partnerId=null,n=3,autonomous=false){
  busy=true;renderHeader();try{
   const proposals=await generateChildren(parents[0],parents[1]||null,n,autonomous?'autopilot':'manual');
   if(state.selectedBoardId!==board.id)throw Error('Board changed while generating; results discarded');
+  lab?.guard(proposals,board);
   const added=addIdeas(proposals,ids,routeAtStart==='offline'?'procedural':'model: '+routeAtStart);
+  lab?.noveltyReceipt(added,parents);
   log(`${autonomous?'Autopilot':'Manual'} ${parents.length>1?'crossbreeding':'branching'}: ${ids.join(' + ')} -> ${added.map(i=>i.id).join(', ')||'none'} (${routeAtStart})`);
   if(autonomous){const removed=prune();if(removed.length){persist();log('Archived low-priority leaves: '+removed.join(', '));}}
   persist();renderAll();if(!autonomous)notify(added.length+' descendants generated.');return added;
@@ -1578,7 +1842,7 @@ async function probeRouter(){saveRouterSettings();if(config.provider==='offline'
  const valid=response.trim().length>0;log('Endpoint probe '+(valid?'succeeded':'returned empty')+' for '+config.provider+'.');notify(valid?'Model endpoint responded.':'Endpoint response was empty.',!valid);}
  catch(e){log('Endpoint probe failed: '+e.message);notify('Probe failed: '+e.message,true);}finally{$('probeRouter').disabled=false;}
 }
-function renderAll(){renderBoardList();renderHeader();renderAnchors();renderGraph();renderInspector();renderJury();renderObservatory();renderRuntimeLog();}
+function renderAll(){renderBoardList();renderHeader();renderAnchors();renderGraph();renderInspector();renderJury();renderObservatory();renderRuntimeLog();lab?.setSemanticAfterBoard();lab?.refresh();}
 function changeView(view){if(!['studio','jury','autopilot','models'].includes(view))return;selectedView=view;
  for(const el of document.querySelectorAll('.view'))el.hidden=el.id!==view;
  for(const tab of document.querySelectorAll('.tab'))tab.setAttribute('aria-selected',String(tab.dataset.view===view));
@@ -1722,6 +1986,20 @@ $('provider').addEventListener('change',e=>switchProvider(e.target.value));$('sa
 $('forgetKey').addEventListener('click',()=>{saveKey(config.provider,'',false);$('apiKey').value='';config.persistKey=false;if(config.profiles[config.provider])config.profiles[config.provider].persistKey=false;persistConfig();renderProvider();notify('Key cleared from session and localStorage for current provider.');});
 window.addEventListener('resize',()=>{if(selectedView==='studio'){requestAnimationFrame(drawEdges);observatory.resize();}});
 window.addEventListener('beforeunload',()=>{clearTimeout(autoTimer);});
+// The Lab is an opt-in view of the existing authority/state, not a parallel database.
+lab=globalThis.RigLab.createLab({
+ getState:()=>state,currentBoard,currentIdeas,selected:selectedIdea,score:getScores,isGold:i=>getGold().has(i.id),
+ invalidate:invalidateJury,persist,render:renderAll,autoStep:()=>autoStep,
+ selectAcrossBoards(id){const target=state.ideas.find(i=>i.id===id);if(!target)return false;
+  if(target.boardId!==state.selectedBoardId){stopAuto('Board changed via global search');state.selectedBoardId=target.boardId;picked=[];atlasDepthChoice=null;}
+  state.selectedIdeaId=id;persist({preserveJury:true});renderAll();return true;
+ },
+ restoreWorkspace(snapshot){stopAuto('Stopped to restore a checkpoint');state=C.validateImport(snapshot);atlasDepthChoice=null;picked=[];if(!persist())throw Error('Could not save restored workspace');renderAll();},
+ setSemantic(edges,enabled){observatory.setSemanticEdges(edges,enabled);},
+ exportWorkspace:downloadWorkspace,
+ exportBrief(content,i){exportBlob(new Blob([content],{type:'text/markdown;charset=utf-8'}),C.slug(i.title)+'-candidate-brief.md');},
+ openAutoSettings(){if(document.body.classList.contains('mode-immersive'))$('hudWorkbench').click();$('viewTabs').querySelector('[data-view="autopilot"]').click();$('startAuto').focus({preventScroll:true});}
+});
 // Deliberate public pure-core diagnostics, with no access to credentials or private state.
 globalThis.EvolutionRigTest={core:C,calibration:()=>C.anchors(),getPublicState:()=>({boards:state.boards.length,ideas:state.ideas.length,provider:config.provider,mode}),getAtlasDiagnostics:()=>observatory.diagnostics()};
 if(window.innerWidth<=760 && state.boards.length)$('boardComposer').open=false;
@@ -1808,6 +2086,40 @@ if(!calibrator.passes)notify('Scoring reference gate failed. Gold export is disa
 @media(max-width:800px){#guideDialog{width:calc(100vw - 18px);max-height:calc(100dvh - 20px)}.guide-head{padding:16px 18px 14px;gap:10px}.guide-head h2{font-size:31px;margin:4px 0 6px}.guide-head p{font-size:11px}.guide-grid{grid-template-columns:1fr;padding:14px 14px 16px}.guide-foot{display:grid;padding:11px 14px}.guide-foot p{max-width:none}}
 @media(max-width:450px){.guide-head p{display:none}.guide-head h2{font-size:27px}.guide-head .guide-close span{display:none}.guide-card h3{font-size:16px}.guide-card p{font-size:11px}}
 @media(prefers-reduced-motion:reduce){#guideDialog *,#guideDialog *::before,#guideDialog *::after{animation:none!important;transition:none!important}}
+
+</style>
+<style>
+/* Evolution Lab: explicit opt-in modal. No additional permanent sidebars. */
+#rigLab{position:fixed;inset:0;margin:auto;padding:0;width:min(1150px,calc(100vw - 26px));height:min(89dvh,870px);max-width:none;max-height:none;color:#eaf1ff;background:#080f22;border:1px solid #6483b0;border-radius:14px;box-shadow:0 26px 95px #000c;overflow:hidden}
+#rigLab::backdrop{background:rgba(1,4,13,.85);backdrop-filter:blur(9px)}
+.rig-lab-shell{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;overflow:hidden}
+.rig-lab-head{display:flex;justify-content:space-between;align-items:start;gap:18px;padding:22px clamp(16px,3vw,32px) 14px;background:radial-gradient(circle at 15% 0,rgba(120,134,255,.24),transparent 37%),linear-gradient(115deg,#101e3d,#0a1329);border-bottom:1px solid #4f66906e}
+.rig-lab-head h2{font:400 clamp(26px,3vw,42px)/1.1 Georgia,serif;color:#f8e9ce;margin:4px 0}.rig-lab-head p{font-size:12px;color:#bfd1ea;margin:5px 0}.lab-overline,.rig-lab-card>span{font:700 10px var(--mono);letter-spacing:.12em;color:#e5bd7f}
+.rig-lab-nav{display:flex;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:8px 13px;background:#0a1730;border-bottom:1px solid #44608980}
+.rig-lab-nav button{font:700 11px var(--mono);padding:9px 13px;border-radius:4px;white-space:nowrap;background:transparent;border:1px solid transparent;color:#adc3e0;min-height:35px}
+.rig-lab-nav button[aria-current=true]{background:#d1b280;color:#152036;border-color:#edcf9c}
+.rig-lab-body{padding:clamp(15px,2.6vw,30px);overflow:auto;min-width:0;background:radial-gradient(circle at 92% 0,rgba(109,142,243,.12),transparent 34%),#091329}
+.rig-lab-body h3{font:400 clamp(23px,2.6vw,34px)/1.14 Georgia,serif;color:#f4e4c8;margin:0 0 11px}
+.rig-lab-body p{color:#bbcee8;font-size:13px;line-height:1.65}.rig-lab-body strong{color:#f0dfbf}
+.rig-lab-body label{color:#ccdaec}.rig-lab-body input,.rig-lab-body textarea,.rig-lab-body select{background:#0b1834;color:#f4f7ff;border-color:#5875a3}
+.rig-lab-body input[type=checkbox]{width:auto}.rig-lab-body button{border-color:#6079a8;background:#1d3052;color:#f2e8d8}.rig-lab-body button.primary{background:#d6bd8a;color:#142132}.rig-lab-body button:focus-visible{outline:2px solid #eace91;outline-offset:2px}
+.rig-lab-body .lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rig-lab-body .lab-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.rig-lab-body .lab-card{padding:16px;background:linear-gradient(145deg,rgba(24,38,68,.93),rgba(15,26,49,.92));border:1px solid #45618a;border-radius:9px;min-width:0}
+.rig-lab-body .lab-card h4{font:600 17px var(--sans);color:#f1e6d2;margin:2px 0 9px;overflow-wrap:anywhere}
+.rig-lab-body .lab-card p{font-size:12px;margin:4px 0 9px}.rig-lab-body .lab-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 18px}
+.rig-lab-body .lab-note{border-left:3px solid #d0b27e;padding:10px 14px;background:#202b4380;margin:12px 0;color:#c6d5e7;line-height:1.55;font-size:12px}
+.rig-lab-body .lab-tag{display:inline-block;font:700 10px var(--mono);letter-spacing:.06em;color:#d3cba9;border:1px solid #536d95;border-radius:99px;padding:4px 8px;margin:3px}
+.rig-lab-body .lab-rows{display:grid;gap:9px}.rig-lab-body .lab-rows .lab-row{border-bottom:1px solid #4b61856b;padding:9px 0;overflow-wrap:anywhere}
+.rig-lab-body .lab-form{display:grid;gap:12px}.rig-lab-body .lab-form textarea{min-height:62px}
+.rig-lab-body .lab-mono{font:12px/1.55 var(--mono);color:#d0def1;white-space:pre-wrap;overflow-wrap:anywhere}
+.rig-lab-body .lab-table-wrap{overflow:auto;max-width:100%}.rig-lab-body table{width:100%;border-collapse:collapse;color:#d5e0f1;font-size:12px}.rig-lab-body th,.rig-lab-body td{padding:10px;border-bottom:1px solid #49658d;text-align:left;vertical-align:top;min-width:110px;overflow-wrap:anywhere}
+.rig-lab-body .lab-mini{font-size:11px;color:#9fb3d1}.rig-lab-body .lab-plot{position:relative;height:285px;margin:14px 0 5px;border:1px solid #50658e;border-radius:9px;background:linear-gradient(0deg,transparent 49%,#748bb520 50%,transparent 51%),linear-gradient(90deg,transparent 49%,#748bb520 50%,transparent 51%),#0c1b35}
+.rig-lab-body .lab-point{position:absolute;transform:translate(-50%,50%);min-width:24px;min-height:24px;padding:0;border:2px solid #a6cedf;border-radius:50%;background:#58769b;box-shadow:0 0 0 3px #091329}
+.rig-lab-body .lab-point.frontier{background:#eac28b;border-color:#ffedcb;box-shadow:0 0 12px #d6b97b55}
+.rig-lab-body .lab-point:focus-visible{outline:3px solid #fff}.rig-lab-body .lab-axis{font:10px var(--mono);color:#8da9d4}
+.rig-lab-foot{display:flex;justify-content:space-between;gap:10px;padding:10px 16px;font:10px/1.4 var(--mono);color:#a9c2de;border-top:1px solid #45618a;background:#0b1830}
+@media(max-width:770px){#rigLab{width:calc(100vw - 12px);height:calc(100dvh - 12px);border-radius:7px}.rig-lab-head{padding:15px 14px 11px}.rig-lab-head h2{font-size:28px}.rig-lab-head p{font-size:11px}.rig-lab-body{padding:14px}.rig-lab-body .lab-grid,.rig-lab-body .lab-grid.three{grid-template-columns:1fr}.rig-lab-foot{display:grid;gap:3px}.rig-lab-head>button{white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){#rigLab *,#rigLab *::before,#rigLab *::after{animation:none!important;transition:none!important}}
 
 </style>
 <script>

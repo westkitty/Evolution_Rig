@@ -1,0 +1,24 @@
+{
+  "60": {
+    "initial_load_ms": 250.2,
+    "graph_filter_median_ms": 1.2,
+    "graph_filter_runs_ms": [
+      1.5,
+      1.2,
+      1.1,
+      1.1
+    ],
+    "rendered_cards": 60
+  },
+  "180": {
+    "initial_load_ms": 504.3,
+    "graph_filter_median_ms": 3.8,
+    "graph_filter_runs_ms": [
+      3.9,
+      4.4,
+      3.6,
+      3.5
+    ],
+    "rendered_cards": 180
+  }
+}

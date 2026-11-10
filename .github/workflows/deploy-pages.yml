@@ -1,4 +1,4 @@
-name: Deploy Evolution Rig to GitHub Pages
+name: Verify, build and deploy Evolution Rig
 on:
   push:
     branches: [main]
@@ -11,20 +11,49 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
-  deploy:
+  test-and-deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify standalone site
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify deterministic compiled HTML
         run: |
+          python3 build.py
+          git diff --exit-code -- index.html
           test -s index.html
-          grep -qi '<!doctype html>' index.html
+          if grep -Eiq 'crochet|yarn|stitch' index.html; then echo 'Forbidden legacy content detected'; exit 1; fi
+      - name: Test pure core and uplift
+        run: node --test tests/test_core.js tests/test_starters.js tests/test_uplift.js
+      - name: Install browser QA tools
+        run: |
+          python3 -m pip install playwright==1.57.0
+          python3 -m playwright install --with-deps chromium
+      - name: Exercise browser journeys
+        run: |
+          python3 tests/test_browser.py
+          python3 tests/test_observatory.py
+          python3 tests/test_immersive.py
+          python3 tests/test_starters.py
+          python3 tests/test_guide.py
+          python3 tests/test_uplift_browser.py
+          python3 tests/test_usage_browser.py
+          python3 tests/test_rebuild.py
+          python3 tests/test_real_origin.py
+      - name: Publish only the standalone app
+        run: |
+          mkdir -p publish
+          cp index.html publish/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: publish
       - id: deployment
         uses: actions/deploy-pages@v4
