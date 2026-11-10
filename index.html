@@ -178,10 +178,137 @@ label{font-size:11px;color:#bfd1c8;letter-spacing:.065em}
 @media(max-width:520px){.depth-bar{padding:11px 15px;gap:9px}.depth-bar label{width:100%}.depth-bar input[type=range]{min-width:120px}.depth-bar output{min-width:75px}}
 
 </style>
+<style>
+/* Evolution Rig / The Causal Field. Persistent interface <=30% of the viewport
+   in default immersive mode; deeper editors open on deliberate request. */
+.hud-scrim[hidden]{display:none!important}
+.immersion-hud,.hud-dock{display:none}
+.resume-immersion{border:1px solid #bbac84;background:#2e382c;color:#efe4c8;font:700 11px var(--mono);letter-spacing:.08em;white-space:nowrap}
+#atlasCloseNotebook{display:none}
+body.mode-immersive{margin:0;width:100%;height:100dvh;overflow:hidden;background:#061115}
+body.mode-immersive .app{display:block;width:100%;height:100dvh;min-height:0}
+body.mode-immersive .main{width:100%;height:100dvh;min-height:0;margin:0;padding:0}
+body.mode-immersive .main>.masthead,
+body.mode-immersive .main>.summary,
+body.mode-immersive .main>.tabs,
+body.mode-immersive .main>footer,
+body.mode-immersive #studio>.workbar,
+body.mode-immersive #studio>.workbench-divider,
+body.mode-immersive #studio>.grid2{display:none!important}
+body.mode-immersive .view#studio{display:block;position:static;margin:0;padding:0}
+body.mode-immersive .observatory{position:fixed;inset:0;z-index:1;border:0;box-shadow:none;margin:0;min-height:0;overflow:hidden;background:#061317}
+body.mode-immersive .observatory:before{left:19px;top:80px;opacity:.48;z-index:2}
+body.mode-immersive .obs-head{display:none}
+body.mode-immersive .obs-grid{display:block;position:absolute;inset:0;min-height:0;height:100%;width:100%}
+body.mode-immersive .atlas-field{height:100%;width:100%;min-height:0;overflow:hidden}
+body.mode-immersive .atlas-field canvas{height:100%;min-height:0;width:100%;cursor:grab}
+body.mode-immersive .atlas-hud{z-index:3;left:20px;right:20px;top:78px;pointer-events:none}
+body.mode-immersive .atlas-hud .eyebrow{display:none}
+body.mode-immersive .atlas-readout{font-size:10px;color:#b1c3ac;text-shadow:0 1px 8px #061317;text-align:right;margin-left:auto;max-width:220px}
+body.mode-immersive .atlas-key{display:none}
+body.mode-immersive .obs-foot{display:none}
+body.mode-immersive .depth-bar{position:fixed;z-index:15;bottom:calc(55px + env(safe-area-inset-bottom,0px));left:0;right:0;height:46px;min-height:0;width:100%;display:flex;align-items:center;gap:12px;padding:7px clamp(14px,2vw,28px);margin:0;border:0;border-top:1px solid #6486785e;background:linear-gradient(90deg,#071718f2,#10221fe9);backdrop-filter:blur(14px)}
+body.mode-immersive .depth-bar label{min-width:0;margin:0;color:#d3b78a}
+body.mode-immersive .depth-bar input[type=range]{width:auto;min-width:30px;flex:1;height:20px}
+body.mode-immersive .depth-bar output{font-size:10px;min-width:105px;margin:0;color:#c8d2c2}
+body.mode-immersive .depth-bar button{font-size:10px;white-space:nowrap;padding:6px 8px}
+body.mode-immersive .immersion-hud{display:flex;align-items:center;gap:14px;position:fixed;z-index:50;top:0;left:0;right:0;height:61px;padding:0 clamp(14px,2vw,29px);border-bottom:1px solid #7892825e;background:linear-gradient(94deg,#0c1a1ce8,#102420e8 50%,#08181ce8);backdrop-filter:blur(18px);box-shadow:0 2px 22px #0007}
+.hud-signature{display:flex;gap:10px;align-items:center;white-space:nowrap;font:700 10px var(--mono);letter-spacing:.15em;color:#efc68a}
+.hud-sigil{font:400 29px/1 Georgia,serif;color:#e2c08e;text-shadow:0 0 30px #b3b26e6b;transform:rotate(45deg)}
+.hud-wordmark span{color:#b7c8b5}
+.hud-board{height:36px;max-width:min(31vw,360px);display:flex;align-items:center;gap:8px;padding:5px 10px;border:1px solid #516457;background:#122622c7;border-radius:3px;color:#f3e2c5;font:600 12px var(--sans)}
+.hud-board:hover:not(:disabled){background:#224038}
+.hud-board span#hudBoardName{display:block;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hud-prefix{color:#afc1ac;font:700 9px var(--mono);letter-spacing:.09em}
+.hud-flex{flex:1;min-width:6px}
+.hud-telemetry{display:flex;align-items:center;gap:10px;white-space:nowrap;font:10px var(--mono);color:#bad0be}
+.hud-telemetry i{display:block;width:3px;height:3px;border-radius:50%;background:#cbb38e}
+.hud-button{min-height:36px;white-space:nowrap;padding:8px 12px;border-radius:3px;border:1px solid #728779;background:#142923;color:#dceadc;font:700 11px var(--mono)}
+.hud-button-primary{border-color:#e7bf86;background:#d2b17f;color:#10211b}
+.hud-button-primary:hover:not(:disabled){background:#f0d39b}
+body.mode-immersive .hud-dock{display:flex;align-items:center;justify-content:space-between;gap:18px;position:fixed;z-index:40;bottom:0;left:0;right:0;height:calc(55px + env(safe-area-inset-bottom,0px));padding:0 clamp(14px,2vw,29px) env(safe-area-inset-bottom,0px);background:#08171adf;border-top:1px solid #526e606b;backdrop-filter:blur(16px)}
+.hud-dock-heading{display:grid;gap:2px;min-width:200px}
+.hud-dock-heading b{font:700 10px var(--mono);letter-spacing:.17em;color:#ebc58f}
+.hud-dock-heading span{font:11px var(--sans);color:#afc0b6}
+.hud-dock-actions{display:flex;align-items:center;justify-content:center;gap:6px}
+.hud-dock-actions button{min-width:46px;min-height:38px;border:1px solid #587266;border-radius:3px;background:#172b29;color:#f0e2cc;padding:5px 10px;font:700 11px var(--mono)}
+.hud-dock-actions button:hover:not(:disabled){background:#324c40;border-color:#eac88d}
+.hud-dock-actions button[aria-expanded=true]{border-color:#dfb67a;background:#524936;color:#ffe7b1}
+.hud-dock-end{font:9px var(--mono);letter-spacing:.12em;color:#91b7ad;text-align:right;min-width:135px}
+body.mode-immersive .atlas-notebook{display:none;position:fixed;z-index:45;right:16px;top:82px;bottom:auto;left:auto;width:min(380px,29vw);max-height:min(43vh,400px);overflow-y:auto;padding:17px 17px 14px;box-shadow:0 20px 75px #000b;border:1px solid #b6a27875;background:linear-gradient(156deg,#172b28f8,#0b2024f9);border-radius:3px;gap:10px}
+body.mode-immersive.ui-notes-open .atlas-notebook{display:flex;flex-direction:column}
+body.mode-immersive .atlas-notebook::before{right:17px;top:7px}
+body.mode-immersive .atlas-focus h3{font-size:clamp(19px,2vw,27px);margin:7px 0}
+body.mode-immersive .atlas-evidence strong{font-size:23px}
+body.mode-immersive .atlas-evidence>div{padding:7px}
+body.mode-immersive .atlas-recent{margin-top:0}
+body.mode-immersive #atlasCloseNotebook{display:flex;align-self:flex-start;gap:5px;align-items:center;border:0;border-bottom:1px solid #9b967553;background:transparent;border-radius:0;padding:4px 0 7px;color:#d9c4a4;font:600 11px var(--mono)}
+body.mode-immersive .rail{display:flex;flex-direction:column;gap:21px;position:fixed;z-index:210;inset:0 auto 0 0;width:min(368px,calc(100vw - 22px));height:100dvh;min-width:0;max-width:100%;overflow-y:auto;padding:24px 20px;background:#101f23;box-shadow:25px 0 90px #0009;border-right:1px solid #d0ae7c5e;transform:translateX(-103%);visibility:hidden;pointer-events:none;transition:transform .22s ease,visibility .22s}
+body.mode-immersive.ui-boards-open .rail{transform:translateX(0);visibility:visible;pointer-events:auto}
+body.mode-immersive .hud-scrim{display:block;position:fixed;inset:0;z-index:190;background:#000b;backdrop-filter:blur(3px)}
+body.mode-immersive .hud-scrim[hidden]{display:none!important}
+body.mode-immersive .rail .create-board-details>summary{display:list-item}
+body.mode-immersive .rail .create-board-details form{margin-top:11px}
+body.mode-immersive .rail .board-list{max-height:25vh}
+body.mode-immersive .toast{bottom:calc(112px + env(safe-area-inset-bottom,0px));z-index:300}
+@media(max-width:1190px){.hud-dock-end{display:none}.hud-dock-heading{min-width:0}body.mode-immersive .atlas-notebook{width:min(350px,31vw)}}
+@media(max-width:850px){.hud-signature .hud-wordmark{display:none}.hud-telemetry{display:none}.hud-board{max-width:48vw}.hud-dock-heading span{display:none}.hud-dock-heading{min-width:0}body.mode-immersive .atlas-notebook{width:min(330px,44vw)}}
+@media(max-width:600px){
+ body.mode-immersive .immersion-hud{height:53px;padding:0 11px;gap:7px}
+ .hud-signature{gap:0}.hud-sigil{font-size:22px}.hud-prefix{display:none}
+ .hud-board{flex:1;min-width:0;max-width:none;height:35px;gap:4px;padding:4px 7px}
+ .hud-board span#hudBoardName{font-size:11px;max-width:100%}
+ .hud-flex{display:none}
+ .hud-button{min-height:35px;padding:5px 8px;font-size:10px}
+ #hudWorkbench{font-size:0;min-width:42px}#hudWorkbench span{font-size:17px}
+ .hud-dock-heading{display:none}
+ body.mode-immersive .hud-dock{justify-content:center;height:calc(51px + env(safe-area-inset-bottom,0px));padding:0 8px env(safe-area-inset-bottom,0px)}
+ .hud-dock-actions{width:100%;gap:5px;justify-content:space-evenly}
+ .hud-dock-actions button{flex:1;min-width:0;max-width:100px;height:39px;font-size:11px;padding:5px 7px}
+ body.mode-immersive .depth-bar{bottom:calc(51px + env(safe-area-inset-bottom,0px));height:48px;min-height:0;padding:5px 10px;gap:7px;flex-wrap:nowrap}
+ body.mode-immersive .depth-bar label{display:none}
+ body.mode-immersive .depth-bar output{font-size:9px;min-width:77px}
+ body.mode-immersive .depth-bar button{min-width:0;font-size:9px;padding:5px 6px}
+ body.mode-immersive .atlas-hud{top:64px;left:14px;right:14px}
+ body.mode-immersive .observatory:before{top:70px;left:10px}
+ body.mode-immersive .atlas-readout{font-size:9px;max-width:180px}
+ body.mode-immersive .atlas-notebook{top:65px;right:9px;width:calc(100vw - 18px);max-height:32vh;min-height:0;padding:12px;gap:8px}
+ body.mode-immersive .atlas-evidence strong{font-size:20px}
+ body.mode-immersive .atlas-focus h3{font-size:20px}
+ body.mode-immersive .rail{width:calc(100vw - 12px);padding:17px}
+}
+@media(max-width:350px){#hudNewSeed{font-size:0;min-width:36px}#hudNewSeed::before{content:'+';font-size:19px}body.mode-immersive .depth-bar output{min-width:57px;font-size:8px}}
+@media(max-height:650px){body.mode-immersive .immersion-hud{height:46px}body.mode-immersive .hud-dock{height:calc(43px + env(safe-area-inset-bottom,0px))}body.mode-immersive .depth-bar{bottom:calc(43px + env(safe-area-inset-bottom,0px));height:39px;padding-top:2px;padding-bottom:2px}body.mode-immersive .atlas-hud{top:55px}body.mode-immersive .observatory:before{top:56px}body.mode-immersive .atlas-notebook{top:55px;max-height:35vh}}
+@media(prefers-reduced-motion:reduce){body.mode-immersive .rail{transition:none!important}body.mode-immersive .atlas-notebook{animation:none!important}}
+/* The only empty-state annotation: this is a doorway, not manufactured data. */
+.field-prologue{display:none}
+body.mode-immersive .field-prologue:not([hidden]){display:flex;position:fixed;z-index:10;left:clamp(27px,3vw,52px);bottom:145px;flex-direction:column;gap:11px;width:min(390px,34vw);padding:20px 22px 18px;background:linear-gradient(115deg,#112420ee,#0b1b1ccf);border-left:2px solid #caaa7c;border-top:1px solid #83917b50;box-shadow:14px 16px 55px #0107076e;backdrop-filter:blur(7px);pointer-events:auto}
+.field-prologue-label{color:#d6b988;font:700 10px var(--mono);letter-spacing:.16em}
+.field-prologue h2{font:400 clamp(24px,2.6vw,37px)/1.08 var(--serif);letter-spacing:-.04em;color:#f2e2c6}
+.field-prologue p{font-size:12px;line-height:1.55;color:#a9c1b4;max-width:33ch;margin:0}
+.field-prologue button{align-self:flex-start;color:#e9c58f;background:transparent;border:1px solid #ac926d;padding:8px 11px;font:700 10px var(--mono);border-radius:2px}
+@media(max-width:1299px),(max-height:849px){body.mode-immersive .field-prologue:not([hidden]){display:none}}
+/* Short landscape: retain actual actions instead of converting field into toolbars. */
+@media(max-height:530px){
+ body.mode-immersive .immersion-hud{height:38px}
+ body.mode-immersive .hud-dock{height:33px;padding-bottom:0}
+ body.mode-immersive .depth-bar{height:28px;bottom:33px;padding:2px 12px;gap:5px}
+ body.mode-immersive .atlas-readout{display:none}
+ body.mode-immersive .observatory:before{top:45px}
+ body.mode-immersive .atlas-notebook{top:45px;max-height:35vh}
+ .hud-button{min-height:29px;padding-top:3px;padding-bottom:3px}
+ .hud-board{height:29px}
+ .hud-dock-actions button{height:29px;min-height:29px}
+ body.mode-immersive .depth-bar input[type=range]{height:14px}
+ body.mode-immersive .depth-bar button{padding:3px 6px}
+}
+@media(max-height:330px){body.mode-immersive .depth-bar{display:none}}
+
+</style>
 </head>
-<body>
+<body class="mode-immersive">
 <div class="app">
-<aside class="rail" aria-label="Boards and workspace controls">
+<aside class="rail" id="workspaceRail" aria-label="Boards and workspace controls">
   <div class="brand"><div class="brand-icon" aria-hidden="true"><i></i></div><div><strong>EVOLUTION RIG</strong><small>AN INSTRUMENT FOR POSSIBILITIES</small></div></div>
   <section class="rail-section"><div class="eyebrow">01 / Boards</div><div id="boardList" class="board-list" role="list" aria-label="Available boards"></div></section>
   <section class="rail-section"><div class="eyebrow">New independent board</div><details class="create-board-details" id="boardComposer" open><summary>Create a board</summary>
@@ -191,15 +318,35 @@ label{font-size:11px;color:#bfd1c8;letter-spacing:.065em}
   <div class="rail-note"><strong>Private by default.</strong> Boards and ideas stay in this browser storage. There is no service or account. Export JSON periodically; browser storage can be cleared. Model calls leave the device only if you explicitly choose a remote provider. <div id="storageNotice" class="tiny-note" style="margin-top:9px"></div></div>
 </aside>
 <main class="main" id="main">
-  <header class="masthead"><div><div class="eyebrow" id="boardKicker">BOARD / NONE</div><h1 id="boardTitle">Create a board to begin.</h1><p id="boardObjective" class="goal">Define a goal, grow candidate ideas, compare them with an inspectable jury and export a strong candidate as a project.</p></div><div class="status-ribbon" id="autoStatus"><span class="status-dot" id="autoDot"></span><span id="autoStatusLabel">AUTOPILOT / IDLE</span></div></header>
+  <div class="immersion-hud" id="immersionHud" role="toolbar" aria-label="Causal field operations">
+    <div class="hud-signature" aria-hidden="true"><span class="hud-sigil">◇</span><span class="hud-wordmark">E<span>VOLUTION</span> RIG</span></div>
+    <button type="button" id="hudBoards" class="hud-board" aria-label="Open board switcher and workspace controls" aria-controls="workspaceRail" aria-expanded="false"><span class="hud-prefix">FIELD /</span><span id="hudBoardName">No board selected</span><span aria-hidden="true">⌄</span></button>
+    <span class="hud-flex"></span>
+    <div class="hud-telemetry" aria-label="Current field statistics"><span id="hudIdeaCount">0 ideas</span><i aria-hidden="true"></i><span id="hudGeneration">Generation 0</span></div>
+    <button type="button" id="hudNewSeed" class="hud-button hud-button-primary">+ Seed</button>
+    <button type="button" id="hudWorkbench" class="hud-button" aria-label="Open complete Evolution Rig workbench">Workbench <span aria-hidden="true">↗</span></button>
+  </div>
+  <div class="hud-dock" id="immersionDock" role="toolbar" aria-label="Causal field navigation">
+    <div class="hud-dock-heading"><b>THE CAUSAL FIELD</b><span>Recorded causes. Visible consequences.</span></div>
+    <div class="hud-dock-actions">
+      <button id="hudZoomOut" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+      <button id="hudZoomIn" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+      <button id="hudFit" type="button" aria-label="Fit complete field" title="Fit field">Fit</button>
+      <button id="hudTrace" type="button" aria-label="Center on selected idea" title="Trace selected idea">Trace</button>
+      <button id="hudInfo" type="button" aria-expanded="false" aria-controls="atlasNotebook" aria-label="Show selected idea field report">Record</button>
+    </div>
+    <span class="hud-dock-end" id="hudRoute">LOCAL / OFFLINE</span>
+  </div>
+
+  <header class="masthead"><div><div class="eyebrow" id="boardKicker">BOARD / NONE</div><h1 id="boardTitle">Create a board to begin.</h1><p id="boardObjective" class="goal">Define a goal, grow candidate ideas, compare them with an inspectable jury and export a strong candidate as a project.</p></div><button type="button" id="resumeImmersion" class="resume-immersion">◈ Return to field</button><div class="status-ribbon" id="autoStatus"><span class="status-dot" id="autoDot"></span><span id="autoStatusLabel">AUTOPILOT / IDLE</span></div></header>
   <section class="summary" aria-label="Board statistics"><div class="stat"><strong id="statTotal">0</strong><span>Total ideas</span></div><div class="stat"><strong id="statActive">0</strong><span>Active candidates</span></div><div class="stat"><strong id="statGold">0</strong><span>Gold shortlisted</span></div><div class="stat"><strong id="statGenerations">0</strong><span>Deepest generation</span></div></section>
   <nav class="tabs" id="viewTabs" role="tablist" aria-label="Workspace areas"><button class="tab" data-view="studio" role="tab" aria-selected="true">01 / Studio</button><button class="tab" data-view="jury" role="tab" aria-selected="false">02 / Jury</button><button class="tab" data-view="autopilot" role="tab" aria-selected="false">03 / Autopilot</button><button class="tab" data-view="models" role="tab" aria-selected="false">04 / Models</button></nav>
   <section class="view" id="studio" role="tabpanel" aria-label="Idea studio">
     <div class="workbar"><button class="primary" id="newSeed">+ New seed</button><button id="branchSelected">Branch selected</button><label class="bar" style="gap:6px">N <input type="number" id="branchCount" min="1" max="8" step="1" value="3" aria-label="Number of branch children"></label><button id="crossPicked">Crossbreed picked pair</button><span class="stretch"></span><label>Filter <select id="nodeFilter"><option value="active">Active</option><option value="all">All, including archived</option><option value="gold">Gold only</option></select></label><label>Search <input id="nodeSearch" placeholder="Title or mechanism" aria-label="Search ideas"></label></div>
     <section class="observatory" id="observatory" aria-labelledby="atlasTitle">
     <header class="obs-head"><div><div class="eyebrow">THE OBSERVATORY / CAUSAL SURVEY</div><h2 id="atlasTitle">Every possibility leaves a trace.</h2><p>The map is evidence, not a prediction. Every point is a recorded idea. Every thread is a real parent relationship. Even discarded paths remain.</p></div><div class="obs-controls" aria-label="Observatory navigation"><button id="atlasZoomOut" aria-label="Zoom out" title="Zoom out">− Zoom</button><button id="atlasZoomIn" aria-label="Zoom in" title="Zoom in">+ Zoom</button><button data-atlas-reset id="atlasReset" title="Fit full field (Home)">Fit field</button><button class="obs-focus" id="atlasFocus" title="Center and magnify selected idea">Trace selected</button></div></header>
-    <div class="obs-grid"><div class="atlas-field"><div class="atlas-hud"><div class="eyebrow">FIELD / <span id="atlasModeLabel">UNPOPULATED</span></div><div class="atlas-readout" id="atlasReadout">0 IDEAS · 0 LINKS<br>NO SURVEY DATA</div></div><canvas id="atlasCanvas" tabindex="0" role="img" aria-label="Interactive causal field. Every point corresponds to an idea; links show recorded ancestry. Click or tap a point to select. Drag to pan, scroll to zoom. Use the adjacent list, family tree, or jury table for keyboard and screen-reader access.">Your ideas and ancestry are also available in the accessible family tree and jury table below.</canvas><div class="atlas-key" aria-label="Diagram legend"><span><i class="key-mark"></i>Active</span><span><i class="key-mark gold"></i>Gold</span><span><i class="key-mark archive"></i>Archived</span><span><i class="key-mark hybrid"></i>Two parents</span></div></div>
-    <aside class="atlas-notebook" aria-label="Selected idea and survey findings"><div class="atlas-focus" aria-live="polite" aria-atomic="true"><div class="eyebrow" id="atlasFocusKicker">FIELD REPORT / AWAITING INPUT</div><h3 id="atlasFocusTitle">No idea selected.</h3><p id="atlasNarrative">Create a board and place a seed. The field will show the lineages you actually construct.</p></div><div class="atlas-evidence" aria-label="Trace counts"><div><strong id="atlasAncestorCount">0</strong><span>Ancestors</span></div><div><strong id="atlasDescendantCount">0</strong><span>Descendants</span></div><div><strong id="atlasArchiveCount">0</strong><span>Archived trails</span></div></div><div class="atlas-trace"><span class="eyebrow">EVIDENCE / NOT ORACLE</span><span id="atlasTraceText">The jury measures textual structure. No rating proves originality, feasibility or real-world impact.</span></div><div class="atlas-recent"><div class="eyebrow">SIGNALS / SELECT A RECORD</div><div class="atlas-index" id="atlasIndex" role="group" aria-label="Notable ideas in the current board"></div></div></aside></div>
+    <div class="obs-grid"><div class="atlas-field"><div class="atlas-hud"><div class="eyebrow">FIELD / <span id="atlasModeLabel">UNPOPULATED</span></div><div class="atlas-readout" id="atlasReadout">0 IDEAS · 0 LINKS<br>NO SURVEY DATA</div></div><aside class="field-prologue" id="fieldPrologue" aria-labelledby="fieldPrologueTitle" hidden><span class="field-prologue-label">FIELD NOTE / ORIGIN ZERO</span><h2 id="fieldPrologueTitle">Everything begins with a choice.</h2><p id="fieldPrologueText">The field will record every lineage you create. No invented paths. No erased ancestors.</p><button id="fieldPrologueStart" type="button">Open a board <span aria-hidden="true">↗</span></button></aside><canvas id="atlasCanvas" tabindex="0" role="img" aria-label="Interactive causal field. Every point corresponds to an idea; links show recorded ancestry. Click or tap a point to select. Drag to pan, scroll to zoom. Use the adjacent list, family tree, or jury table for keyboard and screen-reader access.">Your ideas and ancestry are also available in the accessible family tree and jury table below.</canvas><div class="atlas-key" aria-label="Diagram legend"><span><i class="key-mark"></i>Active</span><span><i class="key-mark gold"></i>Gold</span><span><i class="key-mark archive"></i>Archived</span><span><i class="key-mark hybrid"></i>Two parents</span></div></div>
+    <aside class="atlas-notebook" id="atlasNotebook" aria-label="Selected idea and survey findings"><button id="atlasCloseNotebook" type="button" aria-label="Close field report">× <span>Close record</span></button><div class="atlas-focus" aria-live="polite" aria-atomic="true"><div class="eyebrow" id="atlasFocusKicker">FIELD REPORT / AWAITING INPUT</div><h3 id="atlasFocusTitle">No idea selected.</h3><p id="atlasNarrative">Create a board and place a seed. The field will show the lineages you actually construct.</p></div><div class="atlas-evidence" aria-label="Trace counts"><div><strong id="atlasAncestorCount">0</strong><span>Ancestors</span></div><div><strong id="atlasDescendantCount">0</strong><span>Descendants</span></div><div><strong id="atlasArchiveCount">0</strong><span>Archived trails</span></div></div><div class="atlas-trace"><span class="eyebrow">EVIDENCE / NOT ORACLE</span><span id="atlasTraceText">The jury measures textual structure. No rating proves originality, feasibility or real-world impact.</span></div><div class="atlas-recent"><div class="eyebrow">SIGNALS / SELECT A RECORD</div><div class="atlas-index" id="atlasIndex" role="group" aria-label="Notable ideas in the current board"></div></div></aside></div>
     <div class="depth-bar" aria-label="Timeline depth exploration"><label for="atlasDepth">UNFOLD / GENERATION DEPTH</label><input id="atlasDepth" type="range" min="0" max="0" value="0" step="1" aria-label="Show ideas through generation" disabled><output id="atlasDepthLabel" for="atlasDepth">NO GENERATIONS</output><button id="atlasUnfoldAll" class="sm ghost" disabled>Reveal all</button></div>
     <div class="obs-foot"><span><strong id="atlasFootSummary">No generations recorded</strong> · click a node to follow its ancestry</span><span>Pointer: select / drag / zoom · Keyboard: use signal buttons below or focus the canvas for arrows / ± / Home</span></div>
   </section>
@@ -233,6 +380,7 @@ label{font-size:11px;color:#bfd1c8;letter-spacing:.065em}
   </section>
   <footer style="margin-top:25px;color:#708a89;font:11px var(--mono)">EVOLUTION RIG / LOCAL INSTRUMENT / NO EXTERNAL LIBRARIES / NOTHING RUNS WHEN CLOSED</footer>
 </main></div>
+<div class="hud-scrim" id="hudScrim" hidden aria-hidden="true"></div>
 <dialog class="dialog" id="ideaDialog" aria-labelledby="dialogTitle"><form id="ideaForm" novalidate><div class="dialog-header"><div><div class="eyebrow" id="dialogKicker">NEW / SEED</div><h2 id="dialogTitle">Create idea</h2></div><button type="button" class="ghost sm" id="closeDialog" aria-label="Close">Close</button></div><div class="dialog-content"><div class="field-grid" id="ideaFields"><label style="grid-column:1/-1">Title *<input name="title" required maxlength="160" placeholder="A concrete idea title"></label><label style="grid-column:1/-1">Problem to solve<textarea name="problem" maxlength="2000" rows="2"></textarea></label><label>Target audience<textarea name="audience" maxlength="2000" rows="2"></textarea></label><label>Mechanism / how it works<textarea name="mechanism" maxlength="2000" rows="3"></textarea></label><label>Differentiation / original angle<textarea name="difference" maxlength="2000" rows="3"></textarea></label><label>First execution plan<textarea name="plan" maxlength="2000" rows="3"></textarea></label><label>Validation method<textarea name="validation" maxlength="2000" rows="3"></textarea></label><label>Expected impact / benefit<textarea name="benefit" maxlength="2000" rows="3"></textarea></label><label>Constraints<textarea name="constraints" maxlength="2000" rows="3"></textarea></label><label style="grid-column:1/-1">Risks / unknowns<textarea name="risks" maxlength="2000" rows="2"></textarea></label></div></div><div class="dialog-footer"><button id="cancelIdea" type="button">Cancel</button><button class="primary" id="submitIdea" type="submit">Save idea</button></div></form></dialog>
 <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
 <script>
@@ -587,7 +735,7 @@ function createObservatory(canvas, onSelect) {
     const drawn=data.filter(n=>depthCap===null||n.generation<=depthCap);
     const drawnIds=new Set(drawn.map(n=>n.id));
     const gs=new Set(drawn.map(n=>n.generation));
-    if(!gs.size)gs.add(0);
+    if(!gs.size && !document.body.classList.contains('mode-immersive'))gs.add(0);
     for(const g of [...gs].sort((a,b)=>a-b)){
       const r=(78+g*144)*baseScale*zoom;
       if(r>Math.max(width,height)*2.2)continue;
@@ -651,7 +799,7 @@ function createObservatory(canvas, onSelect) {
     }
     // Physical scale legend derived from zoom; no invented time, distance or counts.
     ctx.fillStyle='rgba(180,199,186,.69)';ctx.font='10px ui-monospace,SFMono-Regular,monospace';ctx.fillText('CAUSAL DISTANCE / GENERATIONS',20,height-20);
-    if(!data.length){ctx.textAlign='center';ctx.fillStyle='#d4d9cd';ctx.font='18px Georgia,serif';ctx.fillText('The field has no recorded ideas.',width/2,height/2-16);ctx.font='12px system-ui,sans-serif';ctx.fillStyle='#9eafa8';ctx.fillText('Create a seed. Its consequences will become visible here.',width/2,height/2+13);ctx.textAlign='left';}
+    if(!data.length && (!document.body.classList.contains('mode-immersive') || !matchMedia('(min-width:1300px) and (min-height:850px)').matches)){ctx.textAlign='center';ctx.fillStyle='#d4d9cd';ctx.font='18px Georgia,serif';ctx.fillText('The field has no recorded ideas.',width/2,height/2-16);ctx.font='12px system-ui,sans-serif';ctx.fillStyle='#9eafa8';ctx.fillText('Create a seed. Its consequences will become visible here.',width/2,height/2+13);ctx.textAlign='left';}
   }
   function schedule(){if(frame||!visible)return;frame=requestAnimationFrame(draw);}
   function localPoint(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
@@ -734,8 +882,13 @@ function renderObservatory(){
  const shownIdeas=ideas.filter(i=>i.generation<=shownDepth);
  const shownIds=new Set(shownIdeas.map(i=>i.id));
  const shownLinks=shownIdeas.reduce((n,i)=>n+i.parents.filter(id=>shownIds.has(id)).length,0);
- $('atlasReadout').innerHTML=`<strong>${shownIdeas.length} / ${ideas.length} IDEAS · ${shownLinks} / ${links} LINKS</strong><br>${shownDepth+1} OF ${maxDepth+1} GENERATIONS DISCLOSED`;
- $('atlasDepthLabel').textContent=atlasDepthChoice===null?'ALL / GEN '+String(maxDepth).padStart(2,'0'):'THROUGH / GEN '+String(shownDepth).padStart(2,'0');
+ if(!count){
+  $('atlasReadout').innerHTML='<strong>0 IDEAS · 0 LINKS</strong><br>NO RECORDED GENERATIONS';
+  $('atlasDepthLabel').textContent='NO GENERATIONS';
+ }else{
+  $('atlasReadout').innerHTML=`<strong>${shownIdeas.length} / ${ideas.length} IDEAS · ${shownLinks} / ${links} LINKS</strong><br>${shownDepth+1} OF ${maxDepth+1} GENERATIONS DISCLOSED`;
+  $('atlasDepthLabel').textContent=atlasDepthChoice===null?'ALL / GEN '+String(maxDepth).padStart(2,'0'):'THROUGH / GEN '+String(shownDepth).padStart(2,'0');
+ }
  observatory.setDepth(atlasDepthChoice);
  $('atlasModeLabel').textContent=selected?'TRACE / '+String(selected.generation).padStart(2,'0'):count?'OVERVIEW / ALL GENERATIONS':'UNPOPULATED';
  $('atlasFootSummary').textContent=count?`${roots} roots / ${Math.max(0,count-roots)} descendants / ${archived} archived`:'No generations recorded';
@@ -1154,6 +1307,74 @@ globalThis.EvolutionRigTest={core:C,calibration:()=>C.anchors(),getPublicState:(
 if(window.innerWidth<=760 && state.boards.length)$('boardComposer').open=false;
 renderCadence();renderProvider();renderAll();changeView('studio');
 if(!calibrator.passes)notify('Scoring reference gate failed. Gold export is disabled.',true);
+})();
+
+</script>
+<script>
+/* Causal Field: progressive disclosure without rewriting the project state.
+   All operations delegate to existing workbench controls and the original
+   observatory; no new source of truth, provider, or generation path. */
+(() => {
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const body=document.body,rail=$('workspaceRail'),scrim=$('hudScrim');
+  const boardButton=$('hudBoards'),infoButton=$('hudInfo');
+  const prefKey='evolution-rig:ui:surface:v1';
+  let prefer='immersive';
+  try{prefer=localStorage.getItem(prefKey)||'immersive';}catch{}
+  const immersive=()=>body.classList.contains('mode-immersive');
+  const save=v=>{try{localStorage.setItem(prefKey,v);}catch{}};
+  let reportReturn=infoButton,boardsReturn=boardButton;
+  function closeBoards(focus=false){body.classList.remove('ui-boards-open');scrim.hidden=true;boardButton.setAttribute('aria-expanded','false');rail.inert=immersive();$('main').inert=false;if(focus && immersive())boardsReturn.focus({preventScroll:true});}
+  function showBoards(){if(!immersive())return;boardsReturn=document.activeElement instanceof HTMLElement?document.activeElement:boardButton;body.classList.add('ui-boards-open');scrim.hidden=false;boardButton.setAttribute('aria-expanded','true');rail.inert=false;$('main').inert=true;const b=$('boardList').querySelector('.selected')||$('boardComposer summary');requestAnimationFrame(()=>b?.focus({preventScroll:true}));}
+  function closeReport(focus=false){body.classList.remove('ui-notes-open');infoButton.setAttribute('aria-expanded','false');$('atlasNotebook').inert=immersive();if(focus && immersive())reportReturn?.focus({preventScroll:true});}
+  function showReport(){if(!immersive())return;reportReturn=document.activeElement instanceof HTMLElement?document.activeElement:infoButton;body.classList.add('ui-notes-open');infoButton.setAttribute('aria-expanded','true');$('atlasNotebook').inert=false;$('atlasCloseNotebook').focus({preventScroll:true});}
+  function adapt(){const active=immersive();rail.inert=active&&!body.classList.contains('ui-boards-open');$('atlasNotebook').inert=active&&!body.classList.contains('ui-notes-open');$('hudWorkbench').setAttribute('aria-pressed',String(!active));$('resumeImmersion').setAttribute('aria-pressed',String(active));requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));}
+  function setMode(value){closeBoards();closeReport();body.classList.toggle('mode-immersive',value==='immersive');save(value);if(value==='immersive')$('viewTabs').querySelector('[data-view="studio"]').click();adapt();}
+  $('hudWorkbench').addEventListener('click',()=>{setMode('workbench');$('resumeImmersion').focus({preventScroll:true});});
+  $('resumeImmersion').addEventListener('click',()=>{setMode('immersive');$('atlasCanvas').focus({preventScroll:true});});
+  boardButton.addEventListener('click',()=>body.classList.contains('ui-boards-open')?closeBoards(true):showBoards());
+  scrim.addEventListener('click',()=>closeBoards(true));
+  rail.addEventListener('click',e=>{if(e.target.closest('[data-board]'))requestAnimationFrame(()=>closeBoards(true));},true);
+  $('boardForm').addEventListener('submit',()=>{const form=$('boardForm');if(form.elements.namedItem('title').value.trim()&&form.elements.namedItem('objective').value.trim())requestAnimationFrame(()=>closeBoards(true));},true);
+  $('hudNewSeed').addEventListener('click',()=>{if($('newSeed').disabled){showBoards();$('boardComposer').open=true;$('boardForm').elements.namedItem('title').focus({preventScroll:true});}else $('newSeed').click();});
+  $('fieldPrologueStart').addEventListener('click',()=>$('hudNewSeed').click());
+  const delegate={hudZoomOut:'atlasZoomOut',hudZoomIn:'atlasZoomIn',hudFit:'atlasReset',hudTrace:'atlasFocus'};
+  for(const [id,target] of Object.entries(delegate))$(id).addEventListener('click',()=>$(target).click());
+  infoButton.addEventListener('click',()=>body.classList.contains('ui-notes-open')?closeReport(true):showReport());
+  $('atlasCloseNotebook').addEventListener('click',()=>closeReport(true));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){if(body.classList.contains('ui-boards-open')){e.preventDefault();closeBoards(true);}else if(body.classList.contains('ui-notes-open')){e.preventDefault();closeReport(true);}return;}
+    if(!immersive()||e.altKey||e.ctrlKey||e.metaKey||e.repeat)return;
+    if(e.target.closest('input,textarea,select,button,[contenteditable="true"],dialog')||$('ideaDialog').open)return;
+    if(e.key.toLowerCase()==='b'){e.preventDefault();showBoards();}
+    if(e.key.toLowerCase()==='n'){e.preventDefault();$('hudNewSeed').click();}
+    if(e.key==='?' ){e.preventDefault();showReport();}
+  });
+  function sync(){
+    const boardTitle=$('boardTitle').textContent.trim();
+    const hasBoard=!$('newSeed').disabled;
+    $('hudBoardName').textContent=hasBoard?boardTitle:'Choose a board';
+    $('hudNewSeed').textContent=hasBoard?'+ Seed':'+ Begin';
+    $('hudIdeaCount').textContent=$('statTotal').textContent+' ideas';
+    $('hudGeneration').textContent='Generation '+$('statGenerations').textContent;
+    const isEmpty=Number($('statTotal').textContent)===0;
+    $('fieldPrologue').hidden=!isEmpty;
+    $('fieldPrologueStart').firstChild.textContent=hasBoard?'Create first idea ':'Open a board ';
+    $('fieldPrologueTitle').textContent=hasBoard?'Now give the field its first cause.':'Everything begins with a choice.';
+    const status=$('autoStatusLabel').textContent;
+    $('hudRoute').textContent=status.includes('RUNNING')?'AUTO / ACTIVE':'LOCAL / CONTROLLED';
+    $('hudTrace').disabled=$('atlasFocus').disabled;
+  }
+  const nodes=['boardTitle','newSeed','statTotal','statGenerations','autoStatusLabel','atlasFocus'];
+  const observer=new MutationObserver(sync);
+  for(const id of nodes)observer.observe($(id),{childList:true,characterData:true,subtree:true,attributes:id==='newSeed'||id==='atlasFocus',attributeFilter:id==='newSeed'||id==='atlasFocus'?['disabled']:undefined});
+  window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+  if(prefer==='workbench')body.classList.remove('mode-immersive');
+  adapt();sync();
+  // Keeps canvas backing dimensions in step with browser address-bar / panel changes.
+  const field=document.querySelector('.atlas-field');
+  if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(immersive())window.dispatchEvent(new Event('resize'));});ro.observe(field);window.addEventListener('pagehide',()=>ro.disconnect(),{once:true});}
 })();
 
 </script>
